@@ -1,0 +1,60 @@
+package utils;
+
+/**
+ * Stellt einen dreidimensionalen Raum da, der alle Punkte p mit: MIN_X <= p.x <
+ * MAX_X MIN_Y <= p.y < MAX_Y MIN_TIME <= p.time < MAX_TIME umfasst (also immer
+ * inklusive der unteren und exclusie der oberen Grenze)
+ * 
+ * @author tobi
+ *
+ */
+public class Range3D {
+	public final int MIN_X;
+	public final int MAX_X;
+	public final int MIN_Y;
+	public final int MAX_Y;
+	public final int MIN_TIME;
+	public final int MAX_TIME;
+	
+	public final int WIDTH;
+	public final int HEIGHT;
+	public final int LENGTH; 
+
+	public Range3D(int minX, int maxX, int minY, int maxY, int minTime,
+			int maxTime) {
+		MIN_X = minX;
+		MAX_X = maxX;
+
+		MIN_Y = minY;
+		MAX_Y = maxY;
+
+		MIN_TIME = minTime;
+		MAX_TIME = maxTime;
+		
+		WIDTH = MAX_X - MIN_X;
+		HEIGHT = MAX_Y - MIN_Y; 
+		LENGTH = MAX_TIME - MIN_TIME;
+	}
+
+	public boolean inX(int x) {
+		return (MIN_X <= x && x < MAX_X);
+	}
+
+	public boolean inY(int y) {
+		return (MIN_Y <= y && y < MAX_Y);
+	}
+
+	public boolean inTime(int time) {
+		return (MIN_TIME <= time && time < MAX_TIME);
+	}
+
+	public boolean overlap(Range3D r) {
+		return inX(r.MIN_X) || inX(r.MAX_X) || inY(r.MIN_Y) || inY(r.MAX_Y)
+				|| inTime(r.MIN_TIME) || inTime(r.MAX_TIME);
+	}
+
+	public boolean inRange(int x, int y, int time) {
+		return inX(x) || inY(y) || inTime(time);
+	}
+
+}
