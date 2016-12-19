@@ -1,0 +1,31 @@
+package tier_1;
+
+import utils.Range2D;
+
+public class Matrix {
+	public final Range2D IMAGE_RANGE;
+	public final int NUMBER_OF_COLUMNS;
+	public final int NUMBER_OF_ROWS;
+
+	public final int SIZE_OF_ROW;
+	public final int SIZE_OF_COLUMN;
+	
+	private final int[] values;
+
+	public Matrix(Range2D range, int numberOfColumns, int numberOfRows) {
+		IMAGE_RANGE = range;
+
+		NUMBER_OF_COLUMNS = numberOfColumns;
+		NUMBER_OF_ROWS = numberOfRows;
+
+		SIZE_OF_ROW = (int) Math
+				.ceil(((double) IMAGE_RANGE.HEIGHT / (double) NUMBER_OF_ROWS));
+		SIZE_OF_COLUMN = (int) Math
+				.ceil(((double) IMAGE_RANGE.WIDTH / (double) NUMBER_OF_COLUMNS));
+		
+		values = new int[NUMBER_OF_COLUMNS * NUMBER_OF_ROWS];
+		for (int i = 0; i < values.length; i++){
+			values[i] = 0;
+		}
+	}
+}
