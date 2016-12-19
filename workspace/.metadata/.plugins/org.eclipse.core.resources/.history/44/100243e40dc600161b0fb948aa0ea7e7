@@ -3,7 +3,6 @@ package tier_1;
 import java.util.ArrayList;
 
 import tier_0.Point;
-import tier_0.Record;
 import utils.Range2D;
 import utils.Range3D;
 
@@ -22,12 +21,6 @@ public class Octree {
 		root.add(p);
 	}
 
-	public void add(Record r){
-		for (Point p : r.getAllPoints()){
-			root.add(p);
-		}
-	}
-	
 	private class OctreeNode {
 		private OctreeNode NWE = null, NEE = null, SWE = null, SEE = null;
 		private OctreeNode NWL = null, NEL = null, SWL = null, SEL = null;
