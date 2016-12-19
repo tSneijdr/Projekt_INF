@@ -3,6 +3,7 @@ package tier_1;
 import java.util.ArrayList;
 
 import tier_0.Point;
+import tier_1.Quadtree.QuadtreeNode;
 import utils.Range2D;
 import utils.Range3D;
 
@@ -21,7 +22,7 @@ public class Octree {
 		root.add(p);
 	}
 
-	private class OctreeNode {
+	class OctreeNode {
 		private OctreeNode NWE = null, NEE = null, SWE = null, SEE = null;
 		private OctreeNode NWL = null, NEL = null, SWL = null, SEL = null;
 		private final int maxNumElements;
@@ -111,7 +112,7 @@ public class Octree {
 				// initialisiere die neuen QuadtreeNodes
 				NWE = new OctreeNode(maxNumElements, nweRange);
 				NEE = new OctreeNode(maxNumElements, neeRange);
-				SWE = new OctreeNode(maxNumElements, sweRange);
+				SWE = new octreeNode(maxNumElements, sweRange);
 				SEE = new OctreeNode(maxNumElements, seeRange);
 
 				NWL = new OctreeNode(maxNumElements, nwlRange);

@@ -20,7 +20,7 @@ public class Quadtree {
 		root.add(p);
 	}
 
-	private class QuadtreeNode {
+	class QuadtreeNode {
 		private QuadtreeNode NW = null, NE = null, SW = null, SE = null;
 		private final int maxNumElements;
 		private final ArrayList<Point> points;

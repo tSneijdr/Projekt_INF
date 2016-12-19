@@ -1,7 +1,5 @@
 package utils;
 
-import tier_0.Point;
-
 /**
  * Stellt einen dreidimensionalen Raum da, der alle Punkte p mit: MIN_X <= p.x <
  * MAX_X MIN_Y <= p.y < MAX_Y MIN_TIME <= p.time < MAX_TIME umfasst (also immer
@@ -50,7 +48,7 @@ public class Range3D {
 		return (MIN_Y <= y && y < MAX_Y);
 	}
 
-	public boolean inTime(double time) {
+	public boolean inTime(int time) {
 		return (MIN_TIME <= time && time < MAX_TIME);
 	}
 
@@ -59,12 +57,8 @@ public class Range3D {
 				|| inTime(r.MIN_TIME) || inTime(r.MAX_TIME);
 	}
 
-	public boolean inRange(int x, int y, double time) {
+	public boolean inRange(int x, int y, int time) {
 		return inX(x) || inY(y) || inTime(time);
-	}
-	
-	public boolean inRange(Point p) {
-		return inRange(p.X, p.Y, p.TIMEPOINT);
 	}
 
 }

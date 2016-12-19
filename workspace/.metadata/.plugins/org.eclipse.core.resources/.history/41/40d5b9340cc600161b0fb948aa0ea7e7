@@ -20,7 +20,7 @@ public class Quadtree {
 		root.add(p);
 	}
 
-	private class QuadtreeNode {
+	class QuadtreeNode {
 		private QuadtreeNode NW = null, NE = null, SW = null, SE = null;
 		private final int maxNumElements;
 		private final ArrayList<Point> points;
@@ -71,7 +71,7 @@ public class Quadtree {
 			// nur ausführen wenn eine Aufteilung des Nodes notwendig und noch
 			// nicht geschehen ist
 			if (points.size() > maxNumElements && NW == null && NE == null
-					&& SE == null && SW == null) {
+					&& SW == null && SW == null) {
 				int midX = range.MIN_X + (range.WIDTH / 2);
 				int midY = range.MIN_Y + (range.HEIGHT / 2);
 

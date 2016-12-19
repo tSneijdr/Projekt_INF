@@ -3,30 +3,33 @@ package tier_1;
 import java.util.ArrayList;
 
 import tier_0.Point;
+import tier_1.Quadtree.QuadtreeNode;
 import utils.Range2D;
+import utils.Range3D;
 
-public class Quadtree {
-	private final QuadtreeNode root;
+public class Octree {
+	private final OctreeNode root;
 
-	public final Range2D RANGE;
+	public final Range3D RANGE;
 
-	public Quadtree(Range2D r, int maxNumElements) {
+	public Octree(Range3D r, int maxNumElements) {
 		RANGE = r;
 
-		root = new QuadtreeNode(maxNumElements, r);
+		root = new OctreeNode(maxNumElements, r);
 	}
 
 	public void add(Point p) {
 		root.add(p);
 	}
 
-	private class QuadtreeNode {
-		private QuadtreeNode NW = null, NE = null, SW = null, SE = null;
+	class OctreeNode {
+		private QuadtreeNode NWE = null, NEE = null, SWE = null, SEE = null;
+		private QuadtreeNode NWL = null, NEL = null, SWL = null, SEL = null;
 		private final int maxNumElements;
 		private final ArrayList<Point> points;
-		public final Range2D range;
+		public final Range3D range;
 
-		public QuadtreeNode(int maxNumberOfElements, Range2D range) {
+		public OctreeNode(int maxNumberOfElements, Range3D range) {
 			this.maxNumElements = maxNumberOfElements;
 			this.range = range;
 
@@ -45,21 +48,29 @@ public class Quadtree {
 			}
 
 			// Weitergeben an Unterbäume falls diese existieren
-			if (NE != null && NW != null && SE != null && SW != null) {
+			if (NEE != null && NWE != null && SEE != null && SWE != null && NEL != null && NWL != null && SEL != null && SWL != null) {
 				// Falls der letzte Punkt den Knoten voll gemacht hat wird
 				// gesplittet
 				if (points.size() > maxNumElements) {
 					initializeSubtrees();
 				}
 
-				if (NW.range.inRange(p)) {
-					NW.add(p);
-				} else if (NE.range.inRange(p)) {
-					NE.add(p);
-				} else if (SW.range.inRange(p)) {
-					SW.add(p);
-				} else if (SE.range.inRange(p)) {
-					SE.add(p);
+				if (NWE.range.inRange(p)) {
+					NWE.add(p);
+				} else if (NEE.range.inRange(p)) {
+					NEE.add(p);
+				} else if (SWE.range.inRange(p)) {
+					SWE.add(p);
+				} else if (SEE.range.inRange(p)) {
+					SEE.add(p);
+				} else if (NWL.range.inRange(p)) {
+					NWL.add(p);
+				} else if (NEL.range.inRange(p)) {
+					NEL.add(p);
+				} else if (SWL.range.inRange(p)) {
+					SWL.add(p);
+				} else if (SEL.range.inRange(p)) {
+					SEL.add(p);
 				}
 			}
 		}
@@ -70,10 +81,12 @@ public class Quadtree {
 		private void initializeSubtrees() {
 			// nur ausführen wenn eine Aufteilung des Nodes notwendig und noch
 			// nicht geschehen ist
-			if (points.size() > maxNumElements && NW == null && NE == null
-					&& SE == null && SW == null) {
+			if (points.size() > maxNumElements && NWE == null && NEE == null
+					&& SEE == null && SWE == null&& NWL == null && NEL == null
+					&& SWL == null && SWL == null) {
 				int midX = range.MIN_X + (range.WIDTH / 2);
 				int midY = range.MIN_Y + (range.HEIGHT / 2);
+				int midTime = range.MIN_TIME + (range.LENGTH / 2);
 
 				// initialisiere die neuen Rangen
 				Range2D nwRange = new Range2D(range.MIN_X,
@@ -85,12 +98,20 @@ public class Quadtree {
 				Range2D seRange = new Range2D((range.MIN_X + midX),
 						range.MAX_X, range.MIN_Y, (range.MIN_Y + midY));
 
+				
+				Range3D nweRange  = new Range3D(nwRange)
+				
 				// initialisiere die neuen QuadtreeNodes
-				NW = new QuadtreeNode(maxNumElements, nwRange);
-				NE = new QuadtreeNode(maxNumElements, neRange);
-				SW = new QuadtreeNode(maxNumElements, swRange);
-				SE = new QuadtreeNode(maxNumElements, seRange);
+				NWE = new QuadtreeNode(maxNumElements, nwRange);
+				NEE = new QuadtreeNode(maxNumElements, neRange);
+				SWE = new QuadtreeNode(maxNumElements, swRange);
+				SEE = new QuadtreeNode(maxNumElements, seRange);
 
+				NWL = new QuadtreeNode(maxNumElements, nwRange);
+				NEL = new QuadtreeNode(maxNumElements, neRange);
+				SWL = new QuadtreeNode(maxNumElements, swRange);
+				SEL = new QuadtreeNode(maxNumElements, seRange);
+				
 				// Fügt Punkte erneut hinzu, so dass sie an Unternäume übergeben
 				// werden
 				for (Point p : points) {

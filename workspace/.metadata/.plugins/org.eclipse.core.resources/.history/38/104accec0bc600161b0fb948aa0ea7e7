@@ -3,30 +3,33 @@ package tier_1;
 import java.util.ArrayList;
 
 import tier_0.Point;
+import tier_1.Quadtree.QuadtreeNode;
 import utils.Range2D;
+import utils.Range3D;
 
-public class Quadtree {
-	private final QuadtreeNode root;
+public class Octree {
+	private final OctreeNode root;
 
-	public final Range2D RANGE;
+	public final Range3D RANGE;
 
-	public Quadtree(Range2D r, int maxNumElements) {
+	public Octree(Range3D r, int maxNumElements) {
 		RANGE = r;
 
-		root = new QuadtreeNode(maxNumElements, r);
+		root = new OctreeNode(maxNumElements, r);
 	}
 
 	public void add(Point p) {
 		root.add(p);
 	}
 
-	private class QuadtreeNode {
-		private QuadtreeNode NW = null, NE = null, SW = null, SE = null;
+	class OctreeNode {
+		private QuadtreeNode NWE = null, NEE = null, SWE = null, SEE = null;
+		private QuadtreeNode NWL = null, NEL = null, SWL = null, SEL = null;
 		private final int maxNumElements;
 		private final ArrayList<Point> points;
-		public final Range2D range;
+		public final Range3D range;
 
-		public QuadtreeNode(int maxNumberOfElements, Range2D range) {
+		public OctreeNode(int maxNumberOfElements, Range3D range) {
 			this.maxNumElements = maxNumberOfElements;
 			this.range = range;
 
@@ -45,7 +48,7 @@ public class Quadtree {
 			}
 
 			// Weitergeben an Unterbäume falls diese existieren
-			if (NE != null && NW != null && SE != null && SW != null) {
+			if (NEE != null && NWE != null && SEE != null && SWE != null && NEL != null && NWL != null && SEL != null && SWL != null) {
 				// Falls der letzte Punkt den Knoten voll gemacht hat wird
 				// gesplittet
 				if (points.size() > maxNumElements) {
@@ -71,7 +74,7 @@ public class Quadtree {
 			// nur ausführen wenn eine Aufteilung des Nodes notwendig und noch
 			// nicht geschehen ist
 			if (points.size() > maxNumElements && NW == null && NE == null
-					&& SE == null && SW == null) {
+					&& SW == null && SW == null) {
 				int midX = range.MIN_X + (range.WIDTH / 2);
 				int midY = range.MIN_Y + (range.HEIGHT / 2);
 

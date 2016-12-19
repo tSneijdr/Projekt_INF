@@ -59,7 +59,7 @@ public class Range3D {
 				|| inTime(r.MIN_TIME) || inTime(r.MAX_TIME);
 	}
 
-	public boolean inRange(int x, int y, double time) {
+	public boolean inRange(int x, int y, int time) {
 		return inX(x) || inY(y) || inTime(time);
 	}
 	

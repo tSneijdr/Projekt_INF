@@ -21,7 +21,7 @@ public class Octree {
 		root.add(p);
 	}
 
-	private class OctreeNode {
+	class OctreeNode {
 		private OctreeNode NWE = null, NEE = null, SWE = null, SEE = null;
 		private OctreeNode NWL = null, NEL = null, SWL = null, SEL = null;
 		private final int maxNumElements;
