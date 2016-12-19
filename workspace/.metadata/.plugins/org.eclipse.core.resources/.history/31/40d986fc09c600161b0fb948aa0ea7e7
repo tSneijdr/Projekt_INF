@@ -8,8 +8,7 @@ public class Timeline {
 	private final OctreeNode root;
 
 	public Timeline() {
-		//root = new OctreeNode(0, 0, 100, 100);
-		root = new OctreeNode(0, 0, 0, 0, 0, 0, 0);
+		root = new OctreeNode(0, 0, 100, 100);
 
 	}
 

@@ -31,10 +31,6 @@ public class Record {
 		this("default", p);
 	}
 
-	/**
-	 * Gibt ein Set zurück das alle Punkte der Datenreihe enthält
-	 * @return
-	 */
 	public Set<Point> getAllPoints() {
 		HashSet<Point> s = new HashSet<Point>();
 

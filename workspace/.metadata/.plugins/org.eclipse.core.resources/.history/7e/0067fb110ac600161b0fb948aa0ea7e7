@@ -9,7 +9,7 @@ public class Timeline {
 
 	public Timeline() {
 		//root = new OctreeNode(0, 0, 100, 100);
-		root = new OctreeNode(0, 0, 0, 0, 0, 0, 0);
+		root = new OctreeNode();
 
 	}
 

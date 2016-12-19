@@ -24,17 +24,13 @@ public class Record {
 	}
 
 	/**
-	 * Konstruktor der nur einen Punkt als Parameter erhält
+	 * Der generelste Konstruktor
 	 * @param p
 	 */
 	public Record(Point p) {
 		this("default", p);
 	}
 
-	/**
-	 * Gibt ein Set zurück das alle Punkte der Datenreihe enthält
-	 * @return
-	 */
 	public Set<Point> getAllPoints() {
 		HashSet<Point> s = new HashSet<Point>();
 

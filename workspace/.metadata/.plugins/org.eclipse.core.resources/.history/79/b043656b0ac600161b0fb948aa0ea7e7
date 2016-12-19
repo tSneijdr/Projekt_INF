@@ -23,18 +23,10 @@ public class Record {
 		this(title, "default", p);
 	}
 
-	/**
-	 * Konstruktor der nur einen Punkt als Parameter erhält
-	 * @param p
-	 */
 	public Record(Point p) {
 		this("default", p);
 	}
 
-	/**
-	 * Gibt ein Set zurück das alle Punkte der Datenreihe enthält
-	 * @return
-	 */
 	public Set<Point> getAllPoints() {
 		HashSet<Point> s = new HashSet<Point>();
 
@@ -47,24 +39,8 @@ public class Record {
 		return s;
 	}
 
-	/**
-	 * Ausdurck ob ein gegebener Punkt zu dieser Datenreihe gehört
-	 * 
-	 * @param p
-	 * @return
-	 */
 	public boolean isElement(Point p) {
-		Point current = this.firstPoint;
-
-		if (current == p)
-			return true;
-		while (current.getNextNode() != null) {
-			current = current.getNextNode();
-			if (current == p) {
-				return true;
-			}
-		}
-		return false;
+		return getAllPoints().contains(p);
 	}
 
 }
