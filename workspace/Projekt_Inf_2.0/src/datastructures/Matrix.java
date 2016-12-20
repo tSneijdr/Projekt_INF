@@ -1,9 +1,11 @@
 package datastructures;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import core.Point;
 import core.Record;
+import utils.Quadrupel;
 import utils.Range2D;
 
 public class Matrix {
@@ -13,8 +15,10 @@ public class Matrix {
 
 	public final int SIZE_OF_ROW;
 	public final int SIZE_OF_COLUMN;
-	
+
 	private final int[] values;
+
+	private final HashSet<Quadrupel<Integer, Integer, Integer, Integer>> arrows;
 
 	public Matrix(Range2D range, int numberOfColumns, int numberOfRows) {
 		IMAGE_RANGE = range;
@@ -26,45 +30,75 @@ public class Matrix {
 				.ceil(((double) IMAGE_RANGE.HEIGHT / (double) NUMBER_OF_ROWS));
 		SIZE_OF_COLUMN = (int) Math
 				.ceil(((double) IMAGE_RANGE.WIDTH / (double) NUMBER_OF_COLUMNS));
-		
+
 		values = new int[NUMBER_OF_COLUMNS * NUMBER_OF_ROWS];
-		for (int i = 0; i < values.length; i++){
+		for (int i = 0; i < values.length; i++) {
 			values[i] = 0;
 		}
+
+		arrows = new HashSet<Quadrupel<Integer, Integer, Integer, Integer>>();
 	}
-	
-	public int getNumberOfPointsAt(int x, int y){
-		if (x < 0 || NUMBER_OF_COLUMNS <= x){
-			throw new ArrayIndexOutOfBoundsException("Der x-Wert stimmt hier nicht.");
+
+	public int getNumberOfPointsAt(int x, int y) {
+		if (x < 0 || NUMBER_OF_COLUMNS <= x) {
+			throw new ArrayIndexOutOfBoundsException(
+					"Der x-Wert stimmt hier nicht.");
 		}
-		if (y < 0 || NUMBER_OF_ROWS <= y){
-			throw new ArrayIndexOutOfBoundsException("Der y-Wert stimmt hier nicht.");
+		if (y < 0 || NUMBER_OF_ROWS <= y) {
+			throw new ArrayIndexOutOfBoundsException(
+					"Der y-Wert stimmt hier nicht.");
 		}
-		
-		return values[y*NUMBER_OF_ROWS + x];
+
+		return values[y * NUMBER_OF_ROWS + x];
 	}
-	
-	public void addPoint(Point p){
+
+	/**
+	 * Fügt der Matrix einen Punkt zu Beachte: Bei der zufügung eines einzelnen
+	 * Punktes werden Pfeile zwischen Graphknoten nicht erhalten
+	 * 
+	 * @param p
+	 */
+	public void addPoint(Point p) {
 		int x = p.X / SIZE_OF_COLUMN;
 		int y = p.Y / SIZE_OF_ROW;
-		
-		if (x < 0 || NUMBER_OF_COLUMNS <= x){
-			throw new ArrayIndexOutOfBoundsException("Der x-Wert stimmt hier nicht.");
+
+		if (x < 0 || NUMBER_OF_COLUMNS <= x) {
+			throw new ArrayIndexOutOfBoundsException(
+					"Der x-Wert stimmt hier nicht.");
 		}
-		if (y < 0 || NUMBER_OF_ROWS <= y){
-			throw new ArrayIndexOutOfBoundsException("Der y-Wert stimmt hier nicht.");
+		if (y < 0 || NUMBER_OF_ROWS <= y) {
+			throw new ArrayIndexOutOfBoundsException(
+					"Der y-Wert stimmt hier nicht.");
 		}
-		
-		values[y*NUMBER_OF_ROWS + x]++;
+
+		values[y * NUMBER_OF_ROWS + x]++;
 	}
-	
-	public void addPoints(Set<Point> points){
-		for (Point p : points){
+
+	private void addPoints(Set<Point> points) {
+		for (Point p : points) {
 			addPoint(p);
 		}
 	}
-	
-	public void addrecord(Record r){
+
+	public void addRecord(Record r) {
 		addPoints(r.getAllPoints());
+
+		Point p = r.firstPoint;
+		while (p.getNextNode() != null) {
+			int x1, x2, y1, y2;
+			x1 = p.X / SIZE_OF_COLUMN;
+			y1 = p.Y / SIZE_OF_ROW;
+
+			x2 = p.getNextNode().X / SIZE_OF_COLUMN;
+			y2 = p.getNextNode().Y / SIZE_OF_ROW;
+
+			Quadrupel<Integer, Integer, Integer, Integer> q;
+			q = new Quadrupel<Integer, Integer, Integer, Integer>(x1, y1, x2,
+					y2);
+			arrows.add(q);
+
+			p = p.getNextNode();
+		}
+
 	}
 }
