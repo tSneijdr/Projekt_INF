@@ -1,6 +1,6 @@
 package utils;
 
-import core.Point;
+import tier_0.Point;
 
 
 

@@ -1,5 +1,5 @@
-import datastructures.Octree;
-import datastructures.Quadtree;
+import tier_1.Quadtree;
+import tier_1.Octree;
 
 public class Main {
 

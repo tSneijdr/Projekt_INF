@@ -1,6 +1,6 @@
 package utils;
 
-import core.Point;
+import tier_0.Point;
 
 /**
  * Stellt einen dreidimensionalen Raum da, der alle Punkte p mit: MIN_X <= p.x <
