@@ -12,11 +12,15 @@ public class Record {
 		TITLE = title;
 		PARTICIPANT = participant;
 
-		// Iteriert zum Anfang des Datensatzes
-		while (p.getPreviousNode() != null) {
-			p = p.getPreviousNode();
+		if (p != null) {
+			// Iteriert zum Anfang des Datensatzes
+			while (p.getPreviousNode() != null) {
+				p = p.getPreviousNode();
+			}
+			firstPoint = p;
+		} else {
+			firstPoint = null;
 		}
-		firstPoint = p;
 	}
 
 	public Record(String title, Point p) {
@@ -25,6 +29,7 @@ public class Record {
 
 	/**
 	 * Konstruktor der nur einen Punkt als Parameter erhält
+	 * 
 	 * @param p
 	 */
 	public Record(Point p) {
@@ -33,6 +38,7 @@ public class Record {
 
 	/**
 	 * Gibt ein Set zurück das alle Punkte der Datenreihe enthält
+	 * 
 	 * @return
 	 */
 	public Set<Point> getAllPoints() {
