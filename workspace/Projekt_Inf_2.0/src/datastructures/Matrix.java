@@ -58,7 +58,7 @@ public class Matrix {
 	 * 
 	 * @param p
 	 */
-	public void addPoint(Point p) {
+	private void addPoint(Point p) {
 		int x = p.X / SIZE_OF_COLUMN;
 		int y = p.Y / SIZE_OF_ROW;
 

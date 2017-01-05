@@ -10,30 +10,17 @@ public class Point {
 	public final double TIMEPOINT;
 	/** Zeit die der Punkt betrachtet wird **/
 	public final double DURATION;
-	public final String TITLE;
 
 	private boolean isAlreadySet = false;
 
 	private Point previousNode = null;
 	private Point nextNode = null;
 
-	public Point(String title, int x, int y, double duration,
-			double timepoint) {
-		X = x;
-		Y = y;
-		TIMEPOINT = timepoint;
-		DURATION = duration;
-
-		TITLE = title;
-	}
-
 	public Point(int x, int y, double timepoint, double duration) {
 		X = x;
 		Y = y;
 		TIMEPOINT = timepoint;
 		DURATION = duration;
-
-		TITLE = "default";
 	}
 
 	// -----------------------------------------------------------------
@@ -78,12 +65,12 @@ public class Point {
 		if (points.size() <= 0) {
 			return null;
 		}
-		
+
 		// Kopiere die Liste, sodass die übergebene Liste nicht verändert wird
 		LinkedList<Point> points2 = new LinkedList<Point>();
 		points2.addAll(points);
 		points = points2;
-		
+
 		Point lastPoint = null;
 		while (!points.isEmpty()) {
 			Point minimalPoint = points.get(0);
@@ -92,18 +79,18 @@ public class Point {
 					minimalPoint = p;
 				}
 			}
-			
+
 			points.remove(minimalPoint);
 			minimalPoint.previousNode = lastPoint;
 			minimalPoint.isAlreadySet = true;
 			lastPoint = minimalPoint;
 		}
-		
+
 		// Iteriert zum Anfang der Liste
-		while(lastPoint.getPreviousNode() != null){
+		while (lastPoint.getPreviousNode() != null) {
 			lastPoint = lastPoint.getPreviousNode();
 		}
-		
+
 		return lastPoint;
 	}
 
@@ -111,8 +98,7 @@ public class Point {
 	// System ----------------------------------------------------------
 	// -----------------------------------------------------------------
 	public String toString() {
-		return "(" + TITLE + ", " + X + ", " + Y + ", " + TIMEPOINT + ", "
-				+ DURATION + ")";
+		return "(" + X + ", " + Y + ", " + TIMEPOINT + ", " + DURATION + ")";
 	}
 
 	public boolean equals(Point p) {

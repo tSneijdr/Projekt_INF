@@ -2,17 +2,10 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import core.Point;
-import core.Record;
-import utils.Range2D;
-import datastructures.Matrix;
 
 public class MainFrame extends JFrame {
 	/**
@@ -22,14 +15,22 @@ public class MainFrame extends JFrame {
 
 	public final JPanel PANEL = new JPanel();
 	public final SelectionPanel SELECTION = new SelectionPanel();
+	public final ModePanel MODE = new ModePanel();
+	
 	
 	public MainFrame(String title) {
 		this.setTitle(title);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		SELECTION.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		MODE.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		PANEL.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		this.add(SELECTION, BorderLayout.WEST);
 		this.add(PANEL, BorderLayout.CENTER);
+		this.add(MODE, BorderLayout.SOUTH);
 	}
 
 

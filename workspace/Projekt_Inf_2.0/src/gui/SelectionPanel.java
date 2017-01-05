@@ -24,7 +24,6 @@ public class SelectionPanel extends JPanel {
 	public SelectionPanel() {
 		this.setLayout(new GridLayout(0, 1));
 		this.setMaximumSize(new Dimension(10, 10));
-
 	}
 
 	public void addRecordDisplaySettings(RecordDisplaySettings s) {
