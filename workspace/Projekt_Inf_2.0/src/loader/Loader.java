@@ -11,8 +11,19 @@ import java.util.Scanner;
 import core.Point;
 import core.Record;
 
+/**
+ * Speichert und liest Datensätze in/aus Textdateien
+ * @author tobi
+ *
+ */
 public abstract class Loader {
 
+	/**
+	 * Liest eine Textdatei ein und gibt einen Datensatz zurück
+	 * @param filename name der Datei
+	 * @return
+	 * @throws Exception
+	 */
 	public static Record load(String filename) throws Exception {
 		File f = new File(filename);
 		if (!(f.exists() && f.canRead())) {
@@ -80,7 +91,7 @@ public abstract class Loader {
 	}
 
 	/**
-	 * SPeichert eine Datenreihe als CSV ab
+	 * Speichert einen Datensatz als CSV ab
 	 * 
 	 * @param filename
 	 * @param p

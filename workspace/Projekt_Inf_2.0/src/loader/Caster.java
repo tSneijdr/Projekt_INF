@@ -5,6 +5,12 @@ import java.util.List;
 
 import core.Point;
 
+/**
+ * Enthält Methoden zum übertragen von Punkten in Listen und umgekehrt
+ * Wird für io in files benötigt
+ * @author tobi
+ *
+ */
 public abstract class Caster {
 
 	/**

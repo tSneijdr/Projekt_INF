@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import core.Point;
 import utils.Range2D;
 
+/**
+ * Datenstruktur, stellt einen einfachen Quadtree dar
+ * @author tobi
+ *
+ */
 public class Quadtree {
 	private final QuadtreeNode root;
 

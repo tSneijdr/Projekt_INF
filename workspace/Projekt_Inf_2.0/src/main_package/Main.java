@@ -12,12 +12,27 @@ import core.RecordDisplaySettings;
 import core_gui.StandardGraphPanel;
 import datastructures.Matrix;
 
+/**
+ * Hauptklasse, ausgangspunkt und Schnittstelle aller anderer Klassen
+ * 
+ * @author tobi
+ *
+ */
 public class Main {
 
+	/**
+	 * Einstiegspunkt des gesamten Programmes sollte nur "new Main();"
+	 * enthalten, wenn nicht ist es ein Experiment
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new Main();
 	}
 
+	/**
+	 * TODO Kommentar
+	 */
 	public Main() {
 		// TODO Auto-generated method stub
 		Range2D r = new Range2D(0, 100, 0, 100);
@@ -26,7 +41,7 @@ public class Main {
 		StandardGraphPanel p = new StandardGraphPanel(500, 500, m);
 
 		HashSet<RecordDisplaySettings> set = new HashSet<RecordDisplaySettings>();
-		
+
 		// g.add(p);
 		// ---------------
 		Record rec = new Record("Test", null);
@@ -35,10 +50,9 @@ public class Main {
 		set.add(s);
 		MainFrame g = new MainFrame(this, "Test", set);
 		// ---------------
-		g.display();
 	}
-	
-	public JPanel getContent(Mode mode){
+
+	public JPanel getContent(Mode mode) {
 		Range2D r = new Range2D(0, 100, 0, 100);
 		Matrix m = new Matrix(r, 10, 10);
 

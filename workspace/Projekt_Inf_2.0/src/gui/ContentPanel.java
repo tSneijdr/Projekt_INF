@@ -12,18 +12,26 @@ import javax.swing.JPanel;
 
 import core.Mode;
 
+/**
+ * Enthält den eigentlichen Inhalt des Fenster sowie eine Combobox zum auswählen
+ * der Art des Inhalts
+ * 
+ * @author tobi
+ *
+ */
 public class ContentPanel extends JPanel {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4426179000569155819L;
 	private final MainFrame PARENT;
 	private JPanel content;
 
+	/**
+	 * Konstruktor, erhält als Parameter nur einen Verweis auf sein
+	 * Parent-Element
+	 * 
+	 * @param parent
+	 */
 	public ContentPanel(MainFrame parent) {
 		this.PARENT = parent;
-		this.content = content;
 
 		JComboBox<String> selection = new JComboBox<String>();
 		JLabel lbl = new JLabel(" Standard ");
@@ -59,7 +67,7 @@ public class ContentPanel extends JPanel {
 		this.content = PARENT.getContent(Mode.values()[0]);
 
 		this.setLayout(new BorderLayout());
-		
+
 		this.add(this.content, BorderLayout.CENTER);
 		{
 
@@ -73,11 +81,4 @@ public class ContentPanel extends JPanel {
 			this.add(subpanel, BorderLayout.SOUTH);
 		}
 	}
-
-	public void setContent(JPanel newContent) {
-		if (newContent != null) {
-			this.content = newContent;
-		}
-	}
-
 }

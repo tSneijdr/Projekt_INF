@@ -15,6 +15,13 @@ import javax.swing.JPanel;
 
 import core.RecordDisplaySettings;
 
+/**
+ * Ein Panel das Optionen zum Bearbeiten von Darstellungsvarianten von Records
+ * erhält (z.b. Farbe und ob ein Datensatz überhaupt dargestellt werden soll)
+ * 
+ * @author tobi
+ *
+ */
 public class EditRecordDisplayPanel extends JPanel {
 	/**
 	 * 
@@ -25,21 +32,28 @@ public class EditRecordDisplayPanel extends JPanel {
 
 	public EditRecordDisplayPanel(HashSet<RecordDisplaySettings> allSettings) {
 		this.ALL_SETTINGS = allSettings;
-		
+
 		this.setLayout(new GridLayout(0, 1));
 		this.setMaximumSize(new Dimension(10, 10));
-		
+
 		this.actualize();
 	}
 
 	public void actualize() {
 		// allRecords.add(s);
-		for (RecordDisplaySettings s : ALL_SETTINGS){
+		for (RecordDisplaySettings s : ALL_SETTINGS) {
 			ALL_SETTINGS.add(s);
 			this.add(new Row(s));
 		}
 	}
 
+	/**
+	 * Eine Private Unterklasse die eine Reihe in diesem Panel darstellt Enthält
+	 * die eigentlichen Relger.
+	 * 
+	 * @author tobi
+	 *
+	 */
 	private class Row extends JPanel {
 		/**
 		 * 

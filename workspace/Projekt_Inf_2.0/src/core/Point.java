@@ -3,6 +3,12 @@ package core;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Stellt einen einzelnen Punkt eines datesatzes dar
+ * 
+ * @author tobi
+ *
+ */
 public class Point {
 	public final int X;
 	public final int Y;

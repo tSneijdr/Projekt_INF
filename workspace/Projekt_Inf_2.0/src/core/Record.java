@@ -3,6 +3,13 @@ package core;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Ein einzelner Datensatz. Enthält neben den Punkte auch z.b. den Titel und den
+ * Namen des Teilnehmers
+ * 
+ * @author tobi
+ *
+ */
 public class Record {
 	public final String TITLE;
 	public final String PARTICIPANT;

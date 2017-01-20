@@ -3,7 +3,7 @@ package core;
 import java.awt.Color;
 
 /**
- * Speichert Einstellungen zur Darstellung von Records
+ * Speichert Einstellungen zur Darstellung von Records, z.b. Farbe und den datensatz selber.
  * 
  * @author tobi
  *

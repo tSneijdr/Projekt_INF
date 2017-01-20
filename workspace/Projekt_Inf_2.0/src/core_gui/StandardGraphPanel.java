@@ -7,6 +7,11 @@ import javax.swing.JPanel;
 
 import datastructures.Matrix;
 
+/**
+ * Ein Test
+ * @author tobi
+ *
+ */
 public class StandardGraphPanel extends JPanel {
 	/**
 	 * 

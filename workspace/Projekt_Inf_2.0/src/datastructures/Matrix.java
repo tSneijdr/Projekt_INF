@@ -8,6 +8,11 @@ import core.Record;
 import utils.Quadrupel;
 import utils.Range2D;
 
+/**
+ * Datenstruktur, stellt eine einfache Matrix dar
+ * @author tobi
+ *
+ */
 public class Matrix {
 	public final Range2D IMAGE_RANGE;
 	public final int NUMBER_OF_COLUMNS;

@@ -1,5 +1,10 @@
 package core;
 
+/**
+ * Enum das die verschiedenen Modi zur Darstellung von Datensätzen speichert
+ * @author tobi
+ *
+ */
 public enum Mode {
 	Standard("Standard"),
 	TemporalX("Auslenkung in X."),

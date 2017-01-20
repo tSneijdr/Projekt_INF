@@ -7,6 +7,13 @@ import core.Record;
 import utils.Range2D;
 import utils.Range3D;
 
+/**
+ * Datenstruktur, stellt einen einfachen Oktree dar (Quadtree der zusätzlich die
+ * Zeitkomponente berücksichtigt)
+ * 
+ * @author tobi
+ *
+ */
 public class Octree {
 	private final OctreeNode root;
 
@@ -22,12 +29,12 @@ public class Octree {
 		root.add(p);
 	}
 
-	public void add(Record r){
-		for (Point p : r.getAllPoints()){
+	public void add(Record r) {
+		for (Point p : r.getAllPoints()) {
 			root.add(p);
 		}
 	}
-	
+
 	private class OctreeNode {
 		private OctreeNode NWE = null, NEE = null, SWE = null, SEE = null;
 		private OctreeNode NWL = null, NEL = null, SWL = null, SEL = null;
@@ -54,7 +61,8 @@ public class Octree {
 			}
 
 			// Weitergeben an Unterbäume falls diese existieren
-			if (NEE != null && NWE != null && SEE != null && SWE != null && NEL != null && NWL != null && SEL != null && SWL != null) {
+			if (NEE != null && NWE != null && SEE != null && SWE != null
+					&& NEL != null && NWL != null && SEL != null && SWL != null) {
 				// Falls der letzte Punkt den Knoten voll gemacht hat wird
 				// gesplittet
 				if (points.size() > maxNumElements) {
@@ -88,7 +96,7 @@ public class Octree {
 			// nur ausführen wenn eine Aufteilung des Nodes notwendig und noch
 			// nicht geschehen ist
 			if (points.size() > maxNumElements && NWE == null && NEE == null
-					&& SEE == null && SWE == null&& NWL == null && NEL == null
+					&& SEE == null && SWE == null && NWL == null && NEL == null
 					&& SWL == null && SWL == null) {
 				int midX = range.MIN_X + (range.WIDTH / 2);
 				int midY = range.MIN_Y + (range.HEIGHT / 2);
@@ -104,17 +112,24 @@ public class Octree {
 				Range2D seRange = new Range2D((range.MIN_X + midX),
 						range.MAX_X, range.MIN_Y, (range.MIN_Y + midY));
 
-				
-				Range3D nweRange  = new Range3D(nwRange, range.MIN_TIME, (range.MIN_TIME + midTime));
-				Range3D neeRange  = new Range3D(neRange, range.MIN_TIME, (range.MIN_TIME + midTime));
-				Range3D sweRange  = new Range3D(swRange, range.MIN_TIME, (range.MIN_TIME + midTime));
-				Range3D seeRange  = new Range3D(seRange, range.MIN_TIME, (range.MIN_TIME + midTime));
-				
-				Range3D nwlRange  = new Range3D(nwRange, (range.MIN_TIME + midTime), range.MAX_TIME);
-				Range3D nelRange  = new Range3D(neRange, (range.MIN_TIME + midTime), range.MAX_TIME);
-				Range3D swlRange  = new Range3D(swRange, (range.MIN_TIME + midTime), range.MAX_TIME);
-				Range3D selRange  = new Range3D(seRange, (range.MIN_TIME + midTime), range.MAX_TIME);
-				
+				Range3D nweRange = new Range3D(nwRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+				Range3D neeRange = new Range3D(neRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+				Range3D sweRange = new Range3D(swRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+				Range3D seeRange = new Range3D(seRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+
+				Range3D nwlRange = new Range3D(nwRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+				Range3D nelRange = new Range3D(neRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+				Range3D swlRange = new Range3D(swRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+				Range3D selRange = new Range3D(seRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+
 				// initialisiere die neuen QuadtreeNodes
 				NWE = new OctreeNode(maxNumElements, nweRange);
 				NEE = new OctreeNode(maxNumElements, neeRange);
@@ -125,7 +140,7 @@ public class Octree {
 				NEL = new OctreeNode(maxNumElements, nelRange);
 				SWL = new OctreeNode(maxNumElements, swlRange);
 				SEL = new OctreeNode(maxNumElements, selRange);
-				
+
 				// Fügt Punkte erneut hinzu, so dass sie an Unternäume übergeben
 				// werden
 				for (Point p : points) {

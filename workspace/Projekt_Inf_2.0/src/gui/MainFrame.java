@@ -13,10 +13,14 @@ import core.Mode;
 import core.RecordDisplaySettings;
 import core_gui.StandardGraphPanel;
 
+/**
+ * Hauptklasse die das GUI verwaltet, Kind einer Main-Klasseninstanz
+ * 
+ * @author tobi
+ *
+ */
 public class MainFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1890682455992057761L;
 
 	private final Main PARENT;
@@ -26,14 +30,22 @@ public class MainFrame extends JFrame {
 	private final ContentPanel CONTENT_1;
 	private final ContentPanel CONTENT_2;
 
+	/**
+	 * Konstruktor, erhält als Parameter die Main-Parentklasse sowie ein HashSet
+	 * mit allen RecordDisplaySettings die dargestellt werden sollen
+	 * 
+	 * @param parent
+	 * @param title
+	 * @param allSettings
+	 */
 	public MainFrame(Main parent, String title,
 			HashSet<RecordDisplaySettings> allSettings) {
 		this.ALL_SETTINGS = allSettings;
 		this.PARENT = parent;
-		
+
 		CONTENT_1 = new ContentPanel(this);
 		CONTENT_2 = new ContentPanel(this);
-		
+
 		SELECTION = new EditRecordDisplayPanel(ALL_SETTINGS);
 
 		this.setTitle(title);
@@ -48,20 +60,26 @@ public class MainFrame extends JFrame {
 		this.add(SELECTION, BorderLayout.WEST);
 		this.add(CONTENT_1, BorderLayout.CENTER);
 		this.add(CONTENT_2, BorderLayout.EAST);
+
+		this.pack();
+		this.setVisible(true);
 	}
 
-	public void display() {
-		// JFrame Einstellungen
-		this.setVisible(true);
-		this.pack();
-		this.repaint();
-	}
-	
-	public void actualize(){
+	/**
+	 * Aktualisiert dieses und alle Unterfenster wenn neuer Inhalt vorhanden ist
+	 */
+	public void actualize() {
 		this.SELECTION.actualize();
 	}
-	
-	protected JPanel getContent(Mode m){
+
+	/**
+	 * Wird von Kindern dieser Klasse aufgerufen um neuen Content zu erhalten
+	 * Ruft nur getContent(...) von seinem parent auf
+	 * 
+	 * @param m
+	 * @return
+	 */
+	protected JPanel getContent(Mode m) {
 		return PARENT.getContent(m);
 	}
 }

@@ -1,5 +1,13 @@
 package utils;
 
+/**
+ * Einfache Datenstruktur, stellt ein Paar beliebiger Datentypen dar
+ * 
+ * @author tobi
+ *
+ * @param <A>
+ * @param <B>
+ */
 public class Pair<A, B> {
 	public final A firstValue;
 	public final B secondValue;
@@ -8,8 +16,9 @@ public class Pair<A, B> {
 		firstValue = a;
 		secondValue = b;
 	}
-	
-	public boolean equals(Pair<A, B> p){
-		return firstValue.equals(p.firstValue) && secondValue.equals(p.secondValue);
+
+	public boolean equals(Pair<A, B> p) {
+		return firstValue.equals(p.firstValue)
+				&& secondValue.equals(p.secondValue);
 	}
 }

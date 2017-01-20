@@ -1,5 +1,15 @@
 package utils;
 
+/**
+ * Praktische Datenstruktur, stellt ein Quadrupel von beliebigen Werten dar
+ * 
+ * @author tobi
+ *
+ * @param <A>
+ * @param <B>
+ * @param <C>
+ * @param <D>
+ */
 public class Quadrupel<A, B, C, D> {
 	public final A FIRST;
 	public final B SECOND;
