@@ -1,0 +1,94 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import core.Record;
+
+public class SelectionPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1394306799106528139L;
+
+	private final HashSet<RecordDisplaySettings> allRecords;
+
+	public SelectionPanel() {
+		allRecords = new HashSet<RecordDisplaySettings>();
+		
+		this.setLayout(new GridLayout(0,2));
+
+	}
+
+	public void addRecordDisplaySettings(RecordDisplaySettings s) {
+		//allRecords.add(s);
+		
+		this.add(new Row(s));
+	}
+	
+	public static void main(String[] args){
+		JFrame frame = new JFrame();
+		frame.setTitle("Test");
+		frame.setVisible(true);
+		
+		Record rec = new Record("Test", null);
+		RecordDisplaySettings s = new RecordDisplaySettings(rec);
+
+		Record rec2 = new Record("Test2", null);
+		RecordDisplaySettings s2 = new RecordDisplaySettings(rec);
+
+		
+		Record rec3 = new Record("Test3", null);
+		RecordDisplaySettings s3 = new RecordDisplaySettings(rec);
+
+		Record rec4 = new Record("Test4", null);
+		RecordDisplaySettings s4 = new RecordDisplaySettings(rec);
+		
+		SelectionPanel p = new SelectionPanel();
+		p.addRecordDisplaySettings(s);
+		p.addRecordDisplaySettings(s2);
+		p.addRecordDisplaySettings(s3);
+		p.addRecordDisplaySettings(s4);
+		p.addRecordDisplaySettings(s4);
+		p.addRecordDisplaySettings(s4);
+		p.addRecordDisplaySettings(s4);
+		frame.add(p);
+		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	private class Row extends JPanel {
+		private final RecordDisplaySettings set;
+		private final JCheckBox box;
+
+		public Row(RecordDisplaySettings set) {
+			this.set = set;
+
+			box = new JCheckBox("Test");
+			box.setSelected(set.active);
+			box.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					set.active = box.isSelected();
+				}
+
+			});
+
+			this.add(new JCheckBox());
+			
+			JLabel lbl = new JLabel(set.RECORD.TITLE);
+			this.add(lbl);
+		}
+	}
+}

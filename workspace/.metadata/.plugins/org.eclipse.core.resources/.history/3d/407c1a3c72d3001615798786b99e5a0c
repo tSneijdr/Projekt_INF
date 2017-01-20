@@ -1,0 +1,20 @@
+package loader;
+
+import java.util.List;
+
+import core.Point;
+
+public abstract class Loader {
+	
+	public static List<String[]> load(String filename){
+		
+	}
+	
+	public static void save(String filename, Point p){
+		save(filename, Caster.toList(p));
+	}
+	
+	public static void save(String filename, List<String[]> list){
+		
+	}
+}

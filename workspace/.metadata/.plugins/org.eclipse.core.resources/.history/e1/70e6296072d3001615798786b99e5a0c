@@ -1,0 +1,60 @@
+package loader;
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+import core.Point;
+import core.Record;
+
+public abstract class Loader {
+
+	public static Record load(String filename) throws Exception {
+		File f = new File(filename);
+		if (!(f.exists() && f.canRead())) {
+			throw new Exception(
+					"Die zu lesende Datei exisitiert nicht oder kann nicht gelesen werden.");
+		}
+
+		Scanner s = null;
+		LinkedList<String[]> list = new LinkedList<String[]>();
+
+		try {
+			s = new Scanner(f);
+
+			while (s.hasNextLine()) {
+				String line = s.nextLine();
+
+				// Bearbeitet den gelesenen String
+				line = line.replaceAll(",", "");
+				line = line.replaceAll("  ", " ");
+				line = line.trim();
+
+				String[] ar = line.split(" ");
+				if (ar.length != 4) {
+					s.close();
+					throw new IllegalArgumentException(
+							"Eine der gelesenen Eingaben hat ein illegales Format.");
+				}
+				list.add(ar);
+			}
+			s.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(
+					"Beim Laden einer vorhandenen Datei ist ein Fehler passiert.");
+		}
+	}
+
+	/**
+	 * SPeichert eine Datenreihe als CSV ab
+	 * 
+	 * @param filename
+	 * @param p
+	 */
+	public static void save(String filename, Record rec) {
+		save(filename, Caster.toList(p));
+	}
+
+}

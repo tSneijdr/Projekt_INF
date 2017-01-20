@@ -1,6 +1,8 @@
-/gui/
-/main_gui/
-/core_gui/
 /datastructures/
+/gui/
 /loader/
+/utils/
+/Main.class
 /core/
+/core_gui/
+/main_package/

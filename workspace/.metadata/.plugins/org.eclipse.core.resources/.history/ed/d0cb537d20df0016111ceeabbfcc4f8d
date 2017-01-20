@@ -1,0 +1,69 @@
+package gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import core.Mode;
+
+public class ContentPanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4426179000569155819L;
+	private final MainFrame PARENT;
+	private JPanel content;
+
+	public ContentPanel(MainFrame parent, JPanel content) {
+		this.PARENT = parent;
+		this.content = content;
+
+		JComboBox<String> selection = new JComboBox<String>();
+		JLabel lbl = new JLabel(" Standard ");
+		JButton btn = new JButton("Change");
+
+		for (Mode m : Mode.values()) {
+			selection.addItem(m.name());
+		}
+		selection.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String text = (String) selection.getSelectedItem();
+				text = Mode.valueOf(text).getDescription();
+				text = " " + text + " ";
+
+				lbl.setText(text);
+				
+				PARENT.getContent(Mode mode);
+			}
+
+		});
+
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+
+		});
+
+		this.add(this.content);
+		this.add(selection);
+		this.add(lbl);
+		this.add(btn);
+	}
+
+	public void setContent(JPanel newContent) {
+		if (newContent != null) {
+			this.content = newContent;
+		}
+	}
+
+}

@@ -1,0 +1,50 @@
+package gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+public class SelectionPanel extends JScrollPane {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1394306799106528139L;
+
+	private final HashSet<RecordDisplaySettings> allRecords;
+
+	public SelectionPanel() {
+		allRecords = new HashSet<RecordDisplaySettings>();
+		
+		
+	}
+
+	public void addRecordDisplaySettings(RecordDisplaySettings s) {
+		allRecords.add(s);
+	}
+	
+	class Row extends JPanel{
+		private final RecordDisplaySettings set;
+		
+		public Row(RecordDisplaySettings set){
+			set = set;
+			
+			JCheckBox box = new JCheckBox();
+			box.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+
+			
+			this.add(new JCheckBox());
+		}
+	}
+}

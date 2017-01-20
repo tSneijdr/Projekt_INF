@@ -1,0 +1,24 @@
+package gui;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+
+public class ModePanel extends JPanel{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4426179000569155819L;
+
+	public ModePanel(){
+		JComboBox<String> selection = new JComboBox<String>();
+		selection.addItem("Test1");
+		selection.addItem("Test2");
+		this.add(selection);
+		
+		JButton btn = new JButton("Change");
+		
+		this.add(btn);
+	}
+}

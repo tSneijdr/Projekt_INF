@@ -1,0 +1,14 @@
+package gui;
+
+import java.util.HashSet;
+
+import javax.swing.JPanel;
+
+public class SelectionPanel extends JPanel {
+	private final HashSet<RecordDisplaySettings> allRecords;
+
+	public SelectionPanel() {
+		allRecords = new HashSet<RecordDisplaySettings>();
+	}
+
+}

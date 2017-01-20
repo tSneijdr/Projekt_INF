@@ -62,7 +62,21 @@ public abstract class Loader {
 
 		// castet die Liste zu einem Punkt
 		Point p = Caster.toPoint(list);
-		return new Record(title, p);
+
+		Record r = null;
+		if (title.contains(",")) {
+			String[] l = title.split(",");
+			if (l.length > 1) {
+				r = new Record(l[0], l[1], p);
+			} else {
+				r = new Record(title, p);
+			}
+
+		} else {
+			r = new Record(title, p);
+		}
+
+		return r;
 	}
 
 	/**
@@ -95,7 +109,7 @@ public abstract class Loader {
 		Writer w = null;
 		try {
 			w = new PrintWriter(f);
-			w.write(rec.TITLE + " - " + rec.PARTICIPANT);
+			w.write(rec.TITLE + ", " + rec.PARTICIPANT);
 
 			// Schreibt alle Punkte in die Datei
 			List<String[]> list = Caster.toList(rec.firstPoint);

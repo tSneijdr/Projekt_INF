@@ -1,0 +1,55 @@
+package loader;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+
+import core.Point;
+
+public class Caster {
+	public Caster() {
+
+	}
+
+	public static List<String[]> toList(Point point) {
+		if (point == null)
+			return null;
+
+		while (point.getPreviousNode() != null) {
+			point = point.getPreviousNode();
+		}
+
+	}
+
+	public static Point toPoint(List<String[]> pointList) {
+		if (pointList == null || pointList.size() == 0)
+			return null;
+
+		LinkedList<Point> set = new LinkedList<Point>();
+
+		for (String[] st : pointList) {
+			// Caste die Stringliste in einen Point
+			try {
+				int x
+				int y 
+				double timepoint;
+				double duration;
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new IllegalArgumentException(
+						"Beim Casten der Liste zu einem Punkt ist ein Fehler aufgetreten");
+			}
+
+			Point p = new Point(0, 0, 0, 0);
+
+			// Fügt Point dem Set hinzu
+			set.add(p);
+		}
+
+		// Verlinkt die Punkte aufeinander
+		Point p = Point.link(set);
+
+		return p;
+
+	}
+}
