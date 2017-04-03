@@ -1,0 +1,86 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.util.HashSet;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import main_package.Main;
+import core.Mode;
+import core.Record;
+import core.RecordDisplaySettings;
+import core_gui.StandardGraphPanel;
+
+/**
+ * Hauptklasse die das GUI verwaltet, Kind einer Main-Klasseninstanz
+ * 
+ * @author tobi
+ *
+ */
+public class MainFrame extends JFrame {
+
+	private static final long serialVersionUID = 1890682455992057761L;
+
+	private final Main PARENT;
+	private final HashSet<Record> ALL_SETTINGS;
+
+	private final EditRecordDisplayPanel SELECTION;
+	private final ContentPanel CONTENT_1;
+	private final ContentPanel CONTENT_2;
+
+	/**
+	 * Konstruktor, erhält als Parameter die Main-Parentklasse sowie ein HashSet
+	 * mit allen RecordDisplaySettings die dargestellt werden sollen
+	 * 
+	 * @param parent
+	 * @param title
+	 * @param allSettings
+	 */
+	public MainFrame(Main parent, String title,
+			HashSet<RecordDisplaySettings> allSettings) {
+		this.ALL_SETTINGS = allSettings;
+		this.PARENT = parent;
+
+		CONTENT_1 = new ContentPanel(this);
+		CONTENT_2 = new ContentPanel(this);
+
+		SELECTION = new EditRecordDisplayPanel(ALL_SETTINGS);
+
+		this.setTitle(title);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLayout(new BorderLayout());
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+		SELECTION.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		CONTENT_1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		CONTENT_2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		this.add(SELECTION, BorderLayout.WEST);
+		this.add(CONTENT_1, BorderLayout.CENTER);
+		this.add(CONTENT_2, BorderLayout.EAST);
+
+		this.pack();
+		this.setVisible(true);
+	}
+
+	/**
+	 * Aktualisiert dieses und alle Unterfenster wenn neuer Inhalt vorhanden ist
+	 */
+	public void actualize() {
+		this.SELECTION.actualize();
+	}
+
+	/**
+	 * Wird von Kindern dieser Klasse aufgerufen um neuen Content zu erhalten
+	 * Ruft nur getContent(...) von seinem parent auf
+	 * 
+	 * @param m
+	 * @return
+	 */
+	protected JPanel getContent(Mode m) {
+		return PARENT.getContent(m);
+	}
+}

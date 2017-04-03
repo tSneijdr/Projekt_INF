@@ -1,5 +1,6 @@
 package core;
 
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +12,15 @@ import java.util.Set;
  *
  */
 public class Record {
+	// Daten die die eigentliche Datenreihe betreffen
 	public final String TITLE;
 	public final String PARTICIPANT;
 	public final Point firstPoint;
 
+	// Daten die die Darstellung der Datenreihe betreffen
+	public boolean active = true;
+	public Color color = Color.BLACK;
+	
 	public Record(String title, String participant, Point p) {
 		TITLE = title;
 		PARTICIPANT = participant;

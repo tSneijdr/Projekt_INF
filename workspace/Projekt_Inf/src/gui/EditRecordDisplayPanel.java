@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import core.RecordDisplaySettings;
+import core.Record;
 
 /**
  * Ein Panel das Optionen zum Bearbeiten von Darstellungsvarianten von Records
@@ -28,9 +28,9 @@ public class EditRecordDisplayPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -1394306799106528139L;
 
-	private final HashSet<RecordDisplaySettings> ALL_SETTINGS;
+	private final HashSet<Record> ALL_SETTINGS;
 
-	public EditRecordDisplayPanel(HashSet<RecordDisplaySettings> allSettings) {
+	public EditRecordDisplayPanel(HashSet<Record> allSettings) {
 		this.ALL_SETTINGS = allSettings;
 
 		this.setLayout(new GridLayout(0, 1));
@@ -41,7 +41,7 @@ public class EditRecordDisplayPanel extends JPanel {
 
 	public void actualize() {
 		// allRecords.add(s);
-		for (RecordDisplaySettings s : ALL_SETTINGS) {
+		for (Record s : ALL_SETTINGS) {
 			ALL_SETTINGS.add(s);
 			this.add(new Row(s));
 		}
@@ -60,10 +60,10 @@ public class EditRecordDisplayPanel extends JPanel {
 		 */
 		private static final long serialVersionUID = -5526203096078064341L;
 
-		private final RecordDisplaySettings SET;
+		private final Record SET;
 		private final JCheckBox box;
 
-		public Row(RecordDisplaySettings set) {
+		public Row(Record set) {
 			this.SET = set;
 
 			box = new JCheckBox("Test");
@@ -79,7 +79,7 @@ public class EditRecordDisplayPanel extends JPanel {
 
 			this.add(new JCheckBox());
 
-			JLabel lbl = new JLabel(SET.RECORD.TITLE);
+			JLabel lbl = new JLabel(SET.TITLE);
 			this.add(lbl);
 
 			JButton btn = new JButton();

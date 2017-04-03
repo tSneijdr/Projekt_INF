@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import main_package.Main;
 import core.Mode;
-import core.RecordDisplaySettings;
+import core.Record;
 import core_gui.StandardGraphPanel;
 
 /**
@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1890682455992057761L;
 
 	private final Main PARENT;
-	private final HashSet<RecordDisplaySettings> ALL_SETTINGS;
+	private final HashSet<Record> ALL_SETTINGS;
 
 	private final EditRecordDisplayPanel SELECTION;
 	private final ContentPanel CONTENT_1;
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 	 * @param allSettings
 	 */
 	public MainFrame(Main parent, String title,
-			HashSet<RecordDisplaySettings> allSettings) {
+			HashSet<Record> allSettings) {
 		this.ALL_SETTINGS = allSettings;
 		this.PARENT = parent;
 
