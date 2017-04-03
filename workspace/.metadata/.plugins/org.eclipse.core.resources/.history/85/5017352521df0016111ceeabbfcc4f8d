@@ -1,9 +1,0 @@
-package core;
-
-public enum Mode {
-	Standard("Standard"),
-	TemporalX("Auslenkung in X-Richtung anhand der Reihenfolge der Beobachtung."),
-	TemporalY("Auslenkung in Y-Richtung anhand der Reihenfolge der Beobachtung.");
-
-
-}
