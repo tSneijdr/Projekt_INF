@@ -1,5 +1,0 @@
-package gui;
-
-public enum GraphicMode {
-	PROCENTUAL_COLORED, PROCENTUAL_NUMERICAL, PROCENTUAL_COMBINED
-}
