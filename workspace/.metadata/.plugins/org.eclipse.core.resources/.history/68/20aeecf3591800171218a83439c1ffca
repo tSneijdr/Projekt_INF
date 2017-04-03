@@ -8,6 +8,7 @@ import gui.MainFrame;
 import utils.Range2D;
 import core.Mode;
 import core.Record;
+import core.RecordDisplaySettings;
 import core_gui.StandardGraphPanel;
 import datastructures.Matrix;
 
@@ -39,12 +40,14 @@ public class Main {
 
 		StandardGraphPanel p = new StandardGraphPanel(500, 500, m);
 
-		HashSet<Record> set = new HashSet<Record>();
+		HashSet<RecordDisplaySettings> set = new HashSet<RecordDisplaySettings>();
 
 		// g.add(p);
 		// ---------------
 		Record rec = new Record("Test", null);
-		set.add(rec);
+		RecordDisplaySettings s = new RecordDisplaySettings(rec);
+		s = new RecordDisplaySettings(rec);
+		set.add(s);
 		MainFrame g = new MainFrame(this, "Test", set);
 		// ---------------
 	}

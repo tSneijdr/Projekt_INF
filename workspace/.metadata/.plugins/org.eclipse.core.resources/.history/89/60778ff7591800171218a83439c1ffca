@@ -8,6 +8,7 @@ import gui.MainFrame;
 import utils.Range2D;
 import core.Mode;
 import core.Record;
+import core.RecordDisplaySettings;
 import core_gui.StandardGraphPanel;
 import datastructures.Matrix;
 
