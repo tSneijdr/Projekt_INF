@@ -26,25 +26,26 @@ public class MainApp extends Application {
 			graph.random(10);
 			root.setCenter(graph.getPane(500, 500, 1));
 		}
-		{
-			double min = 1;
-			double max = 100;
-			double step = 1;
-			
-			final Slider slider = new Slider(min, max, step);
-			slider.setShowTickMarks(true);
-			slider.setValue(1);
-			
-			slider.valueProperty().addListener(new ChangeListener<Number>() {
-				@Override
-				public void changed(ObservableValue<? extends Number> observableValue, Number oldValue,
-						Number newValue) {
-					root.setCenter(graph.getPane(500, 500, slider.getValue()));
-				}
-			});
-
-			root.setTop(slider);
-		}
+		/*
+		 * { double min = 1; double max = 100; double step = 1;
+		 * 
+		 * final Slider slider = new Slider(min, max, step);
+		 * slider.setShowTickMarks(true); slider.setValue(1);
+		 * 
+		 * slider.valueProperty().addListener(new ChangeListener<Number>() {
+		 * 
+		 * @Override public void changed(ObservableValue<? extends Number>
+		 * observableValue, Number oldValue, Number newValue) {
+		 * root.setCenter(graph.getPane(500, 500, slider.getValue())); } });
+		 * 
+		 * root.setTop(slider);
+		 * 
+		 * // Bereite das zoomen per Mausrad vor { //root.getCenter().set
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
 
 		Scene scene = new Scene(root, 600, 600);
 		scene.setRoot(root);

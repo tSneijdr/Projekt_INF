@@ -1,0 +1,80 @@
+package model;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.core.Point;
+import model.core.Record;
+import model.store.Octree;
+import model.store.Quadtree;
+import utils.Range2D;
+import utils.Range3D;
+
+public class Model {
+	// Speichert alle in dieser Instanz aktiven Records
+	private final ObservableList<Record> allLoadedRecords;
+
+	// Dient zum mappen in 2D
+	private final Quadtree quad;
+	// Dient zum mappen in 3D
+	private final Octree oct;
+
+	/**
+	 * Spezifiziert zusätzlich zum einfacheren Konstruktor noch die maximale
+	 * Anzahl von Punkten pro Quadtree-/Octree-Knoten
+	 * 
+	 * @param range
+	 * @param n
+	 */
+	public Model(Range3D range, int n) {
+		allLoadedRecords = FXCollections.observableArrayList();
+
+		quad = new Quadtree(range.to2DRange(), n);
+		oct = new Octree(range, n);
+
+	}
+
+	/**
+	 * Standardkonsturktor der nur den Raum spezifiziert
+	 * 
+	 * @param range
+	 *            spezifiziert nur den Raum der benötigt wird
+	 */
+	public Model(Range3D range) {
+		this(range, 10);
+	}
+
+	// -------------------------------------------------------------------------------------------------
+
+	/**
+	 * Fügt ein Record der Datenhaltung zu
+	 * 
+	 * Wirft nullPointerException bei null-Wert
+	 * 
+	 * @param rec
+	 *            das Record
+	 */
+	public void addRecord(Record rec) {
+		if (rec == null)
+			throw new NullPointerException("Es wurde ein null-Wert als Record übergeben");
+
+		// Speichert das Record
+		allLoadedRecords.add(rec);
+
+		// Fügt die einzelnen Punkte der Datenhaltungsebene hinzu
+		for (Point p : rec.getAllPoints()) {
+			quad.add(p);
+			oct.add(p);
+		}
+	}
+	
+	public void getPoints(Range2D range){
+		quad.getPoints(range);
+	}
+	
+	public void getPoints(Range3D range){
+		oct.getPoints(range);
+	}
+	
+	
+
+}

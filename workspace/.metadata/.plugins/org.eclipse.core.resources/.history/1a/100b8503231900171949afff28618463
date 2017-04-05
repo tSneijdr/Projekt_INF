@@ -1,0 +1,8 @@
+package model;
+
+public enum NodeTypes {
+	RECTANGLE,
+	CIRCLE,
+	PICTURE
+	;
+}

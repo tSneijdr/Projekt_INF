@@ -1,0 +1,43 @@
+package model;
+
+import javafx.scene.shape.*;
+
+import java.util.List;
+
+import javafx.scene.paint.Color;
+/**
+ * Stellt einen Knoten im Graphen dar
+ * Speichert u.a. Daten zum darstellen des Knotens
+ * @author tobi
+ *
+ */
+public class Node<T extends Shape> {
+
+	// Beschreibt die Darstellung des Knotens
+	Color color;
+	T shape;
+	
+	// Beschreibt den Ort des Knotens sowie Maße
+	private int xCenter;
+	private int yCenter;
+	
+	private int radius;
+	
+	// Eltern- und Kinderknoten
+	List<Node> parents;
+	List<Node> children;
+	
+	public Node(){
+		this.color = Color.BLACK;
+		
+		this.shape = new T();
+		
+		this.xCenter = 0;
+		this.yCenter = 0;
+		
+		this.radius = 1;
+	}
+	
+	
+	
+}

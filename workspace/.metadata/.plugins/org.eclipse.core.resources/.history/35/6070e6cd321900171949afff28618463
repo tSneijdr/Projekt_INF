@@ -1,0 +1,52 @@
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import model.Graph;
+
+public class MainApp extends Application {
+
+	private Stage primaryStage;
+	private AnchorPane rootLayout;
+
+	Graph graph = new Graph();
+
+	@Override
+	public void start(Stage primaryStage) {
+		BorderPane root = new BorderPane();
+		Scene scene = new Scene(root, 600, 600);
+		scene.setRoot(root);
+		primaryStage.setScene(scene);
+		
+		
+		Slider slider = new Slider(0, 10 , 1);
+		
+		ChangeListener listener = new ChangeListener(){
+			public void changed(ObservableValue a, Object b, Object c){
+				slider.getValue();
+				root.setCenter(graph.getPane(500, 500, slider.getValue()));
+				System.out.println("Setze Value auf: " + slider.getValue());
+			
+			}
+		};
+		slider.valueProperty().addListener(listener); 
+	
+		root.setTop(new Slider());
+		
+		graph = new Graph();
+		graph.random(10);
+		primaryStage.show();
+		
+	
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+}

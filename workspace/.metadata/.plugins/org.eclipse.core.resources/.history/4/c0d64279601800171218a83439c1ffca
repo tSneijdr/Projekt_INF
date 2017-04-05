@@ -1,0 +1,24 @@
+package model;
+
+/**
+ * Einfache Datenstruktur, stellt ein Paar beliebiger Datentypen dar
+ * 
+ * @author tobi
+ *
+ * @param <A>
+ * @param <B>
+ */
+public class Pair<A, B> {
+	public final A firstValue;
+	public final B secondValue;
+
+	public Pair(A a, B b) {
+		firstValue = a;
+		secondValue = b;
+	}
+
+	public boolean equals(Pair<A, B> p) {
+		return firstValue.equals(p.firstValue)
+				&& secondValue.equals(p.secondValue);
+	}
+}

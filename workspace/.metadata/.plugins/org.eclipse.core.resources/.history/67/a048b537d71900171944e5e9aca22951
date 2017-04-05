@@ -1,0 +1,99 @@
+package model;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+
+public class Graph {
+	private final List<Node> allNodes;
+
+	public Graph() {
+		allNodes = new LinkedList<Node>();
+	}
+
+	public void random(int n) {
+		Random r = new Random();
+		for (int index = 0; index < n; index++) {
+			Node node = new Node();
+			node.setShape(NodeType.CIRCLE);
+			node.setxCenter(r.nextInt(500));
+			node.setyCenter(r.nextInt(500));
+			node.setRadius(10);
+
+			allNodes.add(node);
+
+			int i = allNodes.size();
+			i = i <= 0 ? 1 : i;
+			i = r.nextInt(i);
+			i = i <= 0 ? 1 : i;
+
+			try {
+				node.addParent(allNodes.get(i));
+				node.addChild(allNodes.get((i + 1) % allNodes.size()));
+
+			} catch (Exception e) {
+			}
+		}
+
+	}
+
+	public ScrollPane getPane(int paneWidth, int paneHeight, double scaleFactor) {
+		ScrollPane pane = new ScrollPane();
+		pane.setMinSize(paneWidth, paneHeight);
+		pane.setPrefSize(paneWidth, paneHeight);
+
+		
+		
+		
+			
+		pane.setContent(getContent(scaleFactor));
+
+		{
+			pane.
+			
+		}
+		
+		
+		return pane;
+	}
+
+	public Group getContent(double scaleFactor) {
+		Group g = new Group();
+
+		int counter = 0;
+		LinkedList<Node> alreadyVisited = new LinkedList<Node>();
+
+		for (Node n : this.allNodes) {
+			if (!alreadyVisited.contains(n)) {
+
+				for (Node n2 : n.getChildren()) {
+					Line l = new Line();
+					l.setStartX(n.getxCenter() * scaleFactor);
+					l.setStartY(n.getyCenter() * scaleFactor);
+
+					l.setEndX(n2.getxCenter() * scaleFactor);
+					l.setEndY(n2.getyCenter() * scaleFactor);
+
+					l.setStroke(Color.DARKGREEN);
+
+					g.getChildren().add(l);
+					counter++;
+				}
+
+				alreadyVisited.add(n);
+			}
+
+		}
+		System.out.println(counter);
+
+		for (Node n : allNodes) {
+			g.getChildren().add(n.getDrawableObject(scaleFactor));
+		}
+		return g;
+	}
+}

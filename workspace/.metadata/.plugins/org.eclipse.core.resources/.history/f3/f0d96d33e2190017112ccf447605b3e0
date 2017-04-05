@@ -1,0 +1,125 @@
+package model;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+
+public class Graph {
+	private final List<Node> allNodes;
+
+	// Faktoren für korrekte Darstellung
+	private double factor = 1.0;
+	private double displacementX = 0.0;
+	private double displacementY = 0.0;
+
+	public Graph() {
+		allNodes = new LinkedList<Node>();
+	}
+
+	public void random(int n) {
+		Random r = new Random();
+		for (int index = 0; index < n; index++) {
+			Node node = new Node();
+			node.setShape(NodeType.CIRCLE);
+			node.setxCenter(r.nextInt(500));
+			node.setyCenter(r.nextInt(500));
+			node.setRadius(10);
+
+			allNodes.add(node);
+
+			int i = allNodes.size();
+			i = i <= 0 ? 1 : i;
+			i = r.nextInt(i);
+			i = i <= 0 ? 1 : i;
+
+			try {
+				node.addParent(allNodes.get(i));
+				node.addChild(allNodes.get((i + 1) % allNodes.size()));
+
+			} catch (Exception e) {
+			}
+		}
+
+	}
+
+	public BorderPane getPane(int paneWidth, int paneHeight, double scaleFactor) {
+		this.factor = scaleFactor;
+
+		BorderPane pane = new BorderPane();
+		pane.setMinSize(paneWidth, paneHeight);
+		pane.setPrefSize(paneWidth, paneHeight);
+
+		pane.setCenter(getContent(factor));
+
+		// Scrollevent setzen
+		{
+			pane.setOnScroll(null);
+			// pane.Event
+
+			pane.setOnScroll((ScrollEvent event) -> {
+				double deltaFactor = event.getDeltaY() * 0.01;
+
+				factor = (factor + deltaFactor < 1) ? 1 : (factor + deltaFactor);
+				System.out.println("Adjust factor by " + deltaFactor + " to " + factor);
+				pane.setCenter(getContent());
+
+				event.consume();
+			});
+
+			pane.setOnKeyPressed((KeyEvent event) -> {
+				System.out.println("Ololo");
+				System.out.println(event.getCharacter());
+			});
+		}
+
+		return pane;
+	}
+
+	public Group getContent() {
+		Group g = new Group();
+
+		int counter = 0;
+		LinkedList<Node> alreadyVisited = new LinkedList<Node>();
+
+		for (Node n : this.allNodes) {
+			if (!alreadyVisited.contains(n)) {
+
+				for (Node n2 : n.getChildren()) {
+					Line l = new Line();
+					l.setStartX(n.getxCenter() * factor);
+					l.setStartY(n.getyCenter() * factor);
+
+					l.setEndX(n2.getxCenter() * factor);
+					l.setEndY(n2.getyCenter() * Factor);
+
+					l.setStroke(Color.DARKGREEN);
+
+					g.getChildren().add(l);
+					counter++;
+				}
+
+				alreadyVisited.add(n);
+			}
+
+		}
+		System.out.println(counter);
+
+		for (Node n : allNodes) {
+			g.getChildren().add(n.getDrawableObject(scaleFactor, displacementX, displacementY));
+		}
+		return g;
+	}
+}

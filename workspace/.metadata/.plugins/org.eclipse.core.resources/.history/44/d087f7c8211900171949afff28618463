@@ -1,0 +1,18 @@
+package model;
+
+import javafx.scene.shape.*;
+import javafx.scene.paint.Color;
+/**
+ * Stellt einen Knoten im Graphen dar
+ * Speichert u.a. Daten zum darstellen des Knotens
+ * @author tobi
+ *
+ */
+public class Node {
+
+	// Beschreibt die Darstellung des Knotens
+	Color color;
+	Shape shape;
+	
+	
+}

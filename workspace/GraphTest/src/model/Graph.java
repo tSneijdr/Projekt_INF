@@ -4,13 +4,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Graph {
 	private final List<Node> allNodes;
+
+	// Faktoren für korrekte Darstellung
+	private double factor = 1.0;
+	private double displacementX = 0.0;
+	private double displacementY = 0.0;
 
 	public Graph() {
 		allNodes = new LinkedList<Node>();
@@ -26,7 +39,7 @@ public class Graph {
 			node.setRadius(10);
 
 			allNodes.add(node);
-			
+
 			int i = allNodes.size();
 			i = i <= 0 ? 1 : i;
 			i = r.nextInt(i);
@@ -42,49 +55,94 @@ public class Graph {
 
 	}
 
-	public ScrollPane getPane(int paneWidth, int paneHeight, double scaleFactor) {
-		ScrollPane pane = new ScrollPane();
+	public BorderPane getPane(int paneWidth, int paneHeight, double scaleFactor) {
+		this.factor = scaleFactor;
+
+		BorderPane pane = new BorderPane();
 		pane.setMinSize(paneWidth, paneHeight);
 		pane.setPrefSize(paneWidth, paneHeight);
 
+		pane.setFocusTraversable(true);
+
 		
 		
+		pane.setCenter(getContent());
+		
+		// Scrollevent setzen
+		{
+			pane.setOnScroll(null);
+			// pane.Event
+
+			pane.setOnScroll((ScrollEvent event) -> {
+				double deltaFactor = event.getDeltaY() * 0.01;
+
+				factor = (factor + deltaFactor < 1) ? 1 : (factor + deltaFactor);
+				System.out.println("Adjust factor by " + deltaFactor + " to " + factor);
+				pane.setCenter(getContent());
+
+				event.consume();
+			});
+
+			pane.setOnKeyPressed((KeyEvent event) -> {
+				switch (event.getCode()) {
+				case LEFT:
+					
+					break;
+				case RIGHT:
+					displacementX += 10;
+					break;
+				case UP:
+					displacementY += 10;
+					break;
+				case DOWN:
+					displacementY -= 10;
+					break;
+				default:
+					break;
+				}
+
+				pane.setCenter(getContent());
+
+				event.consume();
+			});
+
+		}
+
+		return pane;
+	}
+
+	public Group getContent() {
 		Group g = new Group();
-		
+
 		int counter = 0;
 		LinkedList<Node> alreadyVisited = new LinkedList<Node>();
 
-		for (Node n : this.allNodes){
-			if (!alreadyVisited.contains(n)){
-				
-				for (Node n2 : n.getChildren()){
-					Line l = new Line();
-					l.setStartX(n.getxCenter()*scaleFactor);
-					l.setStartY(n.getyCenter()*scaleFactor);
+		for (Node n : this.allNodes) {
+			if (!alreadyVisited.contains(n)) {
 
-					l.setEndX(n2.getxCenter()*scaleFactor);
-					l.setEndY(n2.getyCenter()*scaleFactor);
-							
+				for (Node n2 : n.getChildren()) {
+					Line l = new Line();
+					l.setStartX(n.getxCenter() * factor + displacementX);
+					l.setStartY(n.getyCenter() * factor + displacementY);
+
+					l.setEndX(n2.getxCenter() * factor + displacementX);
+					l.setEndY(n2.getyCenter() * factor + displacementY);
+
 					l.setStroke(Color.DARKGREEN);
-					
+
 					g.getChildren().add(l);
-					counter ++; 
+					counter++;
 				}
-				
-				
+
 				alreadyVisited.add(n);
 			}
-			
+
 		}
 		System.out.println(counter);
-		
-		
-		for (Node n : allNodes) {
-			g.getChildren().add(n.getDrawableObject(scaleFactor));
-		}
-			
-		pane.setContent(g);
 
-		return pane;
+		for (Node n : allNodes) {
+			g.getChildren().add(n.getDrawableObject(factor, displacementX, displacementY));
+		}
+		return g;
 	}
 }

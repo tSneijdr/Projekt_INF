@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;GraphTest/src/Controller&apos; to &apos;controller&apos;" description="Rename resource &apos;Controller&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/Controller" name="controller" stamp="1491301180995" updateReferences="true"/>
+</session>

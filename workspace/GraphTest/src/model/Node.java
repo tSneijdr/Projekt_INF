@@ -50,13 +50,13 @@ public class Node {
 	 * 
 	 * @return
 	 */
-	public Shape getDrawableObject(double scaleFactor) {
+	public Shape getDrawableObject(double scaleFactor, double displacementX, double displacementY) {
 		Shape s = null;
 
 		// Rechne den Skalierungsfaktor ein
 		{
-			double localXCenter = (double) this.xCenter * scaleFactor;
-			double localYCenter = (double) this.yCenter * scaleFactor;
+			double localXCenter = (double) this.xCenter * scaleFactor + displacementX;
+			double localYCenter = (double) this.yCenter * scaleFactor + displacementY;
 			double localRadius = (double) this.radius * scaleFactor;
 
 			switch (shape) {

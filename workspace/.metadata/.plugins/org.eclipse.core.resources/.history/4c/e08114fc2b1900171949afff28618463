@@ -1,0 +1,97 @@
+package model;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.shape.CubicCurve;
+import javafx.scene.shape.Line;
+
+public class Graph {
+	private final List<Node> allNodes;
+
+	public Graph() {
+		allNodes = new LinkedList<Node>();
+	}
+
+	public void random(int n) {
+		Random r = new Random();
+		for (int index = 0; index < n; index++) {
+			Node node = new Node();
+			node.setShape(NodeType.CIRCLE);
+			node.setxCenter(r.nextInt(500));
+			node.setyCenter(r.nextInt(500));
+			node.setRadius(10);
+
+			allNodes.add(node);
+			
+			int i = allNodes.size();
+			i = i <= 0 ? 1 : i;
+			i = r.nextInt(i);
+			i = i <= 0 ? 1 : i;
+
+			try {
+				node.addParent(allNodes.get(i));
+				node.addChild(allNodes.get((i + 1) % allNodes.size()));
+
+			} catch (Exception e) {
+			}
+		}
+
+	}
+
+	public ScrollPane getPane() {
+		ScrollPane pane = new ScrollPane();
+		pane.setMinSize(500, 500);
+		pane.setPrefSize(500, 500);
+
+		Group g = new Group();
+		for (Node n : allNodes) {
+			g.getChildren().add(n.getDrawableObject());
+		}
+		
+		LinkedList<Node> alreadyVisited = new LinkedList<Node>();
+		
+		int counter = 0;
+		for (Node n : this.allNodes){
+			if (!alreadyVisited.contains(n)){
+				for (Node n2 : n.getChildren()){
+					Line l = new Line();
+					l.setStartX(n.getxCenter());
+					l.setStartY(n.getyCenter());
+
+					l.setEndX(n2.getxCenter());
+					l.setEndY(n2.getyCenter());
+										
+					g.getChildren().add(l);
+					counter ++; 
+				}
+				
+				for (Node n2 : n.getChildren()){
+					Line l = new Line();
+					l.setStartX(n2.getxCenter());
+					l.setStartY(n2.getyCenter());
+
+					l.setEndX(n.getxCenter());
+					l.setEndY(n.getyCenter());
+										
+					g.getChildren().add(l);
+					counter ++; 
+				}
+				
+				
+				alreadyVisited.add(n);
+			}
+			
+		}
+		System.out.println(counter);
+		
+		
+		
+		pane.setContent(g);
+
+		return pane;
+	}
+}

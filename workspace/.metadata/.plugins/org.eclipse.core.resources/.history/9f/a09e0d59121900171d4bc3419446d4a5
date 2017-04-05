@@ -1,0 +1,152 @@
+package model.store;
+
+import java.util.ArrayList;
+
+import model.core.Point;
+import model.core.Record;
+import model.utils.Range2D;
+import model.utils.Range3D;
+
+/**
+ * Datenstruktur, stellt einen einfachen Oktree dar (Quadtree der zusätzlich die
+ * Zeitkomponente berücksichtigt)
+ * 
+ * @author tobi
+ *
+ */
+public class Octree {
+	private final OctreeNode root;
+
+	public final Range3D RANGE;
+
+	public Octree(Range3D r, int maxNumElements) {
+		RANGE = r;
+
+		root = new OctreeNode(maxNumElements, r);
+	}
+
+	public void add(Point p) {
+		root.add(p);
+	}
+
+	public void add(Record r) {
+		for (Point p : r.getAllPoints()) {
+			root.add(p);
+		}
+	}
+
+	private class OctreeNode {
+		private OctreeNode NWE = null, NEE = null, SWE = null, SEE = null;
+		private OctreeNode NWL = null, NEL = null, SWL = null, SEL = null;
+		private final int maxNumElements;
+		private final ArrayList<Point> points;
+		public final Range3D range;
+
+		public OctreeNode(int maxNumberOfElements, Range3D range) {
+			this.maxNumElements = maxNumberOfElements;
+			this.range = range;
+
+			points = new ArrayList<Point>();
+		}
+
+		/**
+		 * Fügt dem Knoten einen neuen Punkt zu. Falls der Knoten Unterknoten
+		 * hat wird auch dem entsprechenden Unterknoten der Punkt zugefügt
+		 * 
+		 * @param p
+		 */
+		public void add(Point p) {
+			if (!points.contains(p)) {
+				points.add(p);
+			}
+
+			// Weitergeben an Unterbäume falls diese existieren
+			if (NEE != null && NWE != null && SEE != null && SWE != null
+					&& NEL != null && NWL != null && SEL != null && SWL != null) {
+				// Falls der letzte Punkt den Knoten voll gemacht hat wird
+				// gesplittet
+				if (points.size() > maxNumElements) {
+					initializeSubtrees();
+				}
+
+				if (NWE.range.inRange(p)) {
+					NWE.add(p);
+				} else if (NEE.range.inRange(p)) {
+					NEE.add(p);
+				} else if (SWE.range.inRange(p)) {
+					SWE.add(p);
+				} else if (SEE.range.inRange(p)) {
+					SEE.add(p);
+				} else if (NWL.range.inRange(p)) {
+					NWL.add(p);
+				} else if (NEL.range.inRange(p)) {
+					NEL.add(p);
+				} else if (SWL.range.inRange(p)) {
+					SWL.add(p);
+				} else if (SEL.range.inRange(p)) {
+					SEL.add(p);
+				}
+			}
+		}
+
+		/**
+		 * Initialisiert alle Unterbäume mit den entsprechenden Ranges
+		 */
+		private void initializeSubtrees() {
+			// nur ausführen wenn eine Aufteilung des Nodes notwendig und noch
+			// nicht geschehen ist
+			if (points.size() > maxNumElements && NWE == null && NEE == null
+					&& SEE == null && SWE == null && NWL == null && NEL == null
+					&& SWL == null && SWL == null) {
+				int midX = range.MIN_X + (range.WIDTH / 2);
+				int midY = range.MIN_Y + (range.HEIGHT / 2);
+				int midTime = range.MIN_TIME + (range.LENGTH / 2);
+
+				// initialisiere die neuen Rangen
+				Range2D nwRange = new Range2D(range.MIN_X,
+						(range.MIN_X + midX), (range.MIN_Y + midY), range.MAX_Y);
+				Range2D neRange = new Range2D((range.MIN_X + midX),
+						range.MAX_X, (range.MIN_Y + midY), range.MAX_Y);
+				Range2D swRange = new Range2D(range.MIN_X,
+						(range.MIN_X + midX), range.MIN_Y, (range.MIN_Y + midY));
+				Range2D seRange = new Range2D((range.MIN_X + midX),
+						range.MAX_X, range.MIN_Y, (range.MIN_Y + midY));
+
+				Range3D nweRange = new Range3D(nwRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+				Range3D neeRange = new Range3D(neRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+				Range3D sweRange = new Range3D(swRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+				Range3D seeRange = new Range3D(seRange, range.MIN_TIME,
+						(range.MIN_TIME + midTime));
+
+				Range3D nwlRange = new Range3D(nwRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+				Range3D nelRange = new Range3D(neRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+				Range3D swlRange = new Range3D(swRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+				Range3D selRange = new Range3D(seRange,
+						(range.MIN_TIME + midTime), range.MAX_TIME);
+
+				// initialisiere die neuen QuadtreeNodes
+				NWE = new OctreeNode(maxNumElements, nweRange);
+				NEE = new OctreeNode(maxNumElements, neeRange);
+				SWE = new OctreeNode(maxNumElements, sweRange);
+				SEE = new OctreeNode(maxNumElements, seeRange);
+
+				NWL = new OctreeNode(maxNumElements, nwlRange);
+				NEL = new OctreeNode(maxNumElements, nelRange);
+				SWL = new OctreeNode(maxNumElements, swlRange);
+				SEL = new OctreeNode(maxNumElements, selRange);
+
+				// Fügt Punkte erneut hinzu, so dass sie an Unternäume übergeben
+				// werden
+				for (Point p : points) {
+					add(p);
+				}
+			}
+		}
+	}
+}

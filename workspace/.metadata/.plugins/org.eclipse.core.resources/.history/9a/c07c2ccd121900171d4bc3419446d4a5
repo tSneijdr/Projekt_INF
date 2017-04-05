@@ -1,0 +1,25 @@
+package model;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.core.Record;
+import model.store.Octree;
+import model.store.Quadtree;
+import model.utils.Range3D;
+
+public class Model {
+	private final ObservableList<Record> allActiveRecords;
+	
+	private final Quadtree quad;
+	private final Octree oct;
+	
+	public Model(Range3D range, int n){
+		allActiveRecords = FXCollections.observableArrayList();
+	
+		quad = new Quadtree();
+		oct = new Octree();
+		
+		
+	}
+	
+}

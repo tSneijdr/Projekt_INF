@@ -1,0 +1,89 @@
+package model;
+
+import java.awt.Color;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Ein einzelner Datensatz. Enthält neben den Punkte auch z.b. den Titel und den
+ * Namen des Teilnehmers
+ * 
+ * @author tobi
+ *
+ */
+public class Record {
+	// Daten die die eigentliche Datenreihe betreffen
+	public final String TITLE;
+	public final String PARTICIPANT;
+	public final Point firstPoint;
+
+	// Daten die die Darstellung der Datenreihe betreffen
+	public boolean active = true;
+	public Color color = Color.BLACK;
+	
+	public Record(String title, String participant, Point p) {
+		TITLE = title;
+		PARTICIPANT = participant;
+
+		if (p != null) {
+			// Iteriert zum Anfang des Datensatzes
+			while (p.getPreviousNode() != null) {
+				p = p.getPreviousNode();
+			}
+			firstPoint = p;
+		} else {
+			firstPoint = null;
+		}
+	}
+
+	public Record(String title, Point p) {
+		this(title, "default", p);
+	}
+
+	/**
+	 * Konstruktor der nur einen Punkt als Parameter erhält
+	 * 
+	 * @param p
+	 */
+	public Record(Point p) {
+		this("default", p);
+	}
+
+	/**
+	 * Gibt ein Set zurück das alle Punkte der Datenreihe enthält
+	 * 
+	 * @return
+	 */
+	public Set<Point> getAllPoints() {
+		HashSet<Point> s = new HashSet<Point>();
+
+		Point p = firstPoint;
+		s.add(p);
+		while (p.getNextNode() != null) {
+			p = p.getNextNode();
+			s.add(p);
+		}
+		return s;
+	}
+
+	/**
+	 * Ausdurck ob ein gegebener Punkt zu dieser Datenreihe gehört
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean isElement(Point p) {
+		Point current = this.firstPoint;
+
+		if (current == p)
+			return true;
+		while (current.getNextNode() != null) {
+			current = current.getNextNode();
+			if (current == p) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+}
