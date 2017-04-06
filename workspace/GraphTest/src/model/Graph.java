@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -11,98 +13,134 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 
 public class Graph {
 	private final List<Node> allNodes;
 
-	// Faktoren für korrekte Darstellung
 	private double factor = 1.0;
-	private double displacementX = 0.0;
-	private double displacementY = 0.0;
 
+	// Faktoren für korrekte Darstellung
 	private double oldX = 0.0;
 	private double oldY = 0.0;
 
+	/**
+	 * Standardkonsturktor
+	 */
 	public Graph() {
 		allNodes = new LinkedList<Node>();
 	}
 
+	/**
+	 * Erzeugt einen zufälligen Graphen mit n Knoten
+	 * 
+	 * @param n
+	 */
 	public void random(int n) {
 		Random r = new Random();
 		for (int index = 0; index < n; index++) {
-			Node node = new Node();
-			node.setShape(NodeType.CIRCLE);
+			String inf = "Information: zufällige Information";
+			HashSet<String> s = new HashSet<String>();
+			s.add(inf);
+			Node node = new Node(s);
+			node.setShape(NodeType.DIAMOND);
 			node.setxCenter(r.nextInt(500));
 			node.setyCenter(r.nextInt(500));
 			node.setRadius(10);
 
 			allNodes.add(node);
 
-			int i = allNodes.size();
-			i = i <= 0 ? 1 : i;
-			i = r.nextInt(i);
-			i = i <= 0 ? 1 : i;
+			for (int index2 = 0; index2 < r.nextInt(allNodes.size()); index2++) {
 
-			try {
-				node.addParent(allNodes.get(i));
-				node.addChild(allNodes.get((i + 1) % allNodes.size()));
+				try {
+					{
+						int i = allNodes.size();
+						i = i <= 0 ? 1 : i;
+						i = r.nextInt(i);
+						i = i <= 0 ? 1 : i;
 
-			} catch (Exception e) {
+						node.addParent(allNodes.get(i));
+						allNodes.get(i).addChild(node);
+					}
+					{
+						int i = allNodes.size();
+						i = i <= 0 ? 1 : i;
+						i = r.nextInt(i);
+						i = i <= 0 ? 1 : i;
+
+						node.addParent(allNodes.get(i));
+						allNodes.get(i).addChild(node);
+					}
+				} catch (Exception e) {
+				}
 			}
 		}
 
 	}
 
+	/**
+	 * Gibt ein JavaFX Pane zurück dass den Graphen darstellt. Kann in GUIs
+	 * eingebaut werden
+	 * 
+	 * @param paneWidth
+	 * @param paneHeight
+	 * @param scaleFactor
+	 * @return
+	 */
 	public BorderPane getPane(int paneWidth, int paneHeight, double scaleFactor) {
 		this.factor = scaleFactor;
 
+		// Setup für das Pane
 		BorderPane pane = new BorderPane();
 		pane.setMinSize(paneWidth, paneHeight);
 		pane.setPrefSize(paneWidth, paneHeight);
 
 		pane.setFocusTraversable(true);
 
-		pane.setCenter(getContent());
+		pane.setCenter(getContent(factor));
 
 		// Scrollevent setzen
-		{
-			pane.setOnScroll(null);
-			// pane.Event
+		pane.setOnScroll((ScrollEvent event) -> {
 
-			pane.setOnScroll((ScrollEvent event) -> {
-				
-				double deltaFactor = event.getDeltaY() * 0.01;
+			double deltaFactor = event.getDeltaY() * 0.01;
 
-				factor = (factor + deltaFactor < 1) ? 1 : (factor + deltaFactor);
-				System.out.println("Adjust factor by " + deltaFactor + " to " + factor);
-				pane.setCenter(getContent());
-				
-				event.consume();
-			});
+			factor = (factor + deltaFactor < 1) ? 1 : (factor + deltaFactor);
+			System.out.println("Adjust factor by " + deltaFactor + " to " + factor);
+			pane.setCenter(getContent(factor));
+		});
 
-			pane.setOnKeyPressed((KeyEvent event) -> {
-
+		// ActionListener für alle Tastendrücke
+		pane.setOnKeyPressed((KeyEvent event) -> {
+			// Funktionalität für Bewegung in Pane
+			{
 				DoubleProperty propX = pane.translateXProperty();
 				DoubleProperty propY = pane.translateYProperty();
 
-				Double speed = 20.0;
+				if (event.isControlDown()) {
+					propX.set(0);
+					propY.set(0);
+					this.factor = 1.0;
+					pane.setCenter(getContent(factor));
+				} else {
 
-				if (event.getCode() == KeyCode.LEFT) {
-					propX.set(propX.get() + speed);
-				} else if (event.getCode() == KeyCode.RIGHT) {
-					propX.set(propX.get() - speed);
-				} else if (event.getCode() == KeyCode.UP) {
-					propY.set(propY.get() + speed);
-				} else if (event.getCode() == KeyCode.DOWN) {
-					propY.set(propY.get() - speed);
+					Double speed = 20.0;
+
+					if (event.getCode() == KeyCode.LEFT) {
+						propX.set(propX.get() + speed);
+					} else if (event.getCode() == KeyCode.RIGHT) {
+						propX.set(propX.get() - speed);
+					} else if (event.getCode() == KeyCode.UP) {
+						propY.set(propY.get() + speed);
+					} else if (event.getCode() == KeyCode.DOWN) {
+						propY.set(propY.get() - speed);
+					}
 				}
+			}
+		});
 
-				event.consume();
-			});
-
-			pane.setOnMouseClicked((MouseEvent event) -> {
+		// ActionListener für alle Mausdrücke
+		pane.setOnMouseClicked((MouseEvent event) -> {
+			// Updatet den oldX und oldY Wert, notwendig für dragging
+			if (event.isPrimaryButtonDown()){
 				Double diffX = event.getScreenX() - oldX;
 				Double diffY = event.getScreenY() - oldY;
 
@@ -112,13 +150,15 @@ public class Graph {
 				propX.set(propX.get() + diffX);
 				propY.set(propY.get() + diffY);
 
-				System.out.println("Kliiiiiiiiiiiickkk");
 				oldX = event.getScreenX();
 				oldY = event.getScreenY();
-			});
+			}
+		});
 
-			pane.setOnMouseDragged((MouseEvent event) -> {
-
+		// ActionListener für Maus dragging
+		pane.setOnMouseDragged((MouseEvent event) -> {
+			// Maus-Dragging Funktionen
+			{
 				if (!(oldX == 0.0 && oldY == 0.0)) {
 					DoubleProperty propX = pane.translateXProperty();
 					DoubleProperty propY = pane.translateYProperty();
@@ -146,45 +186,43 @@ public class Graph {
 
 				oldX = event.getScreenX();
 				oldY = event.getScreenY();
-			});
+			}
+		});
 
-		}
-		System.out.println("Anfangsdaten: " + pane.translateXProperty().get() + " " + pane.translateYProperty().get());
 		return pane;
 	}
 
-	public Group getContent() {
+	/**
+	 * Gibt eine Gruppe aller Objekte des Graphen zurück die gezeichnet werden
+	 * sollen
+	 * 
+	 * @return Group
+	 */
+	private Group getContent(double factor) {
 		Group g = new Group();
 
-		int counter = 0;
+		ArrayList<Edge> allEdges = new ArrayList<Edge>();
 		LinkedList<Node> alreadyVisited = new LinkedList<Node>();
 
-		for (Node n : this.allNodes) {
-			if (!alreadyVisited.contains(n)) {
+		for (Node parent : this.allNodes) {
+			if (!alreadyVisited.contains(parent)) {
 
-				for (Node n2 : n.getChildren()) {
-					Line l = new Line();
-					l.setStartX(n.getxCenter() * factor + displacementX);
-					l.setStartY(n.getyCenter() * factor + displacementY);
-
-					l.setEndX(n2.getxCenter() * factor + displacementX);
-					l.setEndY(n2.getyCenter() * factor + displacementY);
-
-					l.setStroke(Color.DARKGREEN);
-
-					g.getChildren().add(l);
-					counter++;
+				for (Node child : parent.getChildren()) {
+					allEdges.add(new Edge(parent, child));
 				}
 
-				alreadyVisited.add(n);
+				alreadyVisited.add(parent);
 			}
 
 		}
-		System.out.println(counter);
 
-		for (Node n : allNodes) {
-			g.getChildren().add(n.getDrawableObject(factor, displacementX, displacementY));
+		for (Edge edge : allEdges) {
+			g.getChildren().add(edge.getDrawableObject(factor));
 		}
+		for (Node node : allNodes) {
+			g.getChildren().add(node.getDrawableObject(factor));
+		}
+
 		return g;
 	}
 }

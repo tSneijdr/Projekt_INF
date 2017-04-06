@@ -1,19 +1,11 @@
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Graph;
 
 public class MainApp extends Application {
-
-	private Stage primaryStage;
-	private AnchorPane rootLayout;
 
 	Graph graph = new Graph();
 
