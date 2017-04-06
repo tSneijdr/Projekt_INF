@@ -51,9 +51,8 @@ public class Node {
 	 * @return
 	 */
 	public Shape getDrawableObject(double scaleFactor, double displacementX, double displacementY) {
-		Shape s = null;
-
-		// Rechne den Skalierungsfaktor ein
+		// Rechne den Skalierungsfaktor ein und gebe ein entsprechendes Objekt
+		// zurück
 		{
 			double localXCenter = (double) this.xCenter * scaleFactor + displacementX;
 			double localYCenter = (double) this.yCenter * scaleFactor + displacementY;
@@ -121,7 +120,9 @@ public class Node {
 		}
 	}
 
+	// ------------------------------------------------------------------
 	// Getter und Setter
+	// ------------------------------------------------------------------
 	public void addChild(Node child) {
 		children.add(child);
 	}
