@@ -39,8 +39,10 @@ public class Graph {
 		Random r = new Random();
 		for (int index = 0; index < n; index++) {
 			String inf = "Information: zufällige Information";
+			String inf2 = "Test";
 			HashSet<String> s = new HashSet<String>();
 			s.add(inf);
+			s.add(inf2);
 			Node node = new Node(s);
 			node.setShape(NodeType.DIAMOND);
 			node.setxCenter(r.nextInt(500));

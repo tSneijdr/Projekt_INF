@@ -1,4 +1,4 @@
-package model.store;
+package model.datastructures;
 
 import java.util.ArrayList;
 import java.util.HashSet;

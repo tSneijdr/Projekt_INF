@@ -22,8 +22,7 @@ public class Range3D {
 	public final int HEIGHT;
 	public final int LENGTH;
 
-	public Range3D(int minX, int maxX, int minY, int maxY, int minTime,
-			int maxTime) {
+	public Range3D(int minX, int maxX, int minY, int maxY, int minTime, int maxTime) {
 		MIN_X = minX;
 		MAX_X = maxX;
 
@@ -55,21 +54,25 @@ public class Range3D {
 	}
 
 	public boolean overlap(Range3D r) {
-		return inX(r.MIN_X) || inX(r.MAX_X) || inY(r.MIN_Y) || inY(r.MAX_Y)
-				|| inTime(r.MIN_TIME) || inTime(r.MAX_TIME);
+		return inX(r.MIN_X) || inX(r.MAX_X) || inY(r.MIN_Y) || inY(r.MAX_Y) || inTime(r.MIN_TIME) || inTime(r.MAX_TIME);
 	}
 
 	public boolean inRange(int x, int y, double time) {
 		return inX(x) || inY(y) || inTime(time);
 	}
-	
+
 	public boolean inRange(Point p) {
 		return inRange(p.X, p.Y, p.TIMEPOINT);
 	}
-	
-	public Range2D to2DRange(){
+
+	public Range2D to2DRange() {
 		return new Range2D(MIN_X, MAX_X, MIN_Y, MAX_Y);
-		
+
+	}
+
+	public boolean equals(Range3D range) {
+		return this.MAX_TIME == range.MAX_TIME && this.MIN_TIME == range.MIN_TIME && this.MAX_X == range.MAX_X
+				&& this.MIN_X == range.MIN_X && this.MAX_Y == range.MAX_Y && this.MIN_Y == range.MIN_Y;
 	}
 
 }
