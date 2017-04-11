@@ -4,10 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.Model;
-import utils.Range3D;
+import view.RootLayoutController;
 
 public class MainApp extends Application {
 
@@ -31,6 +29,9 @@ public class MainApp extends Application {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 				
+				RootLayoutController test = loader.getController();
+				test.setUpAccordion(null);
+				
 			} catch (Exception e){
 				e.printStackTrace();
 			}
@@ -39,10 +40,6 @@ public class MainApp extends Application {
 	}
 
 	public static void main(String[] args) {
-		Range3D range = new Range3D(0, 10, 0, 10, 0, 10);
-		Model m = new Model(range);
-		
-		
 		launch(args);
 	}
 }

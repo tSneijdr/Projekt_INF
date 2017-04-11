@@ -1,12 +1,11 @@
-package model.datastructures;
+package utils.datastructures;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import model.core.Point;
-import model.core.Record;
-import utils.Quadrupel;
-import utils.Range2D;
+import model.points.Point;
+import model.points.Record;
+import utils.ranges.Range2D;
 
 /**
  * Datenstruktur, stellt eine einfache Matrix dar
@@ -88,7 +87,7 @@ public class Matrix {
 	public void addRecord(Record r) {
 		addPoints(r.getAllPoints());
 
-		Point p = r.firstPoint;
+		Point p = r.getFirstPoint();
 		while (p.getNextNode() != null) {
 			int x1, x2, y1, y2;
 			x1 = p.X / SIZE_OF_COLUMN;

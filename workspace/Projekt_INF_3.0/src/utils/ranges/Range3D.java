@@ -1,6 +1,6 @@
-package utils;
+package utils.ranges;
 
-import model.core.Point;
+import model.points.Point;
 
 /**
  * Stellt einen dreidimensionalen Raum da, der alle Punkte p mit: MIN_X <= p.x <

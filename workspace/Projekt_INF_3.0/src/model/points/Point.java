@@ -1,4 +1,4 @@
-package model.core;
+package model.points;
 
 import java.util.LinkedList;
 import java.util.List;

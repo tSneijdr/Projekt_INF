@@ -1,12 +1,12 @@
-package model.datastructures;
+package utils.datastructures;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.core.Point;
-import utils.Range2D;
-import utils.Range3D;
+import model.points.Point;
+import utils.ranges.Range2D;
+import utils.ranges.Range3D;
 
 /**
  * Datenstruktur, stellt einen einfachen Oktree dar (Quadtree der zusätzlich die

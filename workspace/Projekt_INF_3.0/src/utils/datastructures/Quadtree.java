@@ -1,11 +1,11 @@
-package model.datastructures;
+package utils.datastructures;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.core.Point;
-import utils.Range2D;
+import model.points.Point;
+import utils.ranges.Range2D;
 
 /**
  * Datenstruktur, stellt einen einfachen Quadtree dar

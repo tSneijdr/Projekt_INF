@@ -1,4 +1,4 @@
-package utils;
+package utils.datastructures;
 
 /**
  * Einfache Datenstruktur, stellt ein Paar beliebiger Datentypen dar

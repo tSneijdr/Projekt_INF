@@ -1,10 +1,10 @@
-package model.structure;
+package model.points;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import model.core.Record;
+import model.points.Record;
 
 public class Store {
 	private final List<StoreNode> allNodes;
@@ -49,7 +49,7 @@ public class Store {
 	 */
 	public Record[] getByParticipant(String name) {
 		return (Record[]) allNodes.stream().flatMap((StoreNode node) -> (node.getRecords()))
-				.filter((x) -> (x.PARTICIPANT.equals(name))).toArray();
+				.filter((x) -> (x.getParticipant().equals(name))).toArray();
 	}
 
 	/**
@@ -61,6 +61,16 @@ public class Store {
 	public Record[] getByImage(String url) {
 		return (Record[]) allNodes.stream().filter((StoreNode x) -> x.url.equals(url))
 				.flatMap((StoreNode x) -> (x.getRecords())).toArray();
+	}
+
+	/**
+	 * Gibt alle Records die aktiv sind zurück
+	 * 
+	 * @param url
+	 */
+	public Record[] getActiveRecords() {
+		return (Record[]) allNodes.stream().flatMap((StoreNode n) -> (n.getRecords()))
+				.filter((Record rec) -> rec.isActive()).toArray();
 	}
 
 	/**
@@ -105,7 +115,7 @@ public class Store {
 		 * @return
 		 */
 		public Stream<Record> getParticipant(String name) {
-			return allRecords.stream().filter((part) -> (part.PARTICIPANT.equals(name)));
+			return allRecords.stream().filter((part) -> (part.getParticipant().equals(name)));
 		}
 
 		// --------------------------------------------

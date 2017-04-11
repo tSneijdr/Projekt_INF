@@ -1,4 +1,4 @@
-package model.core;
+package model.points;
 
 import javafx.scene.paint.Color;
 import java.util.HashSet;
@@ -13,17 +13,18 @@ import java.util.Set;
  */
 public class Record {
 	// Daten die die eigentliche Datenreihe betreffen
-	public final String TITLE;
-	public final String PARTICIPANT;
-	public final Point firstPoint;
+	private final String title;
+	
+	private final String participant;
+	private final Point firstPoint;
 
 	// Daten die die Darstellung der Datenreihe betreffen
-	public boolean active = true;
-	public Color color = Color.BLACK;
+	private boolean active = true;
+	private Color color = Color.BLACK;
 	
 	public Record(String title, String participant, Point p) {
-		TITLE = title;
-		PARTICIPANT = participant;
+		this.title = title;
+		this.participant = participant;
 
 		if (p != null) {
 			// Iteriert zum Anfang des Datensatzes
@@ -86,4 +87,32 @@ public class Record {
 		return false;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getParticipant() {
+		return participant;
+	}
+
+	public Point getFirstPoint() {
+		return firstPoint;
+	}
+	
 }

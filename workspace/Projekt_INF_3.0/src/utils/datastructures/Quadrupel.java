@@ -1,4 +1,4 @@
-package utils;
+package utils.datastructures;
 
 /**
  * Praktische Datenstruktur, stellt ein Quadrupel von beliebigen Werten dar
