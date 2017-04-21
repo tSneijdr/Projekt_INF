@@ -17,7 +17,16 @@ import model.points.Record;
 import model.points.Store;
 import utils.datastructures.Sixtupel;
 
-public abstract class Controller {
+public class Controller {
+	private final Set<Point> points;
+
+	public Controller(Store store) {
+		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
+		{
+			points = PointController.getPointsMenu(store);
+		}
+
+	}
 
 	/**
 	 * Nimmt Parameter entgegen und erzeugt daraus ein Pane das einen Ausschnitt
@@ -28,15 +37,9 @@ public abstract class Controller {
 	 * @param store
 	 * @return
 	 */
-	public static BorderPane generatePane(int paneWidth, int paneHeight, Store store, boolean showEdges) {
-		Set<Point> points = null;
+	public BorderPane generatePane(int paneWidth, int paneHeight, boolean showEdges) {
 		SynthesisType synthType = null;
 		TransformationType transType = null;
-
-		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
-		{
-			points = PointController.getPointsMenu(store);
-		}
 
 		// Erzeuge einen Graphen aus den Punkten und erzeugt daraus den Pane
 		{
@@ -48,7 +51,7 @@ public abstract class Controller {
 
 		}
 
-		return GraphController.run(paneWidth, paneHeight, points, synthType, transType, showEdges);
+		return new GraphController(points, synthType).run(paneWidth, paneHeight, transType);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -76,9 +79,8 @@ public abstract class Controller {
 			}
 		}
 
-
 		System.out.println(allSixtuples.get(0).FIRST);
-		
+
 		// Erzeugt aus den sortierten Sechsertupeln Records und fügt sie zu
 		{
 			// Die einzelnen Bilder (repräsentirert durch ihre URL)

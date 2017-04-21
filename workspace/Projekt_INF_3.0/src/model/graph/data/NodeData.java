@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import model.graph.graph.Node;
-
 public class NodeData {
 
 	// Lokalitätsdaten aus der Synthese
@@ -47,6 +45,10 @@ public class NodeData {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public void toggle() {
+		setActive(!active);
 	}
 
 	public List<NodeData> getParents() {

@@ -19,11 +19,17 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage parameterPrimaryStage) {
+		
+		// Setup
 		this.primaryStage = parameterPrimaryStage;
 		this.primaryStage.setTitle("Graphvisualisierung");
+		
+		// Laden der Dateien
 		System.out.println("Lade die Daten aus der Datei...");
 		this.store = Controller.loadStoreFromFile("all_data_small.txt");
 		System.out.println("Laden aus Datei abgeschlossen...");
+
+		Controller controller = new Controller(store);
 
 		FXMLLoader rootLoader;
 		RootLayoutController rootController;
@@ -52,7 +58,7 @@ public class MainApp extends Application {
 		// Setze die Logik
 		{
 			System.out.println("Setze Funtionen der Knöpfe...");
-			rootController.setUpButtons(store, false);
+			rootController.setUpButtons(controller, false);
 			System.out.println("Funktionen der Knöpfe gesetzt...");
 			System.out.println("Setze " + store.getAllRecords().size() + " Einträge in Akkordeon...");
 			rootController.setUpAccordion(store);

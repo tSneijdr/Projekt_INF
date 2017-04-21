@@ -12,9 +12,7 @@ import model.graph.data.GraphData;
 
 public class Graph {
 
-	private final GraphData data;
-	
-	
+	// Faktor mit dem Skaliert wird
 	private double factor = 1.0;
 
 	// Faktoren für korrekte Darstellung
@@ -29,8 +27,6 @@ public class Graph {
 	 * Standardkonsturktor
 	 */
 	public Graph(GraphData data, List<Node> allNodes, List<Edge> allEdges) {
-		this.data = data;
-		
 		this.allNodes = allNodes;
 		this.allEdges = allEdges;
 	}

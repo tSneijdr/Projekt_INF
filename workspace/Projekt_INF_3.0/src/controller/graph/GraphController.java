@@ -11,17 +11,30 @@ import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
 
-public abstract class GraphController {
+public class GraphController {
 
-	public static BorderPane run(int paneWidth, int paneHeight, Set<Point> points, SynthesisType synthType, TransformationType transType, boolean showEdges) {
-		// Synthese eines Graphes aus dem Set der Punkte (ausgewählt durch Menü)
-		// TODO: Implementiere Auswahlmenü
-		GraphData data = Synthesis.get(synthType, points);
+	private final GraphData data;
 
-		// Transformation des Graphens (ausgewählt durch Menü)
-		// TODO: Implementiere Auswahlmenü
-		Graph graph = Transformation.get(transType, data);
-		
-		return graph.getPane(paneWidth, paneHeight, showEdges);
+	private boolean showEdges = true;
+
+	public GraphController(Set<Point> points, SynthesisType synthType) {
+		this.data = Synthesis.get(synthType, points);
 	}
+
+	public BorderPane run(int paneWidth, int paneHeight, TransformationType transType) {
+
+		// Erstelle einen nichttransformierten Graphen aus den Daten
+		Graph graph = Transformation.getUntransformedGraph(data);
+
+		// Transformiere Graph
+		Graph result = Transformation.get(transType, graph);
+
+		// Erstelle Pane
+		return result.getPane(paneWidth, paneHeight, showEdges);
+	}
+
+	// --------------------------------------------------------------------------------------------------
+	// Getter und Setter
+	// --------------------------------------------------------------------------------------------------
+
 }
