@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -73,6 +75,9 @@ public class Node {
 	public Shape getDrawableObject(double scaleFactor) {
 		final Shape result;
 
+		// Vorbereitung der Farbe
+		setColor();
+		
 		// Rechne den Skalierungsfaktor ein und gebe ein entsprechendes
 		// geformtes Objekt zurück, wobei spezifische Informationen bereits
 		// gesetzt sind
@@ -179,6 +184,12 @@ public class Node {
 					// Fügt ein Kontextmenü mit allen zusätlichen Informationen
 					// zu
 					ContextMenu contextMenu = new ContextMenu();
+
+					MenuItem controllItem = new MenuItem("Activate");
+					controllItem.setOnAction((ActionEvent e) -> {
+						this.data.toggle();
+					});
+					contextMenu.getItems().add(controllItem);
 
 					for (String info : informations) {
 						MenuItem item = new MenuItem(info);

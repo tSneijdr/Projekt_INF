@@ -48,6 +48,7 @@ public class NodeData {
 	}
 
 	public void toggle() {
+		System.out.println("Toggle");
 		setActive(!active);
 	}
 

@@ -19,13 +19,14 @@ import utils.datastructures.Sixtupel;
 
 public class Controller {
 	private final Set<Point> points;
+	private final GraphController gc;
 
-	public Controller(Store store) {
+	public Controller(Store store, SynthesisType synthType) {
 		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
 		{
 			points = PointController.getPointsMenu(store);
 		}
-
+		gc = new GraphController(points, synthType);
 	}
 
 	/**
@@ -50,8 +51,8 @@ public class Controller {
 			transType = TransformationType.IDENTITY;
 
 		}
-
-		return new GraphController(points, synthType).run(paneWidth, paneHeight, transType);
+		
+		return gc.run(paneWidth, paneHeight, transType);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -1,5 +1,6 @@
 
 import controller.Controller;
+import controller.graph.synthesis.SynthesisType;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,7 +30,7 @@ public class MainApp extends Application {
 		this.store = Controller.loadStoreFromFile("all_data_small.txt");
 		System.out.println("Laden aus Datei abgeschlossen...");
 
-		Controller controller = new Controller(store);
+		Controller controller = new Controller(store, SynthesisType.RANDOM);
 
 		FXMLLoader rootLoader;
 		RootLayoutController rootController;

@@ -93,6 +93,7 @@ public class Graph {
 
 		// ActionListener für alle Mausdrücke
 		pane.setOnMouseClicked((MouseEvent event) -> {
+			System.out.println("Klick");
 			// Updatet den oldX und oldY Wert, notwendig für dragging
 			if (event.isPrimaryButtonDown()) {
 				Double diffX = event.getScreenX() - oldX;
