@@ -3,16 +3,11 @@ package controller.graph.synthesis;
 import java.util.Set;
 
 import controller.graph.synthesis.classes.RandomSynthesis;
-import model.graph.Graph;
+import model.graph.data.GraphData;
+import model.graph.graph.Graph;
 import model.points.Point;
 
 public abstract class Synthesis {
-
-	private final String name;
-
-	public Synthesis(String name) {
-		this.name = name;
-	}
 
 	/**
 	 * Erhält ein Set von Punkten und Generiert daraus einen Graphen
@@ -20,24 +15,16 @@ public abstract class Synthesis {
 	 * @param points
 	 * @return
 	 */
-	public abstract Graph applyOn(Set<Point> points);
+	public abstract GraphData applyOn(Set<Point> points);
 
-	public String getName() {
-		return name;
-	}
-
-	public static Graph get(SynthesisType type, Set<Point> points) {
-		Synthesis synthesis = null;
+	public static GraphData get(SynthesisType type, Set<Point> points) {
 		switch (type) {
 		case RANDOM:
-			synthesis = new RandomSynthesis();
-			break;
+			return new RandomSynthesis().applyOn(points);
 		default:
-			synthesis = new RandomSynthesis();
-			break;
+			return new RandomSynthesis().applyOn(points);
 		}
-		
-		return synthesis.applyOn(points);
+
 	}
 
 }

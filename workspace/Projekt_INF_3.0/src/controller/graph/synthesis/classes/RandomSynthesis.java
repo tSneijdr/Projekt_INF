@@ -1,75 +1,67 @@
 package controller.graph.synthesis.classes;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import controller.graph.synthesis.Synthesis;
-import model.graph.Graph;
-import model.graph.Node;
-import model.graph.NodeType;
+import model.graph.data.GraphData;
+import model.graph.data.NodeData;
 import model.points.Point;
 
 public class RandomSynthesis extends Synthesis {
-
-	public RandomSynthesis() {
-		super("Zufälliger Graph");
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * Erzeugt einen zufälligen Graphen mit n Knoten
 	 * 
 	 * @param n
 	 */
-	public Graph applyOn(Set<Point> points) {
+	public GraphData applyOn(Set<Point> points) {
+		List<NodeData> allNodeData = new ArrayList<NodeData>();
+
 		Random r = new Random();
 		int n = r.nextInt(100);
 
-		Graph graph = new Graph();
-
+		// Erzeugt Knoten
 		for (int index = 0; index < n; index++) {
-			String inf = "Information: zufällige Information";
-			String inf2 = "Test";
-			HashSet<String> s = new HashSet<String>();
-			s.add(inf);
-			s.add(inf2);
-			Node node = new Node(s);
-			node.setShape(NodeType.DIAMOND);
-			node.setxCenter(r.nextInt(300));
-			node.setyCenter(r.nextInt(300));
-			node.setRadius(10);
+			NodeData nodeData;
+			{
 
-			graph.getAllNodes().add(node);
+				// Füge Informationen hinzu
+				String inf = "Information: zufällige Information";
+				String inf2 = "Test";
+				HashSet<String> s = new HashSet<String>();
+				s.add(inf);
+				s.add(inf2);
 
-			List<Node> allNodes = graph.getAllNodes();
-			for (int index2 = 0; index2 < r.nextInt(allNodes.size()); index2++) {
+				nodeData = new NodeData(0, 0, s);
 
-				try {
-					{
-						int i = allNodes.size();
-						i = i <= 0 ? 1 : i;
-						i = r.nextInt(i);
-						i = i <= 0 ? 1 : i;
-
-						node.addParent(allNodes.get(i));
-						allNodes.get(i).addChild(node);
-					}
-					{
-						int i = allNodes.size();
-						i = i <= 0 ? 1 : i;
-						i = r.nextInt(i);
-						i = i <= 0 ? 1 : i;
-
-						node.addParent(allNodes.get(i));
-						allNodes.get(i).addChild(node);
-					}
-				} catch (Exception e) {
+				// Setzt den Knoten mit einer bistimmten Wahrscheinlichkeit auf
+				// aktiv
+				if (r.nextDouble() <= 0.2) {
+					nodeData.setActive(true);
 				}
 			}
+			allNodeData.add(nodeData);
 		}
-		return graph;
+
+		// Erzeugt Kanten
+		for (int index = 0; index < n; index++) {
+			int i = r.nextInt(allNodeData.size());
+			int j = r.nextInt(allNodeData.size());
+			
+			NodeData parent = allNodeData.get(i);
+			NodeData child = allNodeData.get(j);
+
+			// Symetrisches Einfügen von Eltern-Kind Beziehungen
+			parent.addChild(child);
+			child.addParent(parent);
+
+		}
+
+		return new GraphData(allNodeData);
 
 	}
 

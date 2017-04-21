@@ -63,8 +63,8 @@ public class Matrix {
 	 * @param p
 	 */
 	private void addPoint(Point p) {
-		int x = p.X / SIZE_OF_COLUMN;
-		int y = p.Y / SIZE_OF_ROW;
+		int x = p.getX() / SIZE_OF_COLUMN;
+		int y = p.getY() / SIZE_OF_ROW;
 
 		if (x < 0 || NUMBER_OF_COLUMNS <= x) {
 			throw new ArrayIndexOutOfBoundsException(
@@ -90,11 +90,11 @@ public class Matrix {
 		Point p = r.getFirstPoint();
 		while (p.getNextNode() != null) {
 			int x1, x2, y1, y2;
-			x1 = p.X / SIZE_OF_COLUMN;
-			y1 = p.Y / SIZE_OF_ROW;
-
-			x2 = p.getNextNode().X / SIZE_OF_COLUMN;
-			y2 = p.getNextNode().Y / SIZE_OF_ROW;
+			x1 = p.getX() / SIZE_OF_COLUMN;
+			y1 = p.getY() / SIZE_OF_ROW;
+			
+			x2 = p.getNextNode().getX() / SIZE_OF_COLUMN;
+			y2 = p.getNextNode().getY() / SIZE_OF_ROW;
 
 			Quadrupel<Integer, Integer, Integer, Integer> q;
 			q = new Quadrupel<Integer, Integer, Integer, Integer>(x1, y1, x2,

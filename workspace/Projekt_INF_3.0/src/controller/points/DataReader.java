@@ -81,6 +81,7 @@ public class DataReader {
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			System.exit(-1);
 		}
 
 		return dataList;

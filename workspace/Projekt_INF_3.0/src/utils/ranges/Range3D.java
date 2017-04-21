@@ -62,7 +62,7 @@ public class Range3D {
 	}
 
 	public boolean inRange(Point p) {
-		return inRange(p.X, p.Y, p.TIMEPOINT);
+		return inRange(p.getX(), p.getY(), p.getTIMEPOINT());
 	}
 
 	public Range2D to2DRange() {

@@ -47,7 +47,7 @@ public class Range2D {
 	}
 
 	public boolean inRange(Point p) {
-		return inRange(p.X, p.Y);
+		return inRange(p.getX(), p.getY());
 	}
 
 }

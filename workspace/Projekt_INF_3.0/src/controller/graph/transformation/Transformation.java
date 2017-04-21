@@ -1,10 +1,8 @@
 package controller.graph.transformation;
 
-import java.util.Set;
-
-import controller.graph.transformation.classes.IdentityTransformation;
-import model.graph.Graph;
-import model.points.Point;
+import controller.graph.transformation.classes.RandomTransformation;
+import model.graph.data.GraphData;
+import model.graph.graph.Graph;
 
 public abstract class Transformation {
 	private final String name;
@@ -19,23 +17,23 @@ public abstract class Transformation {
 	 * @param points
 	 * @return
 	 */
-	public abstract Graph applyOn(Graph g);
+	public abstract Graph applyOn(GraphData g);
 
 	public String getName() {
 		return name;
 	}
 	
-	public static Graph get(TransformationType type, Graph graph) {
+	public static Graph get(TransformationType type, GraphData data) {
 		Transformation trans;
 		switch (type) {
 		case IDENTITY:
-			trans = new IdentityTransformation();
+			trans = new RandomTransformation();
 			break;
 
 		default:
-			trans = new IdentityTransformation();
+			trans = new RandomTransformation();
 			break;
 		}
-		return trans.applyOn(graph);
+		return trans.applyOn(data);
 	}
 }

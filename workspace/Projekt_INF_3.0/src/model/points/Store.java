@@ -1,9 +1,8 @@
 package model.points;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
-
 import model.points.Record;
 
 public class Store {
@@ -36,8 +35,12 @@ public class Store {
 	 * 
 	 * @return
 	 */
-	public Record[] getAllRecords() {
-		return (Record[]) allNodes.stream().flatMap((StoreNode node) -> (node.getRecords())).toArray();
+	public List<Record> getAllRecords() {
+		List<Record> list = new LinkedList<Record>();
+		for (StoreNode node : allNodes) {
+			list.addAll(node.getRecords());
+		}
+		return list;
 	}
 
 	/**
@@ -47,9 +50,12 @@ public class Store {
 	 * @param name
 	 * @return
 	 */
-	public Record[] getByParticipant(String name) {
-		return (Record[]) allNodes.stream().flatMap((StoreNode node) -> (node.getRecords()))
-				.filter((x) -> (x.getParticipant().equals(name))).toArray();
+	public List<Record> getByParticipant(String name) {
+		List<Record> list = new LinkedList<Record>();
+		for (StoreNode node : allNodes) {
+			list.addAll(node.getParticipant(name));
+		}
+		return list;
 	}
 
 	/**
@@ -58,9 +64,15 @@ public class Store {
 	 * 
 	 * @param url
 	 */
-	public Record[] getByImage(String url) {
-		return (Record[]) allNodes.stream().filter((StoreNode x) -> x.url.equals(url))
-				.flatMap((StoreNode x) -> (x.getRecords())).toArray();
+	public List<Record> getByImage(String url) {
+		List<Record> list = new LinkedList<Record>();
+		for (StoreNode node : allNodes) {
+			if (node.getUrl().equals(url)) {
+				list.addAll(node.getRecords());
+			}
+		}
+		return list;
+
 	}
 
 	/**
@@ -68,9 +80,16 @@ public class Store {
 	 * 
 	 * @param url
 	 */
-	public Record[] getActiveRecords() {
-		return (Record[]) allNodes.stream().flatMap((StoreNode n) -> (n.getRecords()))
-				.filter((Record rec) -> rec.isActive()).toArray();
+	public List<Record> getActiveRecords() {
+		List<Record> list = new LinkedList<Record>();
+		for (StoreNode node : allNodes) {
+			for (Record record : node.getRecords()) {
+				if (record.isActive()) {
+					list.add(record);
+				}
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -80,9 +99,14 @@ public class Store {
 	 * @param name
 	 * @return
 	 */
-	public Record[] getByImageAndParticipant(String url, String name) {
-		return (Record[]) allNodes.stream().filter(x -> x.getUrl().equals(url))
-				.flatMap((StoreNode x) -> (x.getParticipant(name))).toArray();
+	public List<Record> getByImageAndParticipant(String url, String name) {
+		List<Record> list = new LinkedList<Record>();
+		for (StoreNode node : allNodes) {
+			if (node.getUrl().equals(url)) {
+				list.addAll(node.getParticipant(name));
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -114,8 +138,15 @@ public class Store {
 		 * @param name
 		 * @return
 		 */
-		public Stream<Record> getParticipant(String name) {
-			return allRecords.stream().filter((part) -> (part.getParticipant().equals(name)));
+		public List<Record> getParticipant(String name) {
+			List<Record> list = new LinkedList<Record>();
+			for (Record record : allRecords) {
+				if (record.getParticipant().equals(name)) {
+					list.add(record);
+				}
+			}
+			return list;
+
 		}
 
 		// --------------------------------------------
@@ -125,8 +156,8 @@ public class Store {
 			return url;
 		}
 
-		public Stream<Record> getRecords() {
-			return allRecords.stream();
+		public List<Record> getRecords() {
+			return allRecords;
 		}
 
 	}

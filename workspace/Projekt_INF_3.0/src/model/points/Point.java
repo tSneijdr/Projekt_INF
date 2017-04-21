@@ -11,12 +11,12 @@ import java.util.List;
  */
 public class Point {
 
-	public final int X;
-	public final int Y;
+	private final int X;
+	private final int Y;
 	/** Zeit an dem der Punkt erreicht wird **/
-	public final double TIMEPOINT;
+	private final double TIMEPOINT;
 	/** Zeit die der Punkt betrachtet wird **/
-	public final double DURATION;
+	private final double DURATION;
 
 	private boolean isAlreadySet = false;
 
@@ -148,6 +148,24 @@ public class Point {
 			}
 		}
 		return true;
+	}
 
+	// ----------------------------------------------------------------------------
+	// Getter und Setter
+	// ----------------------------------------------------------------------------
+	public int getX() {
+		return X;
+	}
+
+	public int getY() {
+		return Y;
+	}
+
+	public double getTIMEPOINT() {
+		return TIMEPOINT;
+	}
+
+	public double getDURATION() {
+		return DURATION;
 	}
 }

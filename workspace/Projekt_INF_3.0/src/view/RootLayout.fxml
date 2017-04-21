@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -59,7 +60,11 @@
             </SplitPane>
          </center>
          <left>
-            <Accordion id="testAccordion" fx:id="accordion" BorderPane.alignment="CENTER" />
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <content>
+                  <Accordion id="testAccordion" fx:id="accordion" />
+               </content>
+            </ScrollPane>
          </left></BorderPane>
    </children>
 </AnchorPane>

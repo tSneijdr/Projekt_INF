@@ -115,4 +115,8 @@ public class Record {
 		return firstPoint;
 	}
 	
+	public String toString(){
+		return 	"( " + title + " || " + participant + " || " + firstPoint + " )";
+	}
+	
 }
