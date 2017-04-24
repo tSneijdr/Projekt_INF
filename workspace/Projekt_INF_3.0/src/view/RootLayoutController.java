@@ -1,14 +1,18 @@
 package view;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import controller.Controller;
+import controller.graph.transformation.TransformationType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
@@ -16,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import model.points.Record;
 import model.points.Store;
+import view.store.StoreViewController;
 
 public class RootLayoutController {
 	@FXML
@@ -29,39 +34,52 @@ public class RootLayoutController {
 	@FXML
 	private BorderPane lowerRightPane;
 	@FXML
-	private MenuItem ulButton, urButton, llButton, lrButton;
+	private Menu ulMenu, urMenu, llMenu, lrMenu;
+	@FXML
+	private MenuItem showStore;
 
+	// Kontroll - Daten
+	private Controller controller;
+	private Store store;
+	
 	public void initialize() {
+		// Menus
+		{
+			// Pane Setzer
+			{
+				Menu[] menus = { ulMenu, urMenu, llMenu, lrMenu };
+				Map<MenuItem, BorderPane> map = new HashMap<MenuItem, BorderPane>();
+				map.put(ulMenu, upperLeftPane);
+				map.put(urMenu, upperRightPane);
+				map.put(llMenu, lowerLeftPane);
+				map.put(lrMenu, lowerRightPane);
 
-	}
+				// Setzt die Untermenüs und deren Funktion
+				for (Menu menu : menus) {
+					for (TransformationType trans : TransformationType.values()) {
+						MenuItem item = new MenuItem(trans.toString());
+						menu.getItems().add(item);
 
-	public void setUpButtons(Controller controller, boolean showEdges) {
-		ulButton.setOnAction((ActionEvent event) -> {
-			BorderPane p = upperLeftPane;
-			p.setCenter(controller.generatePane((int) p.getWidth(), (int) p.getHeight(), showEdges));
-		});
+						item.setOnAction((ActionEvent e) -> {
+							BorderPane pane = map.get(item.getParentMenu());
+							int width = (int) pane.getWidth();
+							int height = (int) pane.getHeight();
 
-		urButton.setOnAction((ActionEvent event) -> {
-			BorderPane p = upperRightPane;
-			p.setCenter(controller.generatePane((int) p.getWidth(), (int) p.getHeight(), showEdges));
+							pane.setCenter(controller.generatePane(width, height, true));
 
-		});
+						});
+					}
+				}
+			}
 
-		llButton.setOnAction((ActionEvent event) -> {
-			BorderPane p = lowerLeftPane;
-			p.setCenter(controller.generatePane((int) p.getWidth(), (int) p.getHeight(), showEdges));
-		});
+			// Store
+			{
+				showStore.setOnAction((ActionEvent event) -> {
+					StoreViewController.run(store);
+				});
+			}
+		}
 
-		lrButton.setOnAction((ActionEvent event) -> {
-			BorderPane p = lowerRightPane;
-			p.setCenter(controller.generatePane((int) p.getWidth(), (int) p.getHeight(), showEdges));
-		});
-
-	}
-
-	public void actualizePanels() {
-		//BorderPane p = lowerLeftPane;
-		// p.setCenter
 	}
 
 	public void setUpAccordion(Store store) {
@@ -98,5 +116,13 @@ public class RootLayoutController {
 			}
 		}
 
+	}
+
+	// ------------------------------------------------------------------
+	// Getter und Setter
+	// ------------------------------------------------------------------
+	public void setUp(Controller controller, Store store) {
+		this.controller = controller;
+		this.store = store;
 	}
 }

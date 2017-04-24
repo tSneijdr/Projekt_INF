@@ -34,5 +34,9 @@ public class Sixtupel<A, B, C, D, E, F> {
 				&& THIRD.equals(q.THIRD) && FOURTH.equals(q.FOURTH)
 				&& FIFTH.equals(q.FIFTH) && SIXTH.equals(q.SIXTH);
 	}
+	
+	public String toString(){
+		return "( "+ FIRST+", " + SECOND +", " + THIRD + ", " + FOURTH + ", " + FIFTH + ", " + SIXTH +" )";
+	}
 
 }

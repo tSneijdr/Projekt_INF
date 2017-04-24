@@ -28,14 +28,20 @@
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
+                        <Menu mnemonicParsing="false" text="Unspecified Menu">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                          </items>
+                        </Menu>
                   </items>
                 </Menu>
-                  <Menu fx:id="someButton" mnemonicParsing="false" text="View">
+                  <Menu fx:id="viewMenu" mnemonicParsing="false" text="View">
                      <items>
-                        <MenuItem fx:id="ulButton" mnemonicParsing="false" text="Upper Left" />
-                        <MenuItem fx:id="urButton" mnemonicParsing="false" text="Upper Right" />
-                        <MenuItem fx:id="llButton" mnemonicParsing="false" text="Lower Left" />
-                        <MenuItem fx:id="lrButton" mnemonicParsing="false" text="Lower Right" />
+                     	<MenuItem fx:id="showStore" text="Show Store" />
+                        <Menu fx:id="ulMenu" mnemonicParsing="false" text="Upper Left" />
+                        <Menu fx:id="urMenu" mnemonicParsing="false" text="Upper Right" />
+                        <Menu fx:id="llMenu" mnemonicParsing="false" text="Lower Left" />
+                        <Menu fx:id="lrMenu" mnemonicParsing="false" text="Lower Right" />
                      </items>
                   </Menu>
               </menus>

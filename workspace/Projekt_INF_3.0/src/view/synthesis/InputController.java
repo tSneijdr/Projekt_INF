@@ -1,10 +1,9 @@
-package view.inputForm;
+package view.synthesis;
 
 import java.io.IOException;
 
 import controller.graph.synthesis.SynthesisType;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +12,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import utils.ranges.Range2D;
 
 public class InputController {
@@ -141,6 +141,9 @@ public class InputController {
 		stage.setTitle("Art der Synthese");
 		stage.setScene(scene);
 		stage.setAlwaysOnTop(true);
+		stage.setOnCloseRequest((WindowEvent e) -> {
+			System.exit(0);
+		});
 		stage.showAndWait();
 
 		return controller;

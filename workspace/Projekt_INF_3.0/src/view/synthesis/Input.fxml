@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.popup.SynthesisPopupController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.synthesis.InputController">
    <bottom>
       <Button fx:id="exitBtn" mnemonicParsing="false" text="Save" BorderPane.alignment="CENTER" />
    </bottom>

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import controller.graph.transformation.classes.RandomTransformation;
+import controller.graph.transformation.subclasses.RandomTransformation;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.graph.graph.Edge;
@@ -15,12 +15,6 @@ import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
 public abstract class Transformation {
-	private final String name;
-
-	public Transformation(String name) {
-		this.name = name;
-	}
-
 	/**
 	 * Erhält ein Set von Punkten und Generiert daraus einen Graphen
 	 * 
@@ -28,24 +22,6 @@ public abstract class Transformation {
 	 * @return
 	 */
 	public abstract Graph applyOn(Graph g);
-
-	public String getName() {
-		return name;
-	}
-
-	public static Graph get(TransformationType type, Graph graph) {
-		Transformation trans;
-		switch (type) {
-		case IDENTITY:
-			trans = new RandomTransformation();
-			break;
-
-		default:
-			trans = new RandomTransformation();
-			break;
-		}
-		return trans.applyOn(graph);
-	}
 
 	/**
 	 * Erzeugt aus den übergebenen GraphenDaten einen noch untransformierten

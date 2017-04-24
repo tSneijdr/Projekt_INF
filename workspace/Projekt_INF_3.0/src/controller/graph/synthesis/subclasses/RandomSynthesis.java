@@ -10,7 +10,7 @@ import controller.graph.synthesis.Synthesis;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.points.Point;
-import view.inputForm.InputController;
+import view.synthesis.InputController;
 
 public class RandomSynthesis extends Synthesis {
 	

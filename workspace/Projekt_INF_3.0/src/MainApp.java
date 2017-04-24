@@ -1,6 +1,7 @@
 
 import controller.Controller;
 import controller.graph.synthesis.SynthesisType;
+import controller.points.DataReader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,7 +28,7 @@ public class MainApp extends Application {
 
 		// Laden der Dateien
 		System.out.println("Lade die Daten aus der Datei...");
-		this.store = Controller.loadStoreFromFile("all_data_small.txt");
+		this.store = DataReader.loadStoreFromFile("all_data_small.txt");
 		System.out.println("Laden aus Datei abgeschlossen...");
 
 		// Laden des Controllers
@@ -59,14 +60,17 @@ public class MainApp extends Application {
 				return;
 			}
 		}
+		
 		// Setze die Logik
 		{
-			System.out.println("Setze Funtionen der Knöpfe...");
-			rootController.setUpButtons(controller, false);
-			System.out.println("Funktionen der Knöpfe gesetzt...");
 			System.out.println("Setze " + store.getAllRecords().size() + " Einträge in Akkordeon...");
 			rootController.setUpAccordion(store);
 			System.out.println("Akkordeon gesetzt...");
+		}
+		
+		// Verlinken der beiden Controller
+		{
+			rootController.setUp(controller, store);
 		}
 
 	}

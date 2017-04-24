@@ -1,5 +1,7 @@
 package model.graph.graph;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,9 @@ public class Graph {
 	// Mapping vin Daten auf Knoten
 	private final Map<NodeData, Node> mapping;
 	
+	// Originale Daten
+	private final GraphData data;
+	
 	/**
 	 * Standardkonsturktor
 	 */
@@ -36,6 +41,7 @@ public class Graph {
 		this.allNodes = allNodes;
 		this.allEdges = allEdges;
 		this.mapping = mapping;
+		this.data = data;
 	}
 
 	/**
@@ -64,8 +70,8 @@ public class Graph {
 
 			double deltaFactor = event.getDeltaY() * 0.01;
 
-			factor = (factor + deltaFactor < 1) ? 1 : (factor + deltaFactor);
-			System.out.println("Adjust factor by " + deltaFactor + " to " + factor);
+			factor = (factor + deltaFactor < 0.1) ? 0.1 : (factor + deltaFactor);
+			System.out.println("      Adjust factor by " + deltaFactor + " to " + factor);
 			pane.setCenter(getContent(factor, showEdges));
 		});
 
@@ -100,7 +106,6 @@ public class Graph {
 
 		// ActionListener für alle Mausdrücke
 		pane.setOnMouseClicked((MouseEvent event) -> {
-			System.out.println("Klick");
 			// Updatet den oldX und oldY Wert, notwendig für dragging
 			if (event.isPrimaryButtonDown()) {
 				Double diffX = event.getScreenX() - oldX;
@@ -128,8 +133,8 @@ public class Graph {
 					Double diffX = event.getScreenX() - oldX;
 					Double diffY = event.getScreenY() - oldY;
 
-					System.out.println(event.getScreenX() + " " + event.getScreenX() + " || " + oldX + " " + oldY
-							+ " || " + diffX + " " + diffY);
+					// System.out.println(event.getScreenX() + " " + event.getScreenX() + " || " + oldX + " " + oldY
+					//		+ " || " + diffX + " " + diffY);
 
 					double cutOffRange = 100;
 					if (cutOffRange >= Math.sqrt(Math.pow(diffY, 2.0) + Math.pow(diffX, 2.0))) {
@@ -163,5 +168,24 @@ public class Graph {
 		}
 
 		return g;
+	}
+	
+	// ---------------------------------------------------------------
+	// Getter und Setter
+	// ---------------------------------------------------------------
+	public List<Node> getAllNodes(){
+		return new ArrayList<Node>(this.allNodes);
+	}
+	
+	public List<Edge> getAllEdges(){
+		return new ArrayList<Edge>(this.allEdges);
+	}
+	
+	public Map<NodeData, Node> getMapping(){
+		return new HashMap<NodeData, Node>(mapping);
+	}
+	
+	public GraphData getData(){
+		return data;
 	}
 }

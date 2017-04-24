@@ -4,7 +4,7 @@ import java.util.Set;
 
 import model.graph.data.GraphData;
 import model.points.Point;
-import view.inputForm.InputController;
+import view.synthesis.InputController;
 
 public abstract class Synthesis {
 	/**

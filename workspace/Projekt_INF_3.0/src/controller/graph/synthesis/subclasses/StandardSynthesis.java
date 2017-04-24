@@ -13,7 +13,7 @@ import model.graph.data.NodeData;
 import model.points.Point;
 import utils.datastructures.Quadtree;
 import utils.ranges.Range2D;
-import view.inputForm.InputController;
+import view.synthesis.InputController;
 
 public class StandardSynthesis extends Synthesis {
 

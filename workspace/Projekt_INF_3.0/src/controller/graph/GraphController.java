@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
-import view.inputForm.InputController;
+import view.synthesis.InputController;
 
 public class GraphController {
 
@@ -28,10 +28,10 @@ public class GraphController {
 		Graph graph = Transformation.getUntransformedGraph(data);
 
 		// Transformiere Graph
-		Graph result = Transformation.get(transType, graph);
+		transType.getTransformation().applyOn(graph);
 
 		// Erstelle Pane
-		return result.getPane(paneWidth, paneHeight, showEdges);
+		return graph.getPane(paneWidth, paneHeight, showEdges);
 	}
 
 	// --------------------------------------------------------------------------------------------------
