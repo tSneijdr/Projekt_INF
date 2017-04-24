@@ -2,13 +2,19 @@ package controller.graph.synthesis;
 
 import java.util.Set;
 
-import controller.graph.synthesis.classes.RandomSynthesis;
+import controller.graph.synthesis.random.RandomSynthesis;
+import controller.graph.synthesis.standard.StandardSynthesis;
 import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
 
 public abstract class Synthesis {
-
+	private final String description;
+	
+	public Synthesis(String description){
+		this.description = description;
+	}
+	
 	/**
 	 * Erhält ein Set von Punkten und Generiert daraus einen Graphen
 	 * 
@@ -18,13 +24,7 @@ public abstract class Synthesis {
 	public abstract GraphData applyOn(Set<Point> points);
 
 	public static GraphData get(SynthesisType type, Set<Point> points) {
-		switch (type) {
-		case RANDOM:
-			return new RandomSynthesis().applyOn(points);
-		default:
-			return new RandomSynthesis().applyOn(points);
-		}
-
+		return type.getSynthesis().applyOn(points);
 	}
 
 }

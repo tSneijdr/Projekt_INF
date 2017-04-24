@@ -1,6 +1,8 @@
 package model.graph.graph;
 
 import java.util.List;
+import java.util.Map;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
@@ -9,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import model.graph.data.GraphData;
+import model.graph.data.NodeData;
 
 public class Graph {
 
@@ -19,16 +22,20 @@ public class Graph {
 	private double oldX = 0.0;
 	private double oldY = 0.0;
 
-	
+	// Speichern von Knoten und Kanten
 	private final List<Node> allNodes;
 	private final List<Edge> allEdges;
+	
+	// Mapping vin Daten auf Knoten
+	private final Map<NodeData, Node> mapping;
 	
 	/**
 	 * Standardkonsturktor
 	 */
-	public Graph(GraphData data, List<Node> allNodes, List<Edge> allEdges) {
+	public Graph(GraphData data, List<Node> allNodes, List<Edge> allEdges, Map<NodeData, Node> mapping) {
 		this.allNodes = allNodes;
 		this.allEdges = allEdges;
+		this.mapping = mapping;
 	}
 
 	/**

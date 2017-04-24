@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
+import view.popup.SynthesisPopupController;
 
 public class GraphController {
 
@@ -17,8 +18,8 @@ public class GraphController {
 
 	private boolean showEdges = true;
 
-	public GraphController(Set<Point> points, SynthesisType synthType) {
-		this.data = Synthesis.get(synthType, points);
+	public GraphController(Set<Point> points, SynthesisPopupController controller) {
+		this.data = Synthesis.get(controller.getType(), points);
 	}
 
 	public BorderPane run(int paneWidth, int paneHeight, TransformationType transType) {
@@ -36,5 +37,16 @@ public class GraphController {
 	// --------------------------------------------------------------------------------------------------
 	// Getter und Setter
 	// --------------------------------------------------------------------------------------------------
+	public boolean isShowEdges() {
+		return showEdges;
+	}
+
+	public void setShowEdges(boolean showEdges) {
+		this.showEdges = showEdges;
+	}
+
+	public GraphData getData() {
+		return data;
+	}
 
 }

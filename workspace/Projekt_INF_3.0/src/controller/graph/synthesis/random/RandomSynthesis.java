@@ -1,4 +1,4 @@
-package controller.graph.synthesis.classes;
+package controller.graph.synthesis.random;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +13,10 @@ import model.points.Point;
 
 public class RandomSynthesis extends Synthesis {
 
+	public RandomSynthesis(){
+		super("Erzeugt einen zufälligen Graphen");
+	}
+	
 	/**
 	 * Erzeugt einen zufälligen Graphen mit n Knoten
 	 * 
@@ -22,7 +26,7 @@ public class RandomSynthesis extends Synthesis {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 
 		Random r = new Random();
-		int n = r.nextInt(100);
+		int n = 10;
 
 		// Erzeugt Knoten
 		for (int index = 0; index < n; index++) {

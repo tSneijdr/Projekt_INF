@@ -20,17 +20,20 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage parameterPrimaryStage) {
-		
+
 		// Setup
 		this.primaryStage = parameterPrimaryStage;
 		this.primaryStage.setTitle("Graphvisualisierung");
-		
+
 		// Laden der Dateien
 		System.out.println("Lade die Daten aus der Datei...");
 		this.store = Controller.loadStoreFromFile("all_data_small.txt");
 		System.out.println("Laden aus Datei abgeschlossen...");
 
-		Controller controller = new Controller(store, SynthesisType.RANDOM);
+		// Laden des Controllers
+		System.out.println("Initialisiere den Controller...");
+		Controller controller = new Controller(store);
+		System.out.println("Initialisieren des Kontrollers abgeschlossen...");
 
 		FXMLLoader rootLoader;
 		RootLayoutController rootController;

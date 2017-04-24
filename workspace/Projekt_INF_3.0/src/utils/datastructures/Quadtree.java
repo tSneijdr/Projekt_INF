@@ -115,7 +115,7 @@ public class Quadtree {
 		 */
 		public Set<Point> getPoints(Range2D searchRange) {
 			if (!this.range.overlap(searchRange)) {
-				return null;
+				return new HashSet<Point>();
 			}
 
 			HashSet<Point> fittingPoints = new HashSet<Point>();

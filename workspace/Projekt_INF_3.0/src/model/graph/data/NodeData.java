@@ -22,7 +22,7 @@ public class NodeData {
 	// Daten zum Darstellen des Knotens
 	private boolean active;
 
-	public NodeData(int column, int row, HashSet<String> informations) {
+	public NodeData(int column, int row, Set<String> informations) {
 		this.originalColumn = column;
 		this.originalRow = row;
 

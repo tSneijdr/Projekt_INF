@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -11,22 +12,30 @@ import controller.graph.synthesis.SynthesisType;
 import controller.graph.transformation.TransformationType;
 import controller.points.DataReader;
 import controller.points.PointController;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import model.points.Point;
 import model.points.Record;
 import model.points.Store;
 import utils.datastructures.Sixtupel;
+import view.popup.SynthesisPopupController;
 
 public class Controller {
 	private final Set<Point> points;
 	private final GraphController gc;
 
-	public Controller(Store store, SynthesisType synthType) {
+	public Controller(Store store) {
 		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
 		{
-			points = PointController.getPointsMenu(store);
+			//points = PointController.getPointsMenu(store);
+			
+			points = store.getAllRecords().get(1).getAllPoints();
 		}
-		gc = new GraphController(points, synthType);
+		
+		SynthesisPopupController con = SynthesisPopupController.run();
+		
+		
+		gc = new GraphController(points, con);
 	}
 
 	/**
@@ -45,7 +54,7 @@ public class Controller {
 		// Erzeuge einen Graphen aus den Punkten und erzeugt daraus den Pane
 		{
 			// Wähle die Art der Synthese aus
-			synthType = SynthesisType.RANDOM;
+			synthType = SynthesisType.STANDARD;
 
 			// Wähle die Art der Transformation aus
 			transType = TransformationType.IDENTITY;

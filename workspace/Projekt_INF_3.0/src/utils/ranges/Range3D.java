@@ -58,7 +58,7 @@ public class Range3D {
 	}
 
 	public boolean inRange(int x, int y, double time) {
-		return inX(x) || inY(y) || inTime(time);
+		return inX(x) && inY(y) && inTime(time);
 	}
 
 	public boolean inRange(Point p) {

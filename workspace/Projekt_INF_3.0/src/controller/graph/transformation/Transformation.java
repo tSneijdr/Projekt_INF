@@ -32,7 +32,7 @@ public abstract class Transformation {
 	public String getName() {
 		return name;
 	}
-	
+
 	public static Graph get(TransformationType type, Graph graph) {
 		Transformation trans;
 		switch (type) {
@@ -46,7 +46,7 @@ public abstract class Transformation {
 		}
 		return trans.applyOn(graph);
 	}
-	
+
 	/**
 	 * Erzeugt aus den übergebenen GraphenDaten einen noch untransformierten
 	 * Graphen
@@ -70,8 +70,8 @@ public abstract class Transformation {
 			// Setzt die Darstellung des Knotens
 			node.setColor();
 			node.setRadius(10);
-			node.setxCenter(rand.nextInt(500));
-			node.setyCenter(rand.nextInt(500));
+			node.setxCenter(data.getOriginalColumn());
+			node.setyCenter(data.getOriginalRow());
 
 			map.put(data, node);
 			allNodes.add(node);
@@ -110,6 +110,6 @@ public abstract class Transformation {
 			}
 		}
 
-		return new Graph(graphData, allNodes, allEdges);
+		return new Graph(graphData, allNodes, allEdges, map);
 	}
 }

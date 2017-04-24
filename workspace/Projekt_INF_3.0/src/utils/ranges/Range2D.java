@@ -43,11 +43,15 @@ public class Range2D {
 	}
 
 	public boolean inRange(int x, int y) {
-		return inX(x) || inY(y);
+		return inX(x) && inY(y);
 	}
 
 	public boolean inRange(Point p) {
 		return inRange(p.getX(), p.getY());
+	}
+
+	public String toString() {
+		return "(x: " + MIN_X + " -> " + MAX_X + ", y: " + MIN_Y + " -> " + MAX_Y + ")";
 	}
 
 }
