@@ -1,4 +1,4 @@
-package controller.graph.synthesis.random;
+package controller.graph.synthesis.subclasses;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,19 +10,16 @@ import controller.graph.synthesis.Synthesis;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.points.Point;
+import view.popup.SynthesisPopupController;
 
 public class RandomSynthesis extends Synthesis {
-
-	public RandomSynthesis(){
-		super("Erzeugt einen zufälligen Graphen");
-	}
 	
 	/**
 	 * Erzeugt einen zufälligen Graphen mit n Knoten
 	 * 
 	 * @param n
 	 */
-	public GraphData applyOn(Set<Point> points) {
+	public GraphData applyOn(Set<Point> points, SynthesisPopupController controller) {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 
 		Random r = new Random();
@@ -65,7 +62,7 @@ public class RandomSynthesis extends Synthesis {
 
 		}
 
-		return new GraphData(allNodeData);
+		return new GraphData(allNodeData, controller.getRange());
 
 	}
 

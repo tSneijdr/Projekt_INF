@@ -3,7 +3,6 @@ package controller.graph;
 import java.util.Set;
 
 import controller.graph.synthesis.Synthesis;
-import controller.graph.synthesis.SynthesisType;
 import controller.graph.transformation.Transformation;
 import controller.graph.transformation.TransformationType;
 import javafx.scene.layout.BorderPane;
@@ -19,7 +18,8 @@ public class GraphController {
 	private boolean showEdges = true;
 
 	public GraphController(Set<Point> points, SynthesisPopupController controller) {
-		this.data = Synthesis.get(controller.getType(), points);
+		Synthesis synthesis = controller.getType().getSynthesis();
+		this.data = synthesis.applyOn(points, controller);
 	}
 
 	public BorderPane run(int paneWidth, int paneHeight, TransformationType transType) {

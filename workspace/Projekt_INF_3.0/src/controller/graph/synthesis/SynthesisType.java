@@ -1,7 +1,7 @@
 package controller.graph.synthesis;
 
-import controller.graph.synthesis.random.RandomSynthesis;
-import controller.graph.synthesis.standard.StandardSynthesis;
+import controller.graph.synthesis.subclasses.RandomSynthesis;
+import controller.graph.synthesis.subclasses.StandardSynthesis;
 
 public enum SynthesisType{
 	RANDOM("Erzeugt eine zufälligen Graphen"),

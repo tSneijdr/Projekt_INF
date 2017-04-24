@@ -1,4 +1,4 @@
-package controller.graph.synthesis.standard;
+package controller.graph.synthesis.subclasses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,27 +13,19 @@ import model.graph.data.NodeData;
 import model.points.Point;
 import utils.datastructures.Quadtree;
 import utils.ranges.Range2D;
+import view.popup.SynthesisPopupController;
 
 public class StandardSynthesis extends Synthesis {
 
-	public StandardSynthesis() {
-		super("Erzeugt einen Graphen durch Rasterisierung");
-	}
-
 	@Override
-	public GraphData applyOn(Set<Point> points) {
+	public GraphData applyOn(Set<Point> points, SynthesisPopupController controller) {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 		Map<Point, NodeData> map = new HashMap<Point, NodeData>();
-		Range2D range;
-		int numberOfColumns;
-		int numberOfRows;
 
-		// Auswahlmenü hier
-		numberOfColumns = 10;
-		numberOfRows = 10;
-		range = new Range2D(0, 1000, 0, 1000);
-		{
-					}
+		// Notwendige Daten werden aus contoller extrahiert
+		Range2D range = controller.getRange();
+		int numberOfColumns = controller.getNumberOfColumns();
+		int numberOfRows = controller.getNumberOfRows();
 
 		// Datenstruktur zur Auswahl der Punkte
 		Quadtree tree = new Quadtree(range, 5);
@@ -91,6 +83,6 @@ public class StandardSynthesis extends Synthesis {
 		}
 		System.out.println("   Aus " + points.size() + " Punkt(en) wurde(n) " + allNodeData.size() + " Rohknoten.");
 		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
-		return new GraphData(allNodeData);
+		return new GraphData(allNodeData, controller.getRange());
 	}
 }
