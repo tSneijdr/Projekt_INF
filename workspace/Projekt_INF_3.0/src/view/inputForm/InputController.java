@@ -1,4 +1,4 @@
-package view.popup;
+package view.inputForm;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utils.ranges.Range2D;
 
-public class SynthesisPopupController {
+public class InputController {
 
 	@FXML
 	private Button exitBtn;
@@ -86,8 +86,8 @@ public class SynthesisPopupController {
 						this.numberOfColumns = Integer.valueOf(this.additionalInfoTxtFld1.getText());
 						this.numberOfRows = Integer.valueOf(this.additionalInfoTxtFld2.getText());
 					}
-
-					range = new Range2D(0, width, 0, height);
+					this.type = SynthesisType.valueOf(this.synthesisChoice.getSelectionModel().getSelectedItem());
+					this.range = new Range2D(0, width, 0, height);
 				} catch (Exception e) {
 					System.err.println("Es ist ein Fehler aufgtetreten, das Programm wird beendet");
 					e.printStackTrace();
@@ -120,14 +120,14 @@ public class SynthesisPopupController {
 		return numberOfRows;
 	}
 
-	public static SynthesisPopupController run() {
+	public static InputController run() {
 		FXMLLoader fxmlLoader = null;
-		SynthesisPopupController controller = null;
+		InputController controller = null;
 		Scene scene = null;
 
 		try {
 			fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(SynthesisPopupController.class.getResource("SynthesisPopup.fxml"));
+			fxmlLoader.setLocation(InputController.class.getResource("Input.fxml"));
 
 			scene = new Scene(fxmlLoader.load());
 			controller = fxmlLoader.getController();

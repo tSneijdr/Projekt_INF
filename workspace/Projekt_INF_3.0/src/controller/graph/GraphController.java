@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
-import view.popup.SynthesisPopupController;
+import view.inputForm.InputController;
 
 public class GraphController {
 
@@ -17,7 +17,7 @@ public class GraphController {
 
 	private boolean showEdges = true;
 
-	public GraphController(Set<Point> points, SynthesisPopupController controller) {
+	public GraphController(Set<Point> points, InputController controller) {
 		Synthesis synthesis = controller.getType().getSynthesis();
 		this.data = synthesis.applyOn(points, controller);
 	}

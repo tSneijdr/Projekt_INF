@@ -28,7 +28,6 @@ public class RootLayoutController {
 	private BorderPane upperRightPane;
 	@FXML
 	private BorderPane lowerRightPane;
-
 	@FXML
 	private MenuItem ulButton, urButton, llButton, lrButton;
 

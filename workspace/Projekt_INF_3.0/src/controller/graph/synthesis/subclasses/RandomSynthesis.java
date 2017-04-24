@@ -10,7 +10,7 @@ import controller.graph.synthesis.Synthesis;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.points.Point;
-import view.popup.SynthesisPopupController;
+import view.inputForm.InputController;
 
 public class RandomSynthesis extends Synthesis {
 	
@@ -19,7 +19,7 @@ public class RandomSynthesis extends Synthesis {
 	 * 
 	 * @param n
 	 */
-	public GraphData applyOn(Set<Point> points, SynthesisPopupController controller) {
+	public GraphData applyOn(Set<Point> points, InputController controller) {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 
 		Random r = new Random();
@@ -62,6 +62,8 @@ public class RandomSynthesis extends Synthesis {
 
 		}
 
+		System.out.println("   Es wurde(n) " + allNodeData.size() + " Rohknoten zufällig erstellt.");
+		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
 		return new GraphData(allNodeData, controller.getRange());
 
 	}

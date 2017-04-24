@@ -18,7 +18,7 @@ import model.points.Point;
 import model.points.Record;
 import model.points.Store;
 import utils.datastructures.Sixtupel;
-import view.popup.SynthesisPopupController;
+import view.inputForm.InputController;
 
 public class Controller {
 	private final Set<Point> points;
@@ -32,7 +32,7 @@ public class Controller {
 			points = store.getAllRecords().get(1).getAllPoints();
 		}
 		
-		SynthesisPopupController con = SynthesisPopupController.run();
+		InputController con = InputController.run();
 		
 		
 		gc = new GraphController(points, con);

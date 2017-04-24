@@ -4,7 +4,7 @@ import java.util.Set;
 
 import model.graph.data.GraphData;
 import model.points.Point;
-import view.popup.SynthesisPopupController;
+import view.inputForm.InputController;
 
 public abstract class Synthesis {
 	/**
@@ -13,5 +13,5 @@ public abstract class Synthesis {
 	 * @param points
 	 * @return
 	 */
-	public abstract GraphData applyOn(Set<Point> points, SynthesisPopupController controller);
+	public abstract GraphData applyOn(Set<Point> points, InputController controller);
 }

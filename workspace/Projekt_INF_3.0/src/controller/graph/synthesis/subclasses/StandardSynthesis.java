@@ -13,12 +13,12 @@ import model.graph.data.NodeData;
 import model.points.Point;
 import utils.datastructures.Quadtree;
 import utils.ranges.Range2D;
-import view.popup.SynthesisPopupController;
+import view.inputForm.InputController;
 
 public class StandardSynthesis extends Synthesis {
 
 	@Override
-	public GraphData applyOn(Set<Point> points, SynthesisPopupController controller) {
+	public GraphData applyOn(Set<Point> points, InputController controller) {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 		Map<Point, NodeData> map = new HashMap<Point, NodeData>();
 
@@ -48,7 +48,6 @@ public class StandardSynthesis extends Synthesis {
 						continue;
 					} else{
 						System.out.println("      " + localPoints.size() + " Punkt(e) => 1 Rohknoten" );
-						System.out.println("      " + localPoints.iterator().next() + " in " + r);
 					}
 					
 					// Zusätzliche releante Daten können hier eingefügt werden
