@@ -133,7 +133,8 @@ public class DataReader {
 
 				// SecondFit enthält nun alle Punkte einer Datenreihe
 				{
-					
+					Record rec = getRecord(secondFit);
+					store.addRecord(rec.getTitle(), rec);
 				}
 			}
 
@@ -142,7 +143,7 @@ public class DataReader {
 		return store;
 	}
 	
-	private Record getRecord(List<Sixtupel<String, String, Integer, Integer, Integer, Integer>> sixtuples){
+	private static Record getRecord(List<Sixtupel<String, String, Integer, Integer, Integer, Integer>> sixtuples){
 		String title = sixtuples.get(0).FIRST;
 		String participant = sixtuples.get(0).SECOND;
 		
@@ -153,9 +154,10 @@ public class DataReader {
 		Point firstPoint = Point.link(points);
 		
 		return new Record(title, participant, firstPoint);
+		
 	}
 	
-	private Point getPoint(Sixtupel<String, String, Integer,Integer, Integer, Integer> sixtupel){
+	private static Point getPoint(Sixtupel<String, String, Integer,Integer, Integer, Integer> sixtupel){
 		int x = sixtupel.FOURTH;
 		int y = sixtupel.FIFTH;
 		
