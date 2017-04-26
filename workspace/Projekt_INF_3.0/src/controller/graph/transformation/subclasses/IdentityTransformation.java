@@ -6,7 +6,7 @@ import model.graph.graph.Node;
 
 public class IdentityTransformation extends Transformation {
 
-	public Graph applyOn(Graph g) {
+	public void applyOn(Graph g) {
 
 		int maxRow = 0;
 		int maxColumn = 0;
@@ -31,8 +31,6 @@ public class IdentityTransformation extends Transformation {
 			node.setxCenter(centerX);
 			node.setyCenter(centerY);
 		}
-
-		return g;
 	}
 
 }

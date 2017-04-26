@@ -5,11 +5,10 @@ import model.graph.graph.Graph;
 
 public class RandomTransformation extends Transformation {
 
-	public Graph applyOn(Graph g) {
+	public void applyOn(Graph g) {
 		
 		// Transformiere hier
-		
-		return g;
+
 	}
 
 }

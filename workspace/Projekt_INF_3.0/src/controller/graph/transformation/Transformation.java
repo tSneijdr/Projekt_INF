@@ -21,7 +21,7 @@ public abstract class Transformation {
 	 * @param points
 	 * @return
 	 */
-	public abstract Graph applyOn(Graph g);
+	public abstract void applyOn(Graph g);
 
 	/**
 	 * Erzeugt aus den übergebenen GraphenDaten einen noch untransformierten
@@ -65,9 +65,13 @@ public abstract class Transformation {
 
 					Node parent = node;
 					Node child = map.get(data);
-					Edge edge = new Edge(parent, child);
 
-					allEdges.add(edge);
+					try {
+						Edge edge = new Edge(parent, child);
+
+						allEdges.add(edge);
+					} catch (Exception e) {
+					}
 				}
 				for (NodeData data : node.getData().getChildren()) {
 					// Test ob Kante bereits vorhanden ist
@@ -77,9 +81,13 @@ public abstract class Transformation {
 
 					Node parent = map.get(data);
 					Node child = node;
-					Edge edge = new Edge(parent, child);
 
-					allEdges.add(edge);
+					try {
+						Edge edge = new Edge(parent, child);
+
+						allEdges.add(edge);
+					} catch (Exception e) {
+					}
 				}
 
 				visited.add(node.getData());

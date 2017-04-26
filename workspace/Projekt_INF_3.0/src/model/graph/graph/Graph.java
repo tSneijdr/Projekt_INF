@@ -27,13 +27,13 @@ public class Graph {
 	// Speichern von Knoten und Kanten
 	private final List<Node> allNodes;
 	private final List<Edge> allEdges;
-	
+
 	// Mapping vin Daten auf Knoten
 	private final Map<NodeData, Node> mapping;
-	
+
 	// Originale Daten
 	private final GraphData data;
-	
+
 	/**
 	 * Standardkonsturktor
 	 */
@@ -53,8 +53,8 @@ public class Graph {
 	 * @param scaleFactor
 	 * @return
 	 */
-	public BorderPane getPane(int paneWidth, int paneHeight, boolean showEdges) {
-		this.factor = 1.0;
+	public static BorderPane getPane(int paneWidth, int paneHeight, Graph graph, boolean showEdges) {
+		graph.factor = 1.0;
 
 		// Setup für das Pane
 		BorderPane pane = new BorderPane();
@@ -63,16 +63,40 @@ public class Graph {
 
 		pane.setFocusTraversable(true);
 
-		pane.setCenter(getContent(factor, showEdges));
+		// Skaliere den Graphen
+		{
+			int maxX = 0;
+			int maxY = 0;
+			for (Node node : graph.getAllNodes()) {
+				int nodeX = node.getxCenter() + node.getRadius();
+				int nodeY = node.getyCenter() + node.getRadius();
+
+				maxX = (maxX > nodeX) ? maxX : nodeX;
+				maxY = (maxY > nodeY) ? maxY : nodeY;
+			}
+
+			double factorX = (double) paneWidth / (double) maxX;
+			double factorY = (double) paneHeight / (double) maxY;
+			for (Node node : graph.getAllNodes()) {
+				int nodeX = (int) ((double) node.getxCenter() * (double) factorX);
+				int nodeY = (int) ((double) node.getyCenter() * (double) factorY);
+				
+				node.setxCenter(nodeX);
+				node.setyCenter(nodeY);
+			}
+
+		}
+
+		pane.setCenter(Graph.getContent(graph.factor, graph, showEdges));
 
 		// Scrollevent setzen
 		pane.setOnScroll((ScrollEvent event) -> {
 
 			double deltaFactor = event.getDeltaY() * 0.01;
 
-			factor = (factor + deltaFactor < 0.1) ? 0.1 : (factor + deltaFactor);
-			System.out.println("      Adjust factor by " + deltaFactor + " to " + factor);
-			pane.setCenter(getContent(factor, showEdges));
+			graph.factor = (graph.factor + deltaFactor < 0.1) ? 0.1 : (graph.factor + deltaFactor);
+			System.out.println("      Adjust factor by " + deltaFactor + " to " + graph.factor);
+			pane.setCenter(getContent(graph.factor, graph, showEdges));
 		});
 
 		// ActionListener für alle Tastendrücke
@@ -85,8 +109,8 @@ public class Graph {
 				if (event.isControlDown()) {
 					propX.set(0);
 					propY.set(0);
-					this.factor = 1.0;
-					pane.setCenter(getContent(factor, showEdges));
+					graph.factor = 1.0;
+					pane.setCenter(getContent(graph.factor, graph, showEdges));
 				} else {
 
 					Double speed = 20.0;
@@ -108,8 +132,8 @@ public class Graph {
 		pane.setOnMouseClicked((MouseEvent event) -> {
 			// Updatet den oldX und oldY Wert, notwendig für dragging
 			if (event.isPrimaryButtonDown()) {
-				Double diffX = event.getScreenX() - oldX;
-				Double diffY = event.getScreenY() - oldY;
+				Double diffX = event.getScreenX() - graph.oldX;
+				Double diffY = event.getScreenY() - graph.oldY;
 
 				DoubleProperty propX = pane.translateXProperty();
 				DoubleProperty propY = pane.translateYProperty();
@@ -117,8 +141,8 @@ public class Graph {
 				propX.set(propX.get() + diffX);
 				propY.set(propY.get() + diffY);
 
-				oldX = event.getScreenX();
-				oldY = event.getScreenY();
+				graph.oldX = event.getScreenX();
+				graph.oldY = event.getScreenY();
 			}
 		});
 
@@ -126,15 +150,16 @@ public class Graph {
 		pane.setOnMouseDragged((MouseEvent event) -> {
 			// Maus-Dragging Funktionen
 			{
-				if (!(oldX == 0.0 && oldY == 0.0)) {
+				if (!(graph.oldX == 0.0 && graph.oldY == 0.0)) {
 					DoubleProperty propX = pane.translateXProperty();
 					DoubleProperty propY = pane.translateYProperty();
 
-					Double diffX = event.getScreenX() - oldX;
-					Double diffY = event.getScreenY() - oldY;
+					Double diffX = event.getScreenX() - graph.oldX;
+					Double diffY = event.getScreenY() - graph.oldY;
 
-					// System.out.println(event.getScreenX() + " " + event.getScreenX() + " || " + oldX + " " + oldY
-					//		+ " || " + diffX + " " + diffY);
+					// System.out.println(event.getScreenX() + " " +
+					// event.getScreenX() + " || " + oldX + " " + oldY
+					// + " || " + diffX + " " + diffY);
 
 					double cutOffRange = 100;
 					if (cutOffRange >= Math.sqrt(Math.pow(diffY, 2.0) + Math.pow(diffX, 2.0))) {
@@ -144,8 +169,8 @@ public class Graph {
 					}
 				}
 
-				oldX = event.getScreenX();
-				oldY = event.getScreenY();
+				graph.oldX = event.getScreenX();
+				graph.oldY = event.getScreenY();
 			}
 		});
 
@@ -158,34 +183,34 @@ public class Graph {
 	 * 
 	 * @return Group
 	 */
-	private Group getContent(double factor, boolean showEdges) {
+	private static Group getContent(double factor, Graph graph, boolean showEdges) {
 		Group g = new Group();
-		for (Edge edge : allEdges) {
-			g.getChildren().add(edge.getDrawableObject(factor));
+		for (Edge edge : graph.getAllEdges()) {
+			g.getChildren().addAll(Edge.getDrawableObject(factor, edge));
 		}
-		for (Node node : allNodes) {
-			g.getChildren().add(node.getDrawableObject(factor));
+		for (Node node : graph.getAllNodes()) {
+			g.getChildren().add(Node.getDrawableObject(factor, node));
 		}
 
 		return g;
 	}
-	
+
 	// ---------------------------------------------------------------
 	// Getter und Setter
 	// ---------------------------------------------------------------
-	public List<Node> getAllNodes(){
+	public List<Node> getAllNodes() {
 		return new ArrayList<Node>(this.allNodes);
 	}
-	
-	public List<Edge> getAllEdges(){
+
+	public List<Edge> getAllEdges() {
 		return new ArrayList<Edge>(this.allEdges);
 	}
-	
-	public Map<NodeData, Node> getMapping(){
+
+	public Map<NodeData, Node> getMapping() {
 		return new HashMap<NodeData, Node>(mapping);
 	}
-	
-	public GraphData getData(){
+
+	public GraphData getData() {
 		return data;
 	}
 }

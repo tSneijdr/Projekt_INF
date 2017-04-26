@@ -64,8 +64,11 @@ public class RootLayoutController {
 							BorderPane pane = map.get(item.getParentMenu());
 							int width = (int) pane.getWidth();
 							int height = (int) pane.getHeight();
-
-							pane.setCenter(controller.generatePane(width, height, true));
+							
+							BorderPane newPane = controller.generatePane(width, height, trans);
+							System.out.println("   Setze Pane " + pane + " auf " + newPane);
+							
+							pane.setCenter(newPane);
 
 						});
 					}

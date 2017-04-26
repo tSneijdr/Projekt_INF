@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import model.graph.graph.Node;
+
 public class NodeData {
 
 	// Lokalitätsdaten aus der Synthese
@@ -21,6 +23,7 @@ public class NodeData {
 
 	// Daten zum Darstellen des Knotens
 	private boolean active;
+	private final Set<Node> allInstances;
 
 	public NodeData(int column, int row, Set<String> informations) {
 		this.originalColumn = column;
@@ -34,6 +37,9 @@ public class NodeData {
 
 		// Infromationen
 		this.informations = informations;
+		
+		// Alle Instanzen dieses Datensatzes
+		allInstances = new HashSet<Node>();
 	}
 
 	// ---------------------------------------------------
@@ -45,10 +51,13 @@ public class NodeData {
 
 	public void setActive(boolean active) {
 		this.active = active;
+		for (Node node : allInstances){
+			node.setColor();
+		}
+		
 	}
 
 	public void toggle() {
-		System.out.println("Toggle");
 		setActive(!active);
 	}
 
@@ -73,7 +82,7 @@ public class NodeData {
 	}
 
 	public void addChild(NodeData child) {
-		if (this.children.contains(child) || child == this) {
+		if (this.children.contains(child) || child == this || child == null) {
 			return;
 		} else {
 			this.children.add(child);
@@ -82,12 +91,16 @@ public class NodeData {
 	}
 
 	public void addParent(NodeData parent) {
-		if (this.parents.contains(parent) || parent == this) {
+		if (this.parents.contains(parent) || parent == this || parent == null) {
 			return;
 		} else {
 			this.parents.add(parent);
 			parent.addChild(this);
 		}
+	}
+	
+	public void addInstance(Node node){
+		allInstances.add(node);
 	}
 
 }

@@ -67,14 +67,14 @@ public class StandardSynthesis extends Synthesis {
 			}
 		}
 
+		points = tree.getPoints(tree.RANGE);
 		{
 			// Erstellt Kanten
 			for (Point currentPoint : points) {
 				Point nextPoint = currentPoint.getNextNode();
 
 				// Fügt Kante nur hinzu, wenn der nächste Punkt überhaupt im Set liegt
-				if (points.contains(nextPoint)) {
-
+				if (points.contains(nextPoint) && nextPoint != null) {
 					map.get(currentPoint).addChild(map.get(nextPoint));
 					map.get(nextPoint).addParent(map.get(currentPoint));
 				}

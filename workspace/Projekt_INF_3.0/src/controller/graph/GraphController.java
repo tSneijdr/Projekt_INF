@@ -30,8 +30,11 @@ public class GraphController {
 		// Transformiere Graph
 		transType.getTransformation().applyOn(graph);
 
+		System.out.println("   Größe des Datenknotens: " + data.getAllNodeData().size());
+		System.out.println("   Größe des Graphen: " + graph.getAllNodes().size());
+
 		// Erstelle Pane
-		return graph.getPane(paneWidth, paneHeight, showEdges);
+		return Graph.getPane(paneWidth, paneHeight, graph, showEdges);
 	}
 
 	// --------------------------------------------------------------------------------------------------

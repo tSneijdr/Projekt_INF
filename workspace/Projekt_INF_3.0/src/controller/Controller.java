@@ -1,23 +1,14 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import controller.graph.GraphController;
-import controller.graph.synthesis.SynthesisType;
 import controller.graph.transformation.TransformationType;
-import controller.points.DataReader;
-import controller.points.PointController;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import model.points.Point;
 import model.points.Record;
 import model.points.Store;
-import utils.datastructures.Sixtupel;
 import view.synthesis.InputController;
 
 public class Controller {
@@ -27,14 +18,16 @@ public class Controller {
 	public Controller(Store store) {
 		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
 		{
-			//points = PointController.getPointsMenu(store);
-			
-			points = store.getAllRecords().get(2).getAllPoints();
+			// points = PointController.getPointsMenu(store);
+
+			points = new HashSet<Point>();
+			for (Record rec : store.getAllRecords()) {
+				points.addAll(rec.getAllPoints());
+			}
 		}
-		
+
 		InputController con = InputController.run();
-		
-		
+
 		gc = new GraphController(points, con);
 	}
 
@@ -47,20 +40,7 @@ public class Controller {
 	 * @param store
 	 * @return
 	 */
-	public BorderPane generatePane(int paneWidth, int paneHeight, boolean showEdges) {
-		SynthesisType synthType = null;
-		TransformationType transType = null;
-
-		// Erzeuge einen Graphen aus den Punkten und erzeugt daraus den Pane
-		{
-			// Wähle die Art der Synthese aus
-			synthType = SynthesisType.STANDARD;
-
-			// Wähle die Art der Transformation aus
-			transType = TransformationType.IDENTITY;
-
-		}
-		
+	public BorderPane generatePane(int paneWidth, int paneHeight, TransformationType transType) {
 		return gc.run(paneWidth, paneHeight, transType);
 	}
 }

@@ -62,6 +62,10 @@ public class Point {
 	 * @return Den ersten Punkt der Datenreihe
 	 */
 	public static Point link(List<Point> points) {
+		if (points == null){
+			throw new NullPointerException();
+		}
+		
 		for (Point p : points) {
 			if (p.isAlreadySet == true) {
 				throw new IllegalArgumentException("Einer der Punkte ist bereits Mitglied einer Datenreihe");
@@ -73,21 +77,24 @@ public class Point {
 		}
 
 		// Kopiere die Liste, sodass die übergebene Liste nicht verändert wird
-		LinkedList<Point> points2 = new LinkedList<Point>();
-		points2.addAll(points);
-		points = points2;
+		LinkedList<Point> copy = new LinkedList<Point>(points);
 
 		Point lastPoint = null;
-		while (!points.isEmpty()) {
-			Point minimalPoint = points.get(0);
-			for (Point p : points) {
+		while (!copy.isEmpty()) {
+			Point minimalPoint = copy.get(0);
+			// Ermittle den frühesten Punkt
+			for (Point p : copy) {
 				if (p.TIMEPOINT < minimalPoint.TIMEPOINT) {
 					minimalPoint = p;
 				}
 			}
 
-			points.remove(minimalPoint);
+			copy.remove(minimalPoint);
 			minimalPoint.previousNode = lastPoint;
+			if (lastPoint != null){
+				lastPoint.nextNode = minimalPoint;
+			}
+			
 			minimalPoint.isAlreadySet = true;
 			lastPoint = minimalPoint;
 		}
@@ -96,6 +103,7 @@ public class Point {
 		while (lastPoint.getPreviousNode() != null) {
 			lastPoint = lastPoint.getPreviousNode();
 		}
+
 
 		return lastPoint;
 	}

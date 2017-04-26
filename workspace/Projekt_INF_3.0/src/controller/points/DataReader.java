@@ -98,8 +98,10 @@ public class DataReader {
 	public static Store loadStoreFromFile(String url) {
 		Store store = new Store();
 		List<Sixtupel<String, String, Integer, Integer, Integer, Integer>> allTuples;
-
 		allTuples = readInFile(url);
+	
+		System.out.println("   Größe der Eingabeliste: " +  allTuples.size());
+		
 		while (!allTuples.isEmpty()) {
 			String first = allTuples.get(0).FIRST;
 
@@ -114,7 +116,7 @@ public class DataReader {
 				}
 				allTuples.removeAll(firstFit);
 			}
-
+			
 			// Filtere alle Ergebnisse zweiter Ordnung
 			while (!firstFit.isEmpty()) {
 				String second = firstFit.get(0).SECOND;
@@ -131,6 +133,8 @@ public class DataReader {
 					firstFit.removeAll(secondFit);
 				}
 
+				
+
 				// SecondFit enthält nun alle Punkte einer Datenreihe
 				{
 					Record rec = getRecord(secondFit);
@@ -139,7 +143,17 @@ public class DataReader {
 			}
 
 		}
-
+		
+		// Testprint
+		System.out.println("Gelesene Daten:");
+		int i = 0;
+		for (Record rec : store.getAllRecords()){
+			i += rec.getAllPoints().size();
+			System.out.println("   Titel: '" + rec.getTitle() + "'");
+			System.out.println("      Teilnehmer: '" + rec.getParticipant()+"'");
+			System.out.println("      Anzahl der Punkte: " + rec.getAllPoints().size());
+		}
+		System.out.println("   Anzahl aller gelesenen Punkte: " + i);
 		return store;
 	}
 	
