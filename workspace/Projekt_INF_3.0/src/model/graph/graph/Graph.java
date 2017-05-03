@@ -75,12 +75,18 @@ public class Graph {
 				maxY = (maxY > nodeY) ? maxY : nodeY;
 			}
 
-			double factorX = (double) paneWidth / (double) maxX;
-			double factorY = (double) paneHeight / (double) maxY;
+			// Relativierung zum erhalten des Seitenverhältnisses
+			double factor;
+			{
+				final double factorX = (double) paneWidth / (double) maxX;
+				final double factorY = (double) paneHeight / (double) maxY;
+				factor = Math.min(factorX, factorY);
+			}
+
 			for (Node node : graph.getAllNodes()) {
-				int nodeX = (int) ((double) node.getxCenter() * (double) factorX);
-				int nodeY = (int) ((double) node.getyCenter() * (double) factorY);
-				
+				int nodeX = (int) ((double) node.getxCenter() * factor);
+				int nodeY = (int) ((double) node.getyCenter() * factor);
+
 				node.setxCenter(nodeX);
 				node.setyCenter(nodeY);
 			}
@@ -212,5 +218,9 @@ public class Graph {
 
 	public GraphData getData() {
 		return data;
+	}
+	
+	public void addNode(Node node ){
+		this.allNodes.add(node);
 	}
 }

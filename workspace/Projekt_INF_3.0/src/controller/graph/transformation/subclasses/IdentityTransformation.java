@@ -1,6 +1,7 @@
 package controller.graph.transformation.subclasses;
 
 import controller.graph.transformation.Transformation;
+import javafx.scene.paint.Color;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
@@ -31,6 +32,8 @@ public class IdentityTransformation extends Transformation {
 			node.setxCenter(centerX);
 			node.setyCenter(centerY);
 		}
+		
+		
 	}
 
 }

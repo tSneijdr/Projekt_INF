@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
+import javafx.scene.shape.Sphere;
 
 /**
  * Stellt eine Kante zwischen zwei Knoten dar, dabei werden u.a. Daten wie Farbe
@@ -24,17 +25,22 @@ public class Edge {
 	private Double thickness;
 
 	// Daten zur Darstellung
-	private Line lineObject;
+	private final List<Line> lineObjects;
 
 	public Edge(Node parent, Node child) throws Exception {
-		if (parent == child){
+		if (parent == child) {
 			throw new Exception("Der Elternknoten kann nicht gleich dem Kindknoten sein.");
 		}
-		
+
 		this.thickness = 1.0;
 
 		this.parent = parent;
 		this.child = child;
+
+		this.parent.addOutgoingEdge(this);
+		this.child.addIncomingEdge(this);
+		
+		lineObjects = new LinkedList<Line>();
 	}
 
 	public static List<Shape> getDrawableObject(double scaleFactor, Edge edge) {
@@ -59,7 +65,7 @@ public class Edge {
 
 			l.setStrokeWidth(edge.getThickness() * scaleFactor);
 
-			edge.setLineObject(l);
+			edge.addLineObject(l);
 			objects.add(l);
 		}
 
@@ -83,12 +89,12 @@ public class Edge {
 
 				final double vecX = bigDeffX / bigLen;
 				final double vecY = bigDeffY / bigLen;
-				
+
 				final double orthVecX = -vecY;
 				final double orthVecY = vecX;
-				
+
 				double smallLen = bigLen / 40;
-				
+
 				targetX = targetX + vecX * edge.getChild().getRadius() * scaleFactor;
 				targetY = targetY + vecY * edge.getChild().getRadius() * scaleFactor;
 
@@ -130,6 +136,7 @@ public class Edge {
 					l1.setEndX(corner1X);
 					l1.setEndY(corner1Y);
 
+					l1.setStroke(l.getStroke());
 					l1.setStrokeWidth(l.getStrokeWidth());
 				}
 
@@ -141,8 +148,12 @@ public class Edge {
 					l2.setEndX(corner2X);
 					l2.setEndY(corner2Y);
 
+					l2.setStroke(l.getStroke());
 					l2.setStrokeWidth(l.getStrokeWidth());
 				}
+
+				edge.addLineObject(l1);
+				edge.addLineObject(l2);
 
 				objects.add(l1);
 				objects.add(l2);
@@ -171,20 +182,24 @@ public class Edge {
 		return child;
 	}
 
-	public void setLineObject(Line l) {
-		this.lineObject = l;
+	public void addLineObject(Line l) {
+		this.lineObjects.add(l);
 	}
 
-	public Line getLineObject() {
-		return this.lineObject;
+	public List<Line> getLineObject() {
+		return new LinkedList<Line>(this.lineObjects);
 	}
 
 	public void setColor() {
 		if (this.getLineObject() != null) {
 			if (this.getParent().getColor().equals(this.getChild().getColor())) {
-				this.getLineObject().setStroke(this.getParent().getColor());
+				for (Line l : getLineObject()) {
+					l.setStroke(this.getParent().getColor());
+				}
 			} else {
-				this.getLineObject().setStroke(Color.BLACK);
+				for (Line l : getLineObject()) {
+					l.setStroke(Color.BLACK);
+				}
 			}
 		}
 	}

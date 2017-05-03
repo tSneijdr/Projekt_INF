@@ -1,6 +1,7 @@
 package model.graph.graph;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -45,12 +46,19 @@ public class Node {
 	// Das eigentliche Objekt das dargestellt wird
 	private Shape shapeObject;
 
+	// Relation mit anderen Nodes
+	private final Set<Edge> incoming;
+	private final Set<Edge> outgoing;
+
 	public Node(NodeData data) {
 		this.data = data;
 		this.data.addInstance(this);
 
 		this.children = new ArrayList<Node>();
 		this.parents = new ArrayList<Node>();
+
+		this.incoming = new HashSet<Edge>();
+		this.outgoing = new HashSet<Edge>();
 
 		// Setzt die passende Farbe
 		setColor();
@@ -64,6 +72,22 @@ public class Node {
 
 	public Node() {
 		this(null);
+	}
+
+	public static void activateOutgoingEdges(Node node, boolean active) {
+		node.setActive(active);
+		for (Edge edge : node.getOutgoingEdges()) {
+			edge.getChild().setActive(active);
+			edge.setColor();
+		}
+	}
+
+	public static void activateIncomingEdges(Node node, boolean active) {
+		node.setActive(active);
+		for (Edge edge : node.getIncomingEdges()) {
+			edge.getParent().setActive(active);
+			edge.setColor();
+		}
 	}
 
 	/**
@@ -188,12 +212,33 @@ public class Node {
 					// zu
 					ContextMenu contextMenu = new ContextMenu();
 
-					MenuItem controllItem = new MenuItem("Activate");
-					controllItem.setOnAction((ActionEvent e) -> {
-						node.getData().toggle();
-						node.setColor();
-					});
-					contextMenu.getItems().add(controllItem);
+					// Menu Item Aktiviere
+					{
+						MenuItem controllItem = new MenuItem("Activate");
+						controllItem.setOnAction((ActionEvent e) -> {
+							node.getData().toggle();
+							node.setColor();
+						});
+						contextMenu.getItems().add(controllItem);
+					}
+
+					// Menu Item Aktiviere nachfolger
+					{
+						MenuItem controllItem = new MenuItem("Aktiviere alle Nachfolger");
+						controllItem.setOnAction((ActionEvent e) -> {
+							Node.activateOutgoingEdges(node, true);
+						});
+						contextMenu.getItems().add(controllItem);
+					}
+
+					// Menu Item Aktiviere Vorgänger
+					{
+						MenuItem controllItem = new MenuItem("Aktiviere alle Vorgänger");
+						controllItem.setOnAction((ActionEvent e) -> {
+							Node.activateIncomingEdges(node, true);
+						});
+						contextMenu.getItems().add(controllItem);
+					}
 
 					for (String info : informations) {
 						MenuItem item = new MenuItem(info);
@@ -208,7 +253,7 @@ public class Node {
 		}
 
 		node.shapeObject = result;
-		
+
 		return result;
 	}
 
@@ -249,11 +294,23 @@ public class Node {
 		this.color = color;
 
 		if (this.shapeObject != null) {
+			setFill(color);
+			setStroke(color);
+		}
+	}
+	
+	public void setFill(Color color){
+		if (this.shapeObject != null){
 			this.shapeObject.setFill(color);
-			this.shapeObject.setStroke(color);
 		}
 	}
 
+	public void setStroke(Color color){
+		if (this.shapeObject != null){
+			this.shapeObject.setStroke(color);
+		}
+	}
+	
 	public NodeType getShape() {
 		return shape;
 	}
@@ -309,10 +366,37 @@ public class Node {
 			setColor(((data.isActive()) ? Color.RED : Color.BLACK));
 		}
 
+		for (Edge edge : outgoing) {
+			edge.setColor();
+		}
+		for (Edge edge : incoming) {
+			edge.setColor();
+		}
 	}
+	
+	
 
 	public NodeData getData() {
 		return data;
 	}
-	
+
+	public void addIncomingEdge(Edge e) {
+		if (e.getChild() == this) {
+			this.incoming.add(e);
+		}
+	}
+
+	public void addOutgoingEdge(Edge e) {
+		if (e.getParent() == this) {
+			this.outgoing.add(e);
+		}
+	}
+
+	public Set<Edge> getOutgoingEdges() {
+		return new HashSet<Edge>(outgoing);
+	}
+
+	public Set<Edge> getIncomingEdges() {
+		return new HashSet<Edge>(incoming);
+	}
 }
