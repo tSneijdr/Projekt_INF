@@ -2,24 +2,28 @@ package model.graph.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 
 public class Graph {
-
-	// Faktor mit dem Skaliert wird
-	private double factor = 1.0;
-
 	// Faktoren für korrekte Darstellung
 	private double oldX = 0.0;
 	private double oldY = 0.0;
@@ -53,8 +57,8 @@ public class Graph {
 	 * @param scaleFactor
 	 * @return
 	 */
-	public static BorderPane getPane(int paneWidth, int paneHeight, Graph graph, boolean showEdges) {
-		graph.factor = 1.0;
+	public static BorderPane getPane(int paneWidth, int paneHeight, Graph graph, boolean showEdges,
+			boolean showBackgroundImage) {
 
 		// Setup für das Pane
 		BorderPane pane = new BorderPane();
@@ -91,18 +95,41 @@ public class Graph {
 				node.setyCenter(nodeY);
 			}
 
+			// Setze Hintergrundbild
+			{
+				if (showBackgroundImage) {
+					Image image = graph.getData().getBackground();
+					ImageView view = new ImageView(image);
+
+					view.setFitHeight(graph.getData().getRange().HEIGHT);
+					view.setFitWidth(graph.getData().getRange().WIDTH);
+					
+					pane.getChildren().add(0, view);
+				}
+			}
 		}
 
-		pane.setCenter(Graph.getContent(graph.factor, graph, showEdges));
+		pane.setCenter(Graph.getContent(graph, showEdges));
 
 		// Scrollevent setzen
 		pane.setOnScroll((ScrollEvent event) -> {
 
 			double deltaFactor = event.getDeltaY() * 0.01;
 
-			graph.factor = (graph.factor + deltaFactor < 0.1) ? 0.1 : (graph.factor + deltaFactor);
-			System.out.println("      Adjust factor by " + deltaFactor + " to " + graph.factor);
-			pane.setCenter(getContent(graph.factor, graph, showEdges));
+			/*
+			 * graph.factor = (graph.factor + deltaFactor < 0.1) ? 0.1 :
+			 * (graph.factor + deltaFactor);
+			 * System.out.println("      Adjust factor by " + deltaFactor +
+			 * " to " + graph.factor); pane.setCenter(getContent(graph.factor,
+			 * graph, showEdges));
+			 */
+
+			final double scale = pane.getScaleX();
+			final double newScale = ((scale + deltaFactor) < 0.1) ? 0.1 : scale + deltaFactor;
+
+			pane.setScaleX(newScale);
+			pane.setScaleY(newScale);
+
 		});
 
 		// ActionListener für alle Tastendrücke
@@ -115,8 +142,8 @@ public class Graph {
 				if (event.isControlDown()) {
 					propX.set(0);
 					propY.set(0);
-					graph.factor = 1.0;
-					pane.setCenter(getContent(graph.factor, graph, showEdges));
+					pane.setScaleX(1.0);
+					pane.setScaleY(1.0);
 				} else {
 
 					Double speed = 20.0;
@@ -189,13 +216,13 @@ public class Graph {
 	 * 
 	 * @return Group
 	 */
-	private static Group getContent(double factor, Graph graph, boolean showEdges) {
+	private static Group getContent(Graph graph, boolean showEdges) {
 		Group g = new Group();
 		for (Edge edge : graph.getAllEdges()) {
-			g.getChildren().addAll(Edge.getDrawableObject(factor, edge));
+			g.getChildren().addAll(Edge.getDrawableObject(edge));
 		}
 		for (Node node : graph.getAllNodes()) {
-			g.getChildren().add(Node.getDrawableObject(factor, node));
+			g.getChildren().add(Node.getDrawableObject(node));
 		}
 
 		return g;
@@ -219,8 +246,8 @@ public class Graph {
 	public GraphData getData() {
 		return data;
 	}
-	
-	public void addNode(Node node ){
+
+	public void addNode(Node node) {
 		this.allNodes.add(node);
 	}
 }

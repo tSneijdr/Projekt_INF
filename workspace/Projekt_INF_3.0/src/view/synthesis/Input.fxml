@@ -14,11 +14,8 @@
       <Button fx:id="exitBtn" mnemonicParsing="false" text="Save" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
-      <TextField fx:id="heightTxtFld" text="Höhe des Bildes" BorderPane.alignment="CENTER" />
+      <TextField fx:id="txtFld" text="Bild" BorderPane.alignment="CENTER" />
    </left>
-   <right>
-      <TextField fx:id="widthTxtFld" text="Weite des Bildes" BorderPane.alignment="CENTER" />
-   </right>
    <top>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -37,4 +34,7 @@
          </children>
       </GridPane>
    </top>
+   <right>
+      <Button fx:id="btn" mnemonicParsing="false" text="Picture" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

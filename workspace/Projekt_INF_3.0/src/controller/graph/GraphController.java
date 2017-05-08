@@ -1,11 +1,14 @@
 package controller.graph;
 
+import java.net.URL;
 import java.util.Set;
 
 import controller.graph.synthesis.Synthesis;
 import controller.graph.transformation.Transformation;
 import controller.graph.transformation.TransformationType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
@@ -20,6 +23,13 @@ public class GraphController {
 	public GraphController(Set<Point> points, InputController controller) {
 		Synthesis synthesis = controller.getType().getSynthesis();
 		this.data = synthesis.applyOn(points, controller);
+
+		// TODO Hier!
+		{
+			URL url = this.getClass().getResource("example.jpg");
+			Image img = new Image(url.toString());
+			this.data.setBackground(img);
+		}
 	}
 
 	public BorderPane run(int paneWidth, int paneHeight, TransformationType transType) {
@@ -34,7 +44,14 @@ public class GraphController {
 		System.out.println("   Größe des Graphen: " + graph.getAllNodes().size());
 
 		// Erstelle Pane
-		return Graph.getPane(paneWidth, paneHeight, graph, showEdges);
+		BorderPane pane;
+		if (transType == TransformationType.ORIGINAL) {
+			pane = Graph.getPane(paneWidth, paneHeight, graph, showEdges, true);
+		} else {
+			pane = Graph.getPane(paneWidth, paneHeight, graph, showEdges, false);
+		}
+
+		return pane;
 	}
 
 	// --------------------------------------------------------------------------------------------------

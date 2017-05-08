@@ -13,17 +13,17 @@ import java.util.Set;
  */
 public class Record {
 	// Daten die die eigentliche Datenreihe betreffen
-	private final String title;
-	
+	private final String url;
+
 	private final String participant;
 	private final Point firstPoint;
 
 	// Daten die die Darstellung der Datenreihe betreffen
 	private boolean active = true;
 	private Color color = Color.BLACK;
-	
-	public Record(String title, String participant, Point p) {
-		this.title = title;
+
+	public Record(String url, String participant, Point p) {
+		this.url = url;
 		this.participant = participant;
 
 		if (p != null) {
@@ -35,19 +35,6 @@ public class Record {
 		} else {
 			firstPoint = null;
 		}
-	}
-
-	public Record(String title, Point p) {
-		this(title, "default", p);
-	}
-
-	/**
-	 * Konstruktor der nur einen Punkt als Parameter erhält
-	 * 
-	 * @param p
-	 */
-	public Record(Point p) {
-		this("default", p);
 	}
 
 	/**
@@ -103,10 +90,6 @@ public class Record {
 		this.color = color;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
 	public String getParticipant() {
 		return participant;
 	}
@@ -114,9 +97,13 @@ public class Record {
 	public Point getFirstPoint() {
 		return firstPoint;
 	}
-	
-	public String toString(){
-		return 	"( " + title + " || " + participant + " || " + firstPoint + " )";
+
+	public String toString() {
+		return "( " + url + " || " + participant + " || " + firstPoint + " )";
 	}
-	
+
+	public String getURL() {
+		return url;
+	}
+
 }

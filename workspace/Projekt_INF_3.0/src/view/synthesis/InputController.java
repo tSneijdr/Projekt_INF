@@ -1,8 +1,12 @@
 package view.synthesis;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 import controller.graph.synthesis.SynthesisType;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,18 +15,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import utils.ranges.Range2D;
 
 public class InputController {
 
 	@FXML
 	private Button exitBtn;
 	@FXML
-	private TextField heightTxtFld;
+	private Button btn;
 	@FXML
-	private TextField widthTxtFld;
+	private TextField txtFld;
 	@FXML
 	private ChoiceBox<String> synthesisChoice;
 	@FXML
@@ -32,8 +37,10 @@ public class InputController {
 	@FXML
 	private Label infoLbl;
 
+	private String url;
+
 	private SynthesisType type = SynthesisType.STANDARD;
-	private Range2D range = new Range2D(0, 1000, 0, 1000);
+	private Image img = null;
 	private int numberOfColumns = 10;
 	private int numberOfRows = 10;
 
@@ -74,20 +81,40 @@ public class InputController {
 			infoLbl.setText("");
 		}
 
+		// Image Button
+		{
+			btn.setOnAction((ActionEvent event) -> {
+				FileChooser chooser = new FileChooser();
+				chooser.setTitle("Choose a picture");
+
+				File file = chooser.showOpenDialog(btn.getScene().getWindow());
+
+				
+				
+				try {
+					BufferedImage bufferedImage = ImageIO.read(file);
+					Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+					
+					this.img = image;
+					this.url = file.getAbsolutePath();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(-1);
+				}
+			});
+		}
+
 		// Exit Button
 		{
 			exitBtn.setOnAction((ActionEvent event) -> {
 				try {
-					int height = Integer.valueOf(this.heightTxtFld.getText());
-					int width = Integer.valueOf(this.widthTxtFld.getText());
-
 					if (synthesisChoice.getSelectionModel().getSelectedItem()
 							.equals(SynthesisType.STANDARD.toString())) {
 						this.numberOfColumns = Integer.valueOf(this.additionalInfoTxtFld1.getText());
 						this.numberOfRows = Integer.valueOf(this.additionalInfoTxtFld2.getText());
 					}
 					this.type = SynthesisType.valueOf(this.synthesisChoice.getSelectionModel().getSelectedItem());
-					this.range = new Range2D(0, width, 0, height);
+
 				} catch (Exception e) {
 					System.err.println("Es ist ein Fehler aufgtetreten, das Programm wird beendet");
 					e.printStackTrace();
@@ -108,8 +135,8 @@ public class InputController {
 		return type;
 	}
 
-	public Range2D getRange() {
-		return range;
+	public Image getImage() {
+		return img;
 	}
 
 	public int getNumberOfColumns() {
@@ -147,6 +174,10 @@ public class InputController {
 		stage.showAndWait();
 
 		return controller;
+	}
+	
+	public String getURL(){
+		return this.url;
 	}
 
 }

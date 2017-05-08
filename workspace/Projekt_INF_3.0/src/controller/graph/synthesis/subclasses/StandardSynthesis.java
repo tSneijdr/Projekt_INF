@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import controller.graph.synthesis.Synthesis;
+import javafx.scene.image.Image;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.points.Point;
@@ -23,7 +24,8 @@ public class StandardSynthesis extends Synthesis {
 		Map<Point, NodeData> map = new HashMap<Point, NodeData>();
 
 		// Notwendige Daten werden aus contoller extrahiert
-		Range2D range = controller.getRange();
+		Image img = controller.getImage();
+		Range2D range = new Range2D(0, (int) img.getWidth(), 0, (int) img.getHeight());
 		int numberOfColumns = controller.getNumberOfColumns();
 		int numberOfRows = controller.getNumberOfRows();
 
@@ -42,14 +44,14 @@ public class StandardSynthesis extends Synthesis {
 					// Suchfläche
 					Range2D r = new Range2D(x * sizeColumn, (x + 1) * sizeColumn, y * sizeRow, (y + 1) * sizeRow);
 					Set<Point> localPoints = tree.getPoints(r);
-					
+
 					// Skippe wenn keine Knoten gefunden wurden
-					if (localPoints == null || localPoints.isEmpty()){
+					if (localPoints == null || localPoints.isEmpty()) {
 						continue;
-					} else{
-						System.out.println("      " + localPoints.size() + " Punkt(e) => 1 Rohknoten" );
+					} else {
+						System.out.println("      " + localPoints.size() + " Punkt(e) => 1 Rohknoten");
 					}
-					
+
 					// Zusätzliche releante Daten können hier eingefügt werden
 					Set<String> informations = new HashSet<String>();
 					informations.add("Anzahl der Knoten: " + localPoints.size());
@@ -73,7 +75,8 @@ public class StandardSynthesis extends Synthesis {
 			for (Point currentPoint : points) {
 				Point nextPoint = currentPoint.getNextNode();
 
-				// Fügt Kante nur hinzu, wenn der nächste Punkt überhaupt im Set liegt
+				// Fügt Kante nur hinzu, wenn der nächste Punkt überhaupt im Set
+				// liegt
 				if (points.contains(nextPoint) && nextPoint != null) {
 					map.get(currentPoint).addChild(map.get(nextPoint));
 					map.get(nextPoint).addParent(map.get(currentPoint));
@@ -82,6 +85,6 @@ public class StandardSynthesis extends Synthesis {
 		}
 		System.out.println("   Aus " + points.size() + " Punkt(en) wurde(n) " + allNodeData.size() + " Rohknoten.");
 		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
-		return new GraphData(allNodeData, controller.getRange());
+		return new GraphData(allNodeData, controller.getImage());
 	}
 }

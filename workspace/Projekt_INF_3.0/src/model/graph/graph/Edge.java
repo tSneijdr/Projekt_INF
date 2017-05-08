@@ -39,11 +39,11 @@ public class Edge {
 
 		this.parent.addOutgoingEdge(this);
 		this.child.addIncomingEdge(this);
-		
+
 		lineObjects = new LinkedList<Line>();
 	}
 
-	public static List<Shape> getDrawableObject(double scaleFactor, Edge edge) {
+	public static List<Shape> getDrawableObject(Edge edge) {
 		List<Shape> objects = new LinkedList<Shape>();
 		Line l = null;
 
@@ -51,11 +51,11 @@ public class Edge {
 		{
 			l = new Line();
 
-			l.setStartX(edge.getParent().getxCenter() * scaleFactor);
-			l.setStartY(edge.getParent().getyCenter() * scaleFactor);
+			l.setStartX(edge.getParent().getxCenter());
+			l.setStartY(edge.getParent().getyCenter());
 
-			l.setEndX(edge.getChild().getxCenter() * scaleFactor);
-			l.setEndY(edge.getChild().getyCenter() * scaleFactor);
+			l.setEndX(edge.getChild().getxCenter());
+			l.setEndY(edge.getChild().getyCenter());
 
 			if (edge.getParent().getColor().equals(edge.getChild().getColor())) {
 				l.setStroke(edge.getParent().getColor());
@@ -63,7 +63,7 @@ public class Edge {
 				l.setStroke(Color.BLACK);
 			}
 
-			l.setStrokeWidth(edge.getThickness() * scaleFactor);
+			l.setStrokeWidth(edge.getThickness());
 
 			edge.addLineObject(l);
 			objects.add(l);
@@ -95,8 +95,8 @@ public class Edge {
 
 				double smallLen = bigLen / 40;
 
-				targetX = targetX + vecX * edge.getChild().getRadius() * scaleFactor;
-				targetY = targetY + vecY * edge.getChild().getRadius() * scaleFactor;
+				targetX = targetX + vecX * edge.getChild().getRadius();
+				targetY = targetY + vecY * edge.getChild().getRadius();
 
 				final double crossX = targetX + vecX * smallLen;
 				final double crossY = targetY + vecY * smallLen;

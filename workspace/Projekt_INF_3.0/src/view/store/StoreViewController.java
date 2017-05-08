@@ -35,16 +35,16 @@ public class StoreViewController {
 			return;
 
 		accordion.getPanes().clear();
-		List<Record> records = store.getActiveRecords();
+		List<Record> records = store.getAllRecords();
 
 		for (Record record : records) {
 			if (accordion.getChildrenUnmodifiable().size() >= 100)
 				break;
 
-			String title = record.getTitle();
+			String title = record.getURL();
 			if (title.length() >= 20) {
 				title = "..."
-						+ record.getTitle().substring(record.getTitle().length() - 17, record.getTitle().length());
+						+ record.getURL().substring(record.getURL().length() - 17, record.getURL().length());
 			}
 			{
 				FlowPane pane = new FlowPane(Orientation.VERTICAL);
@@ -77,7 +77,7 @@ public class StoreViewController {
 				}
 
 				TitledPane titledPane = new TitledPane(title, pane);
-				Tooltip t = new Tooltip(record.getTitle());
+				Tooltip t = new Tooltip(record.getURL());
 				Tooltip.install(titledPane, t);
 
 				accordion.getPanes().add(titledPane);

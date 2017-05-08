@@ -18,7 +18,12 @@ public class Store {
 	 * @param url
 	 * @param record
 	 */
-	public void addRecord(String url, Record record) {
+	public void addRecord(Record record) {
+		if (record.getURL() == null || record.getURL().equals("")) {
+			return;
+		}
+
+		String url = record.getURL();
 		for (StoreNode node : allNodes) {
 			if (node.getUrl().equals(url)) {
 				node.addRecord(record);
@@ -44,69 +49,32 @@ public class Store {
 	}
 
 	/**
-	 * Gibt alle Records zurück die dem Teilnehmer mit dem mitgelieferten Namen
-	 * gehören
+	 * Gibt alle Records in diesem Speicher als Speicher zurück wenn Teile der
+	 * Url oder die komplette URL übereinstimmen
 	 * 
-	 * @param name
 	 * @return
 	 */
-	public List<Record> getByParticipant(String name) {
+	private List<Record> getAllRecordsByURL(String url) {
 		List<Record> list = new LinkedList<Record>();
 		for (StoreNode node : allNodes) {
-			list.addAll(node.getParticipant(name));
-		}
-		return list;
-	}
+			boolean fit = node.getUrl().equals(url);
+			if (!fit) {
+				fit = node.getUrl().contains(url) || url.contains(node.getUrl());
+			}
 
-	/**
-	 * Gibt alle Records die einem Bild mit der übergebenen URL zugeordnet sind
-	 * zurück
-	 * 
-	 * @param url
-	 */
-	public List<Record> getByImage(String url) {
-		List<Record> list = new LinkedList<Record>();
-		for (StoreNode node : allNodes) {
-			if (node.getUrl().equals(url)) {
+			if (fit) {
 				list.addAll(node.getRecords());
 			}
 		}
 		return list;
-
 	}
 
-	/**
-	 * Gibt alle Records die aktiv sind zurück
-	 * 
-	 * @param url
-	 */
-	public List<Record> getActiveRecords() {
-		List<Record> list = new LinkedList<Record>();
-		for (StoreNode node : allNodes) {
-			for (Record record : node.getRecords()) {
-				if (record.isActive()) {
-					list.add(record);
-				}
-			}
+	public Store getURLStore(String url) {
+		Store res = new Store();
+		for (Record rec : this.getAllRecordsByURL(url)) {
+			res.addRecord(rec);
 		}
-		return list;
-	}
-
-	/**
-	 * Gibt alle Records zurück auf die die beiden Parameter zutreffen
-	 * 
-	 * @param url
-	 * @param name
-	 * @return
-	 */
-	public List<Record> getByImageAndParticipant(String url, String name) {
-		List<Record> list = new LinkedList<Record>();
-		for (StoreNode node : allNodes) {
-			if (node.getUrl().equals(url)) {
-				list.addAll(node.getParticipant(name));
-			}
-		}
-		return list;
+		return res;
 	}
 
 	/**
@@ -128,27 +96,6 @@ public class Store {
 			allRecords = new ArrayList<Record>();
 		}
 
-		public void addRecord(Record rec) {
-			allRecords.add(rec);
-		}
-
-		/**
-		 * Gibt alle Records mit dem gesuchten Namen zurück
-		 * 
-		 * @param name
-		 * @return
-		 */
-		public List<Record> getParticipant(String name) {
-			List<Record> list = new LinkedList<Record>();
-			for (Record record : allRecords) {
-				if (record.getParticipant().equals(name)) {
-					list.add(record);
-				}
-			}
-			return list;
-
-		}
-
 		// --------------------------------------------
 		// Getter und Setter
 		// --------------------------------------------
@@ -157,7 +104,11 @@ public class Store {
 		}
 
 		public List<Record> getRecords() {
-			return allRecords;
+			return new ArrayList<Record>(allRecords);
+		}
+
+		public void addRecord(Record rec) {
+			allRecords.add(rec);
 		}
 
 	}

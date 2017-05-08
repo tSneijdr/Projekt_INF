@@ -99,7 +99,7 @@ public class Node {
 	 * 
 	 * @return
 	 */
-	public static Shape getDrawableObject(double scaleFactor, Node node) {
+	public static Shape getDrawableObject(Node node) {
 		final Shape result;
 
 		// Vorbereitung der Farbe
@@ -109,9 +109,9 @@ public class Node {
 		// geformtes Objekt zurück, wobei spezifische Informationen bereits
 		// gesetzt sind
 		{
-			double localXCenter = (double) node.xCenter * scaleFactor;
-			double localYCenter = (double) node.yCenter * scaleFactor;
-			double localRadius = (double) node.radius * scaleFactor;
+			double localXCenter = (double) node.xCenter;
+			double localYCenter = (double) node.yCenter;
+			double localRadius = (double) node.radius;
 
 			switch (node.shape) {
 			case RECTANGLE: {

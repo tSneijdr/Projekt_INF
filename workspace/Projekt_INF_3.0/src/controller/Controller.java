@@ -15,7 +15,7 @@ public class Controller {
 	private final Set<Point> points;
 	private final GraphController gc;
 
-	public Controller(Store store) {
+	public Controller(Store store, InputController incon) {
 		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
 		{
 			// points = PointController.getPointsMenu(store);
@@ -26,9 +26,7 @@ public class Controller {
 			}
 		}
 
-		InputController con = InputController.run();
-
-		gc = new GraphController(points, con);
+		gc = new GraphController(points, incon);
 	}
 
 	/**

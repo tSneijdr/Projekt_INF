@@ -13,7 +13,7 @@ import model.points.Point;
 import view.synthesis.InputController;
 
 public class RandomSynthesis extends Synthesis {
-	
+
 	/**
 	 * Erzeugt einen zufälligen Graphen mit n Knoten
 	 * 
@@ -52,7 +52,7 @@ public class RandomSynthesis extends Synthesis {
 		for (int index = 0; index < n; index++) {
 			int i = r.nextInt(allNodeData.size());
 			int j = r.nextInt(allNodeData.size());
-			
+
 			NodeData parent = allNodeData.get(i);
 			NodeData child = allNodeData.get(j);
 
@@ -64,7 +64,8 @@ public class RandomSynthesis extends Synthesis {
 
 		System.out.println("   Es wurde(n) " + allNodeData.size() + " Rohknoten zufällig erstellt.");
 		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
-		return new GraphData(allNodeData, controller.getRange());
+		
+		return new GraphData(allNodeData, controller.getImage());
 
 	}
 
