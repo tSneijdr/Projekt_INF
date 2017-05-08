@@ -61,6 +61,8 @@ public class MainApp extends Application {
 				Scene scene = new Scene(rootLayout);
 				primaryStage.setScene(scene);
 				primaryStage.show();
+				
+				primaryStage.setMaximized(true);
 
 				// Verlange rootController
 				rootController = rootLoader.getController();

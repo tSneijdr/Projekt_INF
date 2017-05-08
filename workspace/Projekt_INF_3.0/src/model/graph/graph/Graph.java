@@ -57,8 +57,7 @@ public class Graph {
 	 * @param scaleFactor
 	 * @return
 	 */
-	public static BorderPane getPane(int paneWidth, int paneHeight, Graph graph, boolean showEdges,
-			boolean showBackgroundImage) {
+	public static BorderPane getPane(int paneWidth, int paneHeight, Graph graph, boolean showBgImage) {
 
 		// Setup für das Pane
 		BorderPane pane = new BorderPane();
@@ -97,19 +96,19 @@ public class Graph {
 
 			// Setze Hintergrundbild
 			{
-				if (showBackgroundImage) {
+				if (showBgImage) {
 					Image image = graph.getData().getBackground();
 					ImageView view = new ImageView(image);
 
 					view.setFitHeight(graph.getData().getRange().HEIGHT);
 					view.setFitWidth(graph.getData().getRange().WIDTH);
-					
+
 					pane.getChildren().add(0, view);
 				}
 			}
 		}
 
-		pane.setCenter(Graph.getContent(graph, showEdges));
+		pane.setCenter(Graph.getContent(graph));
 
 		// Scrollevent setzen
 		pane.setOnScroll((ScrollEvent event) -> {
@@ -216,7 +215,7 @@ public class Graph {
 	 * 
 	 * @return Group
 	 */
-	private static Group getContent(Graph graph, boolean showEdges) {
+	private static Group getContent(Graph graph) {
 		Group g = new Group();
 		for (Edge edge : graph.getAllEdges()) {
 			g.getChildren().addAll(Edge.getDrawableObject(edge));

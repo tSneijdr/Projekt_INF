@@ -81,6 +81,12 @@ public class InputController {
 			infoLbl.setText("");
 		}
 
+		// 
+		{
+			this.txtFld.setEditable(false);
+			this.txtFld.setText("");
+		}
+		
 		// Image Button
 		{
 			btn.setOnAction((ActionEvent event) -> {
@@ -97,6 +103,7 @@ public class InputController {
 					
 					this.img = image;
 					this.url = file.getAbsolutePath();
+					this.txtFld.setText(file.getName());
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);

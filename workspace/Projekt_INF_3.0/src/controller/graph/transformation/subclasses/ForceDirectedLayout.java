@@ -33,6 +33,8 @@ public class ForceDirectedLayout extends Transformation {
 
 	@Override
 	public void applyOn(Graph g) {
+		if (g.getAllNodes().isEmpty() || g == null) return;
+		
 		final List<Node> nodeList = g.getAllNodes();
 		final List<Edge> edgeList = g.getAllEdges();
 

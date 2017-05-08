@@ -12,13 +12,12 @@ import model.points.Store;
 import view.synthesis.InputController;
 
 public class Controller {
-	private final Set<Point> points;
 	private final GraphController gc;
 
 	public Controller(Store store, InputController incon) {
 		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
+		final Set<Point> points;
 		{
-			// points = PointController.getPointsMenu(store);
 
 			points = new HashSet<Point>();
 			for (Record rec : store.getAllRecords()) {

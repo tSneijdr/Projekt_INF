@@ -41,11 +41,11 @@ public class RootLayoutController {
 	// Kontroll - Daten
 	private Controller controller;
 	private Store store;
-	
+
 	public void initialize() {
 		// Menus
 		{
-			// Pane Setzer
+			// Panes setzen
 			{
 				Menu[] menus = { ulMenu, urMenu, llMenu, lrMenu };
 				Map<MenuItem, BorderPane> map = new HashMap<MenuItem, BorderPane>();
@@ -64,10 +64,9 @@ public class RootLayoutController {
 							BorderPane pane = map.get(item.getParentMenu());
 							int width = (int) pane.getWidth();
 							int height = (int) pane.getHeight();
-							
+
 							BorderPane newPane = controller.generatePane(width, height, trans);
-							System.out.println("   Setze Pane " + pane + " auf " + newPane);
-							
+
 							pane.setCenter(newPane);
 
 						});
@@ -98,8 +97,7 @@ public class RootLayoutController {
 
 			String title = record.getURL();
 			if (title.length() >= 20) {
-				title = "..."
-						+ record.getURL().substring(record.getURL().length() - 17, record.getURL().length());
+				title = "..." + record.getURL().substring(record.getURL().length() - 17, record.getURL().length());
 			}
 			{
 				FlowPane pane = new FlowPane(Orientation.VERTICAL);
@@ -127,5 +125,19 @@ public class RootLayoutController {
 	public void setUp(Controller controller, Store store) {
 		this.controller = controller;
 		this.store = store;
+
+		BorderPane[] panes = { upperLeftPane, upperRightPane, lowerLeftPane, lowerRightPane };
+		TransformationType[] type = { TransformationType.ORIGINAL, TransformationType.CIRCULAR,
+				TransformationType.FORCEDIRECTED, TransformationType.HIERARCHICAL };
+
+		for (int i = 0; i < 4; i++) {
+			int width = (int) panes[i].getWidth();
+			int height = (int) panes[i].getHeight();
+
+			BorderPane newPane = controller.generatePane(width, height, type[i]);
+
+			panes[i].setCenter(newPane);
+		}
+
 	}
 }

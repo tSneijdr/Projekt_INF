@@ -8,14 +8,11 @@ import controller.graph.transformation.subclasses.OriginalTransformation;
 import controller.graph.transformation.subclasses.RandomTransformation;
 
 public enum TransformationType {
-	IDENTITY ("Nimmt keine Änderung am Graph vor"),
-	RANDOM ("Alle Knoten werden zufällig angeordnet"),
-	ORIGINAL("Stellt Knoten dem originalen Raster entsprechend dar"),
-	HIERARCHICAL("Hierarchische Darstellung der Knoten"),
-	FORCEDIRECTED("Kräfte-gerichtetes Layout"),
-	CIRCULAR("Stellt Knoten auf einem Kreis dar");
-	
-	
+	ORIGINAL("Stellt Knoten dem originalen Raster entsprechend dar"), IDENTITY(
+			"Nimmt keine Änderung am Graph vor"), RANDOM("Alle Knoten werden zufällig angeordnet"), HIERARCHICAL(
+					"Hierarchische Darstellung der Knoten"), FORCEDIRECTED(
+							"Kräfte-gerichtetes Layout"), CIRCULAR("Stellt Knoten auf einem Kreis dar");
+
 	private final String description;
 
 	TransformationType(String s) {
@@ -25,12 +22,10 @@ public enum TransformationType {
 	public String getDescription() {
 		return this.description;
 	}
-	
-	public Transformation getTransformation(){
-		
-		switch(this){
-		case IDENTITY:
-			return new IdentityTransformation();
+
+	public Transformation getTransformation() {
+
+		switch (this) {
 		case RANDOM:
 			return new RandomTransformation();
 		case ORIGINAL:
@@ -41,6 +36,7 @@ public enum TransformationType {
 			return new ForceDirectedLayout();
 		case CIRCULAR:
 			return new CircularLayout();
+		case IDENTITY:
 		default:
 			return new IdentityTransformation();
 		}
