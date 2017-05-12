@@ -7,10 +7,10 @@ import java.util.Random;
 import java.util.Set;
 
 import controller.graph.synthesis.Synthesis;
+import javafx.scene.image.Image;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.points.Point;
-import view.synthesis.InputController;
 
 public class RandomSynthesis extends Synthesis {
 
@@ -19,7 +19,7 @@ public class RandomSynthesis extends Synthesis {
 	 * 
 	 * @param n
 	 */
-	public GraphData applyOn(Set<Point> points, InputController controller) {
+	public GraphData applyOn(Set<Point> points, final Image img, final int numberOfRows, final int numberOfColumns) {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 
 		Random r = new Random();
@@ -58,14 +58,13 @@ public class RandomSynthesis extends Synthesis {
 
 			// Symetrisches Einfügen von Eltern-Kind Beziehungen
 			parent.addChild(child);
-			child.addParent(parent);
 
 		}
 
 		System.out.println("   Es wurde(n) " + allNodeData.size() + " Rohknoten zufällig erstellt.");
 		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
 		
-		return new GraphData(allNodeData, controller.getImage());
+		return new GraphData(allNodeData, img);
 
 	}
 

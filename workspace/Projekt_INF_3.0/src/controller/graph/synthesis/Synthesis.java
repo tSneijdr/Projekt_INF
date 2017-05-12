@@ -2,9 +2,9 @@ package controller.graph.synthesis;
 
 import java.util.Set;
 
+import javafx.scene.image.Image;
 import model.graph.data.GraphData;
 import model.points.Point;
-import view.synthesis.InputController;
 
 public abstract class Synthesis {
 	/**
@@ -13,5 +13,5 @@ public abstract class Synthesis {
 	 * @param points
 	 * @return
 	 */
-	public abstract GraphData applyOn(Set<Point> points, InputController controller);
+	public abstract GraphData applyOn(final Set<Point> points, final Image image, final int numberOfColumns, final int numberOfRows);
 }

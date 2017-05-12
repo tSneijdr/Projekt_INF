@@ -10,14 +10,21 @@ public class GraphData {
 	private final List<NodeData> allNodeData;
 	private final Range2D range;
 	private Image originalImage;
+	
+	// Daten zur Rasterisierung
+	private final int numColumns;
+	private final int numRows;
 
-	public GraphData(List<NodeData> allNodeData, Image background) {
+	public GraphData(List<NodeData> allNodeData, Image image, int numColumns, int numRows) {
 		this.allNodeData = allNodeData;
 
-		Range2D r = new Range2D(0, (int) background.getWidth(), 0, (int) background.getHeight());
+		Range2D r = new Range2D(0, (int) image.getWidth(), 0, (int) image.getHeight());
 		this.range = r;
 
-		this.originalImage = background;
+		this.originalImage = image;
+		
+		this.numColumns = numColumns;
+		this.numRows = numRows;
 	}
 
 	// ---------------------------------------------------
@@ -37,5 +44,12 @@ public class GraphData {
 
 	public void setBackground(Image img) {
 		this.originalImage = img;
+	}
+	
+	public int getNumColumns(){
+		return numColumns;
+	}
+	public int getNumRows(){
+		return numRows;
 	}
 }

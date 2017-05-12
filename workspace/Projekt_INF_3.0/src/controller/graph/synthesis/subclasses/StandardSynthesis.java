@@ -14,20 +14,15 @@ import model.graph.data.NodeData;
 import model.points.Point;
 import utils.datastructures.Quadtree;
 import utils.ranges.Range2D;
-import view.synthesis.InputController;
 
 public class StandardSynthesis extends Synthesis {
 
 	@Override
-	public GraphData applyOn(Set<Point> points, InputController controller) {
+	public GraphData applyOn(Set<Point> points, final Image img, final int numberOfRows, final int numberOfColumns) {
 		List<NodeData> allNodeData = new ArrayList<NodeData>();
 		Map<Point, NodeData> map = new HashMap<Point, NodeData>();
 
-		// Notwendige Daten werden aus contoller extrahiert
-		Image img = controller.getImage();
 		Range2D range = new Range2D(0, (int) img.getWidth(), 0, (int) img.getHeight());
-		int numberOfColumns = controller.getNumberOfColumns();
-		int numberOfRows = controller.getNumberOfRows();
 
 		// Datenstruktur zur Auswahl der Punkte
 		Quadtree tree = new Quadtree(range, 5);
@@ -52,7 +47,7 @@ public class StandardSynthesis extends Synthesis {
 						System.out.println("      " + localPoints.size() + " Punkt(e) => 1 Rohknoten");
 					}
 
-					// Zusätzliche releante Daten können hier eingefügt werden
+					// Zusätzliche relevante Daten können hier eingefügt werden
 					Set<String> informations = new HashSet<String>();
 					informations.add("Anzahl der Knoten: " + localPoints.size());
 
@@ -79,12 +74,11 @@ public class StandardSynthesis extends Synthesis {
 				// liegt
 				if (points.contains(nextPoint) && nextPoint != null) {
 					map.get(currentPoint).addChild(map.get(nextPoint));
-					map.get(nextPoint).addParent(map.get(currentPoint));
 				}
 			}
 		}
 		System.out.println("   Aus " + points.size() + " Punkt(en) wurde(n) " + allNodeData.size() + " Rohknoten.");
 		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
-		return new GraphData(allNodeData, controller.getImage());
+		return new GraphData(allNodeData, img, numberOfColumns, numberOfRows);
 	}
 }

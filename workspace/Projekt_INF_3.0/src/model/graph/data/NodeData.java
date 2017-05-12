@@ -1,11 +1,14 @@
 package model.graph.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.paint.Color;
 import model.graph.graph.Node;
 
 public class NodeData {
@@ -15,29 +18,29 @@ public class NodeData {
 	private final int originalRow;
 
 	// Eltern- und Kinderknoten
-	private final List<NodeData> parents;
 	private final List<NodeData> children;
+	private final Map<NodeData, Integer> numChildInstances;
 
 	// Zusätzliche Informationnen zu diesem Knoten
 	private final Set<String> informations;
 
 	// Daten zum Darstellen des Knotens
-	private boolean active;
+	private Color color;
 	private final Set<Node> allInstances;
 
 	public NodeData(int column, int row, Set<String> informations) {
 		this.originalColumn = column;
 		this.originalRow = row;
 
-		this.active = false;
+		this.color = Color.BLACK;
 
-		// Eltern- und Kinderliste
-		parents = new LinkedList<NodeData>();
+		// Kinderliste
 		children = new LinkedList<NodeData>();
+		numChildInstances = new HashMap<NodeData, Integer>();
 
 		// Infromationen
 		this.informations = informations;
-		
+
 		// Alle Instanzen dieses Datensatzes
 		allInstances = new HashSet<Node>();
 	}
@@ -45,24 +48,12 @@ public class NodeData {
 	// ---------------------------------------------------
 	// Getter und Setter
 	// ---------------------------------------------------
-	public boolean isActive() {
-		return active;
-	}
 
-	public void setActive(boolean active) {
-		this.active = active;
-		for (Node node : allInstances){
-			node.setColor();
+	public void setColor(Color color) {
+		this.color = color;
+		for (Node node : allInstances) {
+				node.setColor();
 		}
-		
-	}
-
-	public void toggle() {
-		setActive(!active);
-	}
-
-	public List<NodeData> getParents() {
-		return new ArrayList<NodeData>(parents);
 	}
 
 	public List<NodeData> getChildren() {
@@ -82,25 +73,33 @@ public class NodeData {
 	}
 
 	public void addChild(NodeData child) {
-		if (this.children.contains(child) || child == this || child == null) {
+		System.out.println("Wobalobdubdub a");
+		if (child == this || child == null) {
 			return;
+		} else if (this.children.contains(child)) {
+			final int count = numChildInstances.get(child).intValue();
+			this.numChildInstances.put(child, count + 1);
+			System.out.println("Wobalobdubdub b");
 		} else {
 			this.children.add(child);
-			child.addParent(this);
+			this.numChildInstances.put(child, 1);
 		}
 	}
 
-	public void addParent(NodeData parent) {
-		if (this.parents.contains(parent) || parent == this || parent == null) {
-			return;
+	public int getNumberOfChildEdges(NodeData child) {
+		if (this.numChildInstances.containsKey(child)) {
+			return this.numChildInstances.get(child);
 		} else {
-			this.parents.add(parent);
-			parent.addChild(this);
+			return 0;
 		}
 	}
-	
-	public void addInstance(Node node){
+
+	public void addInstance(Node node) {
 		allInstances.add(node);
+	}
+
+	public Color getColor() {
+		return this.color;
 	}
 
 }

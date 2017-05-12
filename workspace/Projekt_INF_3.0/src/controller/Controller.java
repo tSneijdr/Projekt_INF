@@ -3,29 +3,33 @@ package controller;
 import java.util.HashSet;
 import java.util.Set;
 
-import controller.graph.GraphController;
+import controller.graph.Subcontroller;
+import controller.graph.synthesis.SynthesisType;
 import controller.graph.transformation.TransformationType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import model.points.Point;
 import model.points.Record;
 import model.points.Store;
-import view.synthesis.InputController;
 
 public class Controller {
-	private final GraphController gc;
+	private final Subcontroller sub;
 
-	public Controller(Store store, InputController incon) {
+	public Controller(Store store, final SynthesisType synthType, final Image img, final int numberOfColumns,
+			final int numberOfRows) {
+		
 		// Wähle die gewünschten Punkte aus allen geladenen Punkten aus
 		final Set<Point> points;
 		{
-
+			// TODO
 			points = new HashSet<Point>();
 			for (Record rec : store.getAllRecords()) {
 				points.addAll(rec.getAllPoints());
 			}
 		}
 
-		gc = new GraphController(points, incon);
+		sub = new Subcontroller(points, synthType, img, numberOfColumns, numberOfRows);
 	}
 
 	/**
@@ -37,7 +41,7 @@ public class Controller {
 	 * @param store
 	 * @return
 	 */
-	public BorderPane generatePane(int paneWidth, int paneHeight, TransformationType transType) {
-		return gc.run(paneWidth, paneHeight, transType);
+	public Pane generatePane(int paneWidth, int paneHeight, TransformationType transType) {
+		return sub.getPane(paneWidth, paneHeight, transType);
 	}
 }

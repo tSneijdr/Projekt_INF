@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class InputController {
@@ -25,9 +26,13 @@ public class InputController {
 	@FXML
 	private Button exitBtn;
 	@FXML
-	private Button btn;
+	private Button fileBtn2;
 	@FXML
-	private TextField txtFld;
+	private Button fileBtn1;
+	@FXML
+	private TextField fileTxtFld1;
+	@FXML
+	private TextField fileTxtFld2;
 	@FXML
 	private ChoiceBox<String> synthesisChoice;
 	@FXML
@@ -43,7 +48,8 @@ public class InputController {
 	private Image img = null;
 	private int numberOfColumns = 10;
 	private int numberOfRows = 10;
-
+	private File sourcefile = null;
+	
 	public void initialize() {
 		// Choice Box
 		{
@@ -81,19 +87,43 @@ public class InputController {
 			infoLbl.setText("");
 		}
 
-		// 
+		// Filetextfield 1
 		{
-			this.txtFld.setEditable(false);
-			this.txtFld.setText("");
+			this.fileTxtFld1.setEditable(false);
+			this.fileTxtFld1.setText("");
+		}
+
+		// Filetextfield 2
+		{
+			this.fileTxtFld2.setEditable(false);
+			this.fileTxtFld2.setText("");
 		}
 		
-		// Image Button
+		// File Button 1
 		{
-			btn.setOnAction((ActionEvent event) -> {
+			fileBtn1.setOnAction((ActionEvent event) -> {
+				FileChooser chooser = new FileChooser();
+				chooser.setTitle("Choose a Sourcefile");
+
+				File file = chooser.showOpenDialog(fileBtn1.getScene().getWindow());
+
+				try {
+					this.sourcefile = file;
+					this.fileTxtFld1.setText(file.getName());
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(-1);
+				}
+			});
+		}
+
+		// File Button 2
+		{
+			fileBtn2.setOnAction((ActionEvent event) -> {
 				FileChooser chooser = new FileChooser();
 				chooser.setTitle("Choose a picture");
 
-				File file = chooser.showOpenDialog(btn.getScene().getWindow());
+				File file = chooser.showOpenDialog(fileBtn2.getScene().getWindow());
 
 				
 				
@@ -103,14 +133,14 @@ public class InputController {
 					
 					this.img = image;
 					this.url = file.getAbsolutePath();
-					this.txtFld.setText(file.getName());
+					this.fileTxtFld2.setText(file.getName());
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);
 				}
 			});
 		}
-
+		
 		// Exit Button
 		{
 			exitBtn.setOnAction((ActionEvent event) -> {
@@ -122,6 +152,10 @@ public class InputController {
 					}
 					this.type = SynthesisType.valueOf(this.synthesisChoice.getSelectionModel().getSelectedItem());
 
+					if (this.sourcefile == null || this.url == null || this.img == null){
+						throw new Exception("Einer der notwendigen Werte ist nicht gesetzt");
+					}
+					
 				} catch (Exception e) {
 					System.err.println("Es ist ein Fehler aufgtetreten, das Programm wird beendet");
 					e.printStackTrace();
@@ -178,13 +212,19 @@ public class InputController {
 		stage.setOnCloseRequest((WindowEvent e) -> {
 			System.exit(0);
 		});
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.showAndWait();
-
+		
+		
 		return controller;
 	}
 	
 	public String getURL(){
 		return this.url;
+	}
+	
+	public File getSourcefile(){
+		return this.sourcefile;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -34,7 +35,6 @@ public class Node {
 	private final List<Node> parents;
 
 	// Beschreibt die Darstellung des Knotens
-	private Color color;
 	private NodeType shape;
 
 	// Beschreibt den Ort des Knotens sowie Maße
@@ -70,22 +70,18 @@ public class Node {
 		this.radius = 1;
 	}
 
-	public Node() {
-		this(null);
-	}
-
-	public static void activateOutgoingEdges(Node node, boolean active) {
-		node.setActive(active);
-		for (Edge edge : node.getOutgoingEdges()) {
-			edge.getChild().setActive(active);
+	public static void colorOutgoingEdges(Node node, boolean active) {
+		node.setColor();
+		for (Edge edge : node.outgoing) {
+			edge.getChild().getData().setColor(node.getColor());
 			edge.setColor();
 		}
 	}
 
-	public static void activateIncomingEdges(Node node, boolean active) {
-		node.setActive(active);
-		for (Edge edge : node.getIncomingEdges()) {
-			edge.getParent().setActive(active);
+	public static void colorIncomingEdges(Node node, boolean active) {
+		node.setColor();
+		for (Edge edge : node.incoming) {
+			edge.getParent().getData().setColor(node.getColor());
 			edge.setColor();
 		}
 	}
@@ -136,8 +132,8 @@ public class Node {
 				circle.setCenterY(localYCenter);
 				circle.setRadius(localRadius);
 
-				circle.setStroke(node.color);
-				circle.setFill(node.color);
+				circle.setStroke(node.getData().getColor());
+				circle.setFill(node.getData().getColor());
 
 				result = circle;
 				break;
@@ -155,7 +151,7 @@ public class Node {
 				rec.rotateProperty();
 
 				rec.setStroke(node.getColor());
-				rec.setFill(node.color);
+				rec.setFill(node.getData().getColor());
 
 				result = rec;
 				break;
@@ -212,21 +208,27 @@ public class Node {
 					// zu
 					ContextMenu contextMenu = new ContextMenu();
 
-					// Menu Item Aktiviere
+					// Menu Item Color
 					{
-						MenuItem controllItem = new MenuItem("Activate");
-						controllItem.setOnAction((ActionEvent e) -> {
-							node.getData().toggle();
-							node.setColor();
-						});
-						contextMenu.getItems().add(controllItem);
+						Menu menu = new Menu("Color");
+
+						Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.BROWN, Color.CRIMSON,
+								Color.DARKOLIVEGREEN, Color.GREEN };
+						for (Color color : colors) {
+							MenuItem item = new MenuItem(color.toString());
+							item.setOnAction((ActionEvent e) -> {
+								node.getData().setColor(color);
+							});
+							menu.getItems().add(item);
+						}
+						contextMenu.getItems().add(menu);
 					}
 
 					// Menu Item Aktiviere nachfolger
 					{
 						MenuItem controllItem = new MenuItem("Aktiviere alle Nachfolger");
 						controllItem.setOnAction((ActionEvent e) -> {
-							Node.activateOutgoingEdges(node, true);
+							Node.colorOutgoingEdges(node, true);
 						});
 						contextMenu.getItems().add(controllItem);
 					}
@@ -235,7 +237,7 @@ public class Node {
 					{
 						MenuItem controllItem = new MenuItem("Aktiviere alle Vorgänger");
 						controllItem.setOnAction((ActionEvent e) -> {
-							Node.activateIncomingEdges(node, true);
+							Node.colorIncomingEdges(node, true);
 						});
 						contextMenu.getItems().add(controllItem);
 					}
@@ -287,30 +289,9 @@ public class Node {
 	}
 
 	public Color getColor() {
-		return color;
+		return this.data.getColor();
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
-
-		if (this.shapeObject != null) {
-			setFill(color);
-			setStroke(color);
-		}
-	}
-	
-	public void setFill(Color color){
-		if (this.shapeObject != null){
-			this.shapeObject.setFill(color);
-		}
-	}
-
-	public void setStroke(Color color){
-		if (this.shapeObject != null){
-			this.shapeObject.setStroke(color);
-		}
-	}
-	
 	public NodeType getShape() {
 		return shape;
 	}
@@ -333,11 +314,6 @@ public class Node {
 
 	public void setxCenter(int xCenter) {
 		this.xCenter = xCenter;
-
-		if (this.shapeObject != null) {
-			this.shapeObject.setFill(color);
-			this.shapeObject.setStroke(color);
-		}
 	}
 
 	public void setyCenter(int yCenter) {
@@ -346,26 +322,14 @@ public class Node {
 
 	public void setRadius(int radius) {
 		this.radius = radius;
-
-	}
-
-	public boolean isActive() {
-		return data.isActive();
-	}
-
-	public void setActive(boolean active) {
-		this.data.setActive(active);
-		setColor();
 	}
 
 	public void setColor() {
-		if (color == null) {
-			setColor(Color.BLACK);
+		
+		if (this.shapeObject != null) {
+			this.shapeObject.setFill(this.getData().getColor());
+			this.shapeObject.setStroke(this.getData().getColor());
 		}
-		if (color == Color.BLACK || color == Color.RED) {
-			setColor(((data.isActive()) ? Color.RED : Color.BLACK));
-		}
-
 		for (Edge edge : outgoing) {
 			edge.setColor();
 		}
@@ -373,8 +337,6 @@ public class Node {
 			edge.setColor();
 		}
 	}
-	
-	
 
 	public NodeData getData() {
 		return data;
@@ -392,11 +354,4 @@ public class Node {
 		}
 	}
 
-	public Set<Edge> getOutgoingEdges() {
-		return new HashSet<Edge>(outgoing);
-	}
-
-	public Set<Edge> getIncomingEdges() {
-		return new HashSet<Edge>(incoming);
-	}
 }

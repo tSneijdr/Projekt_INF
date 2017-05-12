@@ -88,14 +88,18 @@ public class HierarchicalTransformation extends Transformation {
 					}
 
 					// Lösche Invalide Kanten aus incoming
+					List<Node> toBeRemoved = new LinkedList<Node>();
 					for (Node node : incoming.keySet()) {
 						Set<Edge> list = incoming.get(node);
 						for (Edge e : invalidEdges) {
 							list.remove(e);
 							if (list.isEmpty()) {
-								incoming.remove(node);
+								toBeRemoved.add(node);
 							}
 						}
+					}
+					for (Node node : toBeRemoved){
+						incoming.remove(node);
 					}
 				}
 			}

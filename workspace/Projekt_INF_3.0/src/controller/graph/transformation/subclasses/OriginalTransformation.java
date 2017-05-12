@@ -1,6 +1,7 @@
 package controller.graph.transformation.subclasses;
 
 import controller.graph.transformation.Transformation;
+import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
@@ -8,18 +9,14 @@ public class OriginalTransformation extends Transformation {
 
 	public void applyOn(Graph g) {
 
-		int maxRow = 0;
-		int maxColumn = 0;
-		for (Node node : g.getAllNodes()) {
-			final int row = node.getData().getOriginalRow();
-			final int column = node.getData().getOriginalColumn();
-			
-			maxRow = (row > maxRow) ? row: maxRow;
-			maxColumn  = (column > maxColumn) ? column : maxColumn;
-		}
 		
-		final int width = g.getData().getRange().WIDTH;
-		final int height = g.getData().getRange().HEIGHT;
+		GraphData data = g.getData();
+		
+		final int width = data.getRange().WIDTH;
+		final int height = data.getRange().HEIGHT;
+		
+		final int maxColumn = data.getNumColumns();
+		final int maxRow = data.getNumRows();
 		
 		double columnSize = (double) width / (double) maxColumn;
 		double rowSize = (double) height / (double) maxRow;

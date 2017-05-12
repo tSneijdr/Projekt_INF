@@ -52,14 +52,14 @@
                <items>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                      <items>
-                        <BorderPane fx:id="upperLeftPane" prefHeight="200.0" prefWidth="200.0" />
-                        <BorderPane fx:id="lowerLeftPane" prefHeight="200.0" prefWidth="200.0" />
+                        <AnchorPane fx:id="upperLeftPane" prefHeight="200.0" prefWidth="200.0" />
+                        <AnchorPane fx:id="lowerLeftPane" prefHeight="200.0" prefWidth="200.0" />
                      </items>
                   </SplitPane>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                      <items>
-                        <BorderPane fx:id="upperRightPane" prefHeight="200.0" prefWidth="200.0" />
-                        <BorderPane fx:id="lowerRightPane" prefHeight="200.0" prefWidth="200.0" />
+                        <AnchorPane fx:id="upperRightPane" prefHeight="200.0" prefWidth="200.0" />
+                        <AnchorPane fx:id="lowerRightPane" prefHeight="200.0" prefWidth="200.0" />
                      </items>
                   </SplitPane>
                </items>

@@ -2,12 +2,8 @@ package controller.graph.transformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
-import controller.graph.transformation.subclasses.RandomTransformation;
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.graph.graph.Edge;
@@ -30,14 +26,12 @@ public abstract class Transformation {
 	 * @return
 	 */
 	public static Graph getUntransformedGraph(GraphData graphData) {
-		List<NodeData> allData = graphData.getAllNodeData();
+		final List<NodeData> allData = graphData.getAllNodeData();
 
-		List<Node> allNodes = new ArrayList<Node>();
-		List<Edge> allEdges = new ArrayList<Edge>();
+		final List<Node> allNodes = new ArrayList<Node>();
+		final List<Edge> allEdges = new ArrayList<Edge>();
 
-		Map<NodeData, Node> map = new HashMap<NodeData, Node>();
-
-		Random rand = new Random();
+		final Map<NodeData, Node> map = new HashMap<NodeData, Node>();
 
 		// Erstellt die Knoten
 		for (NodeData data : allData) {
@@ -54,44 +48,21 @@ public abstract class Transformation {
 		}
 
 		// Erstellt die Kanten
-		HashSet<NodeData> visited = new HashSet<NodeData>();
-		for (Node node : allNodes) {
-			if (!visited.contains(node.getData())) {
-				for (NodeData data : node.getData().getChildren()) {
-					// Test ob Kante bereits vorhanden ist
-					if (visited.contains(data)) {
-						continue;
-					}
+		for (Node node1 : allNodes) {
+			for (NodeData data : node1.getData().getChildren()) {
+				Node node2 = map.get(data);
 
-					Node parent = node;
-					Node child = map.get(data);
+				try {
+					Edge edge = new Edge(node1, node2);
+					final double thickness =(double) node1.getData().getNumberOfChildEdges(node2.getData());
+					System.out.println("Dicke: " + thickness);
+					edge.setThickness(thickness);
 
-					try {
-						Edge edge = new Edge(parent, child);
-
-						allEdges.add(edge);
-					} catch (Exception e) {
-					}
+					allEdges.add(edge);
+				} catch (Exception e) {
 				}
-				for (NodeData data : node.getData().getChildren()) {
-					// Test ob Kante bereits vorhanden ist
-					if (visited.contains(data)) {
-						continue;
-					}
-
-					Node parent = map.get(data);
-					Node child = node;
-
-					try {
-						Edge edge = new Edge(parent, child);
-
-						allEdges.add(edge);
-					} catch (Exception e) {
-					}
-				}
-
-				visited.add(node.getData());
 			}
+
 		}
 
 		return new Graph(graphData, allNodes, allEdges, map);
