@@ -1,9 +1,7 @@
 package controller.graph.synthesis.subclasses;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +17,7 @@ public class StandardSynthesis extends Synthesis {
 
 	@Override
 	public GraphData applyOn(Set<Point> points, final Image img, final int numberOfRows, final int numberOfColumns) {
-		List<NodeData> allNodeData = new ArrayList<NodeData>();
+		Set<NodeData> allNodeData = new HashSet<NodeData>();
 		Map<Point, NodeData> map = new HashMap<Point, NodeData>();
 
 		Range2D range = new Range2D(0, (int) img.getWidth(), 0, (int) img.getHeight());
@@ -37,8 +35,8 @@ public class StandardSynthesis extends Synthesis {
 			for (int x = 0; x < numberOfColumns; x++) {
 				for (int y = 0; y < numberOfRows; y++) {
 					// Suchfläche
-					Range2D r = new Range2D(x * sizeColumn, (x + 1) * sizeColumn, y * sizeRow, (y + 1) * sizeRow);
-					Set<Point> localPoints = tree.getPoints(r);
+					final Range2D r = new Range2D(x * sizeColumn, (x + 1) * sizeColumn, y * sizeRow, (y + 1) * sizeRow);
+					final Set<Point> localPoints = tree.getPoints(r);
 
 					// Skippe wenn keine Knoten gefunden wurden
 					if (localPoints == null || localPoints.isEmpty()) {

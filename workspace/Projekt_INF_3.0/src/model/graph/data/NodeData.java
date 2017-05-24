@@ -19,7 +19,7 @@ public class NodeData {
 
 	// Eltern- und Kinderknoten
 	private final List<NodeData> children;
-	private final Map<NodeData, Integer> numChildInstances;
+	private final Map<NodeData, Integer> childThickness;
 
 	// Zusätzliche Informationnen zu diesem Knoten
 	private final Set<String> informations;
@@ -36,7 +36,7 @@ public class NodeData {
 
 		// Kinderliste
 		children = new LinkedList<NodeData>();
-		numChildInstances = new HashMap<NodeData, Integer>();
+		childThickness = new HashMap<NodeData, Integer>();
 
 		// Infromationen
 		this.informations = informations;
@@ -52,7 +52,7 @@ public class NodeData {
 	public void setColor(Color color) {
 		this.color = color;
 		for (Node node : allInstances) {
-				node.setColor();
+			node.setColor();
 		}
 	}
 
@@ -73,22 +73,20 @@ public class NodeData {
 	}
 
 	public void addChild(NodeData child) {
-		System.out.println("Wobalobdubdub a");
 		if (child == this || child == null) {
 			return;
 		} else if (this.children.contains(child)) {
-			final int count = numChildInstances.get(child).intValue();
-			this.numChildInstances.put(child, count + 1);
-			System.out.println("Wobalobdubdub b");
+			final int count = childThickness.get(child).intValue();
+			this.childThickness.put(child, count + 1);
 		} else {
 			this.children.add(child);
-			this.numChildInstances.put(child, 1);
+			this.childThickness.put(child, 1);
 		}
 	}
 
 	public int getNumberOfChildEdges(NodeData child) {
-		if (this.numChildInstances.containsKey(child)) {
-			return this.numChildInstances.get(child);
+		if (this.childThickness.containsKey(child)) {
+			return this.childThickness.get(child);
 		} else {
 			return 0;
 		}

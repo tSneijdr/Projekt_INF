@@ -2,8 +2,11 @@ package controller.graph.transformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import model.graph.data.GraphData;
 import model.graph.data.NodeData;
 import model.graph.graph.Edge;
@@ -26,10 +29,10 @@ public abstract class Transformation {
 	 * @return
 	 */
 	public static Graph getUntransformedGraph(GraphData graphData) {
-		final List<NodeData> allData = graphData.getAllNodeData();
+		final Set<NodeData> allData = graphData.getAllNodeData();
 
-		final List<Node> allNodes = new ArrayList<Node>();
-		final List<Edge> allEdges = new ArrayList<Edge>();
+		final Set<Node> allNodes = new HashSet<Node>();
+		final Set<Edge> allEdges = new HashSet<Edge>();
 
 		final Map<NodeData, Node> map = new HashMap<NodeData, Node>();
 
@@ -54,15 +57,13 @@ public abstract class Transformation {
 
 				try {
 					Edge edge = new Edge(node1, node2);
-					final double thickness =(double) node1.getData().getNumberOfChildEdges(node2.getData());
-					System.out.println("Dicke: " + thickness);
+					final double thickness = (double) node1.getData().getNumberOfChildEdges(node2.getData());
 					edge.setThickness(thickness);
 
 					allEdges.add(edge);
 				} catch (Exception e) {
 				}
 			}
-
 		}
 
 		return new Graph(graphData, allNodes, allEdges, map);

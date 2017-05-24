@@ -33,56 +33,47 @@ public class ForceDirectedLayout extends Transformation {
 
 	@Override
 	public void applyOn(Graph g) {
-		if (g.getAllNodes().isEmpty() || g == null) return;
-		
+		if (g.getAllNodes().isEmpty() || g == null)
+			return;
+
+		new IdentityTransformation().applyOn(g);
+
 		final List<Node> nodeList = g.getAllNodes();
 		final List<Edge> edgeList = g.getAllEdges();
 
-		final Map<Node, Double> xDisp = new HashMap<Node, Double>();
-		final Map<Node, Double> yDisp = new HashMap<Node, Double>();
+		final Map<Node, Vector> disp = new HashMap<Node, Vector>();
 
-		final int W; // width of pane
-		final int H; // length of pane
-		final int area;
-
+		final int W = g.getData().getRange().WIDTH; // width of pane
+		final int H = g.getData().getRange().HEIGHT; // length of pane
+		final int area = W * H;
 		final int numOfNodes = nodeList.size();
-		final int iterations = 100;
-
-		// Bereite Knoten vor
-		{
-			// Setze Knoten auf Identität als Ausgangslage
-			new IdentityTransformation().applyOn(g);
-
-			int maxX = 0;
-			int maxY = 0;
-			for (Node node : g.getAllNodes()) {
-				maxX = (node.getxCenter() > maxX) ? node.getxCenter() : maxX;
-				maxY = (node.getyCenter() > maxY) ? node.getyCenter() : maxY;
-			}
-
-			W = maxX;
-			H = maxY;
-
-			area = W * H;
-		}
-
-		double t = 0.1 * W;
-
 		final double k = Math.sqrt(area / numOfNodes);
 
-		for (Node node : nodeList) {
-			xDisp.put(node, 0.0);
-			yDisp.put(node, 0.0);
+		System.out.println("         ForceDirected: W:" + W + ", H:" + H + ", numNodes: " + numOfNodes);
+
+		{
+			double x = 0.0;
+			double y = 0.0;
+			for (Node n : nodeList) {
+				x += n.getxCenter();
+				y += n.getyCenter();
+			}
+			x = x / nodeList.size();
+			y = y / nodeList.size();
+			System.out.println("         ForceDirected: avg x: " + x + ", avg y: " + y);
 		}
 
-		for (int i = 1; i <= iterations; i++) {
+		double t = 1000;
+		final int iterations = 1000;
+		for (int i = 0; i < iterations; i++) {
+			disp.clear();
+
+			for (Node node : nodeList) {
+				disp.put(node, new Vector(0.0, 0.0));
+			}
 
 			// calculate repulsive forces
 			for (Node v : nodeList) {
-				// vertex has position and disposition attributes for x and y
-				xDisp.put(v, 0.0);
-				yDisp.put(v, 0.0);
-
 				for (Node u : nodeList) {
 					if (v != u) {
 						// delta is short hand for difference
@@ -92,8 +83,7 @@ public class ForceDirectedLayout extends Transformation {
 						final double deltaLength = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
 						final double factor = f_r(deltaLength, k);
-						xDisp.put(v, (xDisp.get(v) + (deltaX / deltaLength) * factor));
-						yDisp.put(v, (yDisp.get(v) + (deltaY / deltaLength) * factor));
+						disp.get(v).add(factor * deltaX / deltaLength, factor * deltaY / deltaLength);
 					}
 				}
 			}
@@ -109,20 +99,19 @@ public class ForceDirectedLayout extends Transformation {
 				final double deltaLength = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
 				final double factor = f_a(deltaLength, k);
-				xDisp.put(parent, (xDisp.get(parent) - (deltaX / deltaLength) * factor));
-				yDisp.put(parent, (yDisp.get(parent) - (deltaY / deltaLength) * factor));
-				xDisp.put(child, (xDisp.get(child) + (deltaX / deltaLength) * factor));
-				yDisp.put(child, (yDisp.get(child) + (deltaY / deltaLength) * factor));
+				disp.get(parent).add(-(deltaX / deltaLength) * factor, -(deltaY / deltaLength) * factor);
+
+				disp.get(child).add((deltaX / deltaLength) * factor, (deltaY / deltaLength) * factor);
 			}
 
 			// limit the maximum displacement to the temperature t
 			// and then prevent from being displaced outside frame
 			for (Node v : nodeList) {
-				final double deltaLength = Math.sqrt(Math.pow(xDisp.get(v), 2) + Math.pow(yDisp.get(v), 2));
+				final double deltaLength = disp.get(v).getLength();
 
 				final double factor = Math.min(deltaLength, t);
-				v.setxCenter((int) (v.getxCenter() + (xDisp.get(v) / deltaLength) * factor));
-				v.setyCenter((int) (v.getyCenter() + (yDisp.get(v) / deltaLength) * factor));
+				v.setxCenter((int) (v.getxCenter() + (disp.get(v).getX() / deltaLength) * factor));
+				v.setyCenter((int) (v.getyCenter() + (disp.get(v).getY() / deltaLength) * factor));
 
 				v.setxCenter(Math.min(W / 2, Math.max(-W / 2, v.getxCenter())));
 				v.setyCenter(Math.min(H / 2, Math.max(-H / 2, v.getyCenter())));
@@ -132,6 +121,34 @@ public class ForceDirectedLayout extends Transformation {
 			// configuration
 			t = cool(t);
 		}
+	}
+
+	class Vector {
+		private double x = 0;
+		private double y = 0;
+
+		public Vector(double x, double y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public void add(double x, double y) {
+			this.x += x;
+			this.y += y;
+		}
+
+		public double getLength() {
+			return Math.sqrt(x * x + y * y);
+		}
+
+		public double getX() {
+			return x;
+		}
+
+		public double getY() {
+			return y;
+		}
+
 	}
 
 }

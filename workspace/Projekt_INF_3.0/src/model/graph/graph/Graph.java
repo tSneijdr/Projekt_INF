@@ -5,20 +5,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -29,8 +23,8 @@ import model.graph.data.NodeData;
 public class Graph {
 
 	// Speichern von Knoten und Kanten
-	private final List<Node> allNodes;
-	private final List<Edge> allEdges;
+	private final Set<Node> allNodes;
+	private final Set<Edge> allEdges;
 
 	// Mapping vin Daten auf Knoten
 	private final Map<NodeData, Node> mapping;
@@ -41,7 +35,7 @@ public class Graph {
 	/**
 	 * Standardkonsturktor
 	 */
-	public Graph(GraphData data, List<Node> allNodes, List<Edge> allEdges, Map<NodeData, Node> mapping) {
+	public Graph(GraphData data, Set<Node> allNodes, Set<Edge> allEdges, Map<NodeData, Node> mapping) {
 		this.allNodes = allNodes;
 		this.allEdges = allEdges;
 		this.mapping = mapping;
@@ -57,7 +51,7 @@ public class Graph {
 	 * @param scaleFactor
 	 * @return
 	 */
-	public static Pane getPane(int paneWidth, int paneHeight, Graph graph, boolean showBgImage, boolean isScaled) {
+	public static Pane getPane(int paneWidth, int paneHeight, Graph graph, boolean showBgImage) {
 
 		// Setup für das Pane
 		Pane pane = new AnchorPane();
@@ -142,8 +136,7 @@ public class Graph {
 			}
 		}
 
-		pane.getChildren().addAll(Graph.getContent(graph));
-
+		pane.getChildren().addAll(Graph.getContent(graph));		
 		return pane;
 	}
 

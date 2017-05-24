@@ -37,20 +37,19 @@ public class MainApp extends Application {
 
 				try {
 					Map<String, String> params = param.getNamed();
-					
+
 					System.out.println("   Parameter:");
-					for(String s : params.keySet()){
+					for (String s : params.keySet()) {
 						System.out.println("      " + s + "=" + params.get(s));
 					}
-					
-					
+
 					if (params.size() != 4) {
 						throw new Exception("Es wurden " + params.size() + "Argumente übergeben.");
 					}
 
 					pictureUrl = params.get("picture");
 					sourceUrl = params.get("source");
-					
+
 					numColumns = Integer.parseInt(params.get("columns"));
 					numRows = Integer.parseInt(params.get("rows"));
 
@@ -60,14 +59,14 @@ public class MainApp extends Application {
 						if (!(f.exists() && f.isFile())) {
 							throw new Exception();
 						}
-						
+
 						f = new File(pictureUrl);
 						if (!(f.exists() && f.isFile())) {
 							throw new Exception();
 						}
-						
+
 					}
-					
+
 					img = new Image(f.toURI().toString());
 				} catch (Exception e) {
 					System.err.println("Einer der Parameter war fehlerhaft");
@@ -109,9 +108,8 @@ public class MainApp extends Application {
 				// Setze inhalt des Fensters
 				Scene scene = new Scene(rootLayout);
 				primaryStage.setScene(scene);
-				primaryStage.show();
-
 				primaryStage.setMaximized(true);
+				primaryStage.show();
 
 				// Verlange rootController
 				rootController = rootLoader.getController();
@@ -120,11 +118,9 @@ public class MainApp extends Application {
 				return;
 			}
 		}
-
+		
 		// Weiteres Vorbereiten
-		{
-			rootController.setUp(controller, store);
-		}
+		rootController.setUp(controller, store);
 
 	}
 

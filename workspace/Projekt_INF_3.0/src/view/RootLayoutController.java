@@ -18,13 +18,15 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import model.points.Record;
 import model.points.Store;
 
@@ -93,72 +95,30 @@ public class RootLayoutController {
 		{
 			for (Pane p : panes) {
 				addActionListeners(p);
+				p.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, null)));
+
 			}
 		}
+		
+		
 
 	}
 
 	private void addActionListeners(Pane pa) {
-		final Double moveSpeed = 10.0;
 		final Double zoomSpeed = 0.001;
 
 		// Zoomevent setzen
 		pa.setOnScroll((ScrollEvent event) -> {
-			Pane pane = panePaneMap.get(pa);
+			final Pane pane = panePaneMap.get(pa);
 
-			final double deltaFactor = event.getDeltaY() * zoomSpeed;
-			final double oldScale = pane.getScaleX();
+			final double newScale = pane.getScaleX() + event.getDeltaY() * zoomSpeed;
+			final double scale = (newScale > 0) ? newScale : pane.getScaleX();
 
-			final double minScale = Math.min(pane.getWidth() / pane.getScaleX() / pa.getWidth(),
-					pane.getHeight() / pane.getScaleX() / pa.getHeight());
-			final double newScale = ((oldScale + deltaFactor) < minScale) ? minScale : oldScale + deltaFactor;
-
-			final double x = event.getSceneX();
-			final double y = event.getSceneY();
-
-			double vecX = x * (newScale / oldScale) - x;
-			double vecY = y * (newScale / oldScale) - y;
-
-			pane.setScaleX(newScale);
-			pane.setScaleY(newScale);
-
-			DoubleProperty xProp = pane.translateXProperty();
-			DoubleProperty yProp = pane.translateXProperty();
-
-			xProp.set(xProp.get() * (newScale / oldScale) - vecX);
-			yProp.set(yProp.get() * (newScale / oldScale) - vecY);
+			pane.setScaleX(scale);
+			pane.setScaleY(scale);
 
 			event.consume();
 		});
-
-		// ActionListener für alle Tastendrücke
-		// pa.setOnKeyPressed((KeyEvent event) -> {
-		// TODO: Fehler hier
-		/*
-		 * // Funktionalität für Bewegung in Pane final Pane pane =
-		 * panePaneMap.get(pa);
-		 * 
-		 * final DoubleProperty propX = pane.translateXProperty(); final
-		 * DoubleProperty propY = pane.translateYProperty();
-		 * 
-		 * if (event.isControlDown()) { pane.translateXProperty().set(0);
-		 * pane.translateYProperty().set(0);
-		 * pane.setScaleX(Math.min(pane.getWidth() / pa.getWidth(),
-		 * pane.getHeight() / pa.getHeight()));
-		 * pane.setScaleY(Math.min(pane.getWidth() / pa.getWidth(),
-		 * pane.getHeight() / pa.getHeight()));
-		 * 
-		 * System.out.println(pane); System.out.println(event.getSource()); }
-		 * else { if (event.getCode() == KeyCode.LEFT) { propX.set(propX.get() +
-		 * moveSpeed); } else if (event.getCode() == KeyCode.RIGHT) {
-		 * propX.set(propX.get() - moveSpeed); } else if (event.getCode() ==
-		 * KeyCode.UP) { propY.set(propY.get() + moveSpeed); } else if
-		 * (event.getCode() == KeyCode.DOWN) { propY.set(propY.get() -
-		 * moveSpeed); } }
-		 * 
-		 * event.consume();
-		 */
-		// });
 
 		// ActionListener für alle Mausdrücke
 		MousePoint point = new MousePoint(0.0, 0.0);
@@ -177,10 +137,20 @@ public class RootLayoutController {
 			final Pane pane = panePaneMap.get(pa);
 
 			if (event.isControlDown()) {
-				pane.translateXProperty().set(0);
-				pane.translateYProperty().set(0);
-				pane.setScaleX(Math.min(pane.getWidth() / pa.getWidth(), pane.getHeight() / pa.getHeight()));
-				pane.setScaleY(Math.min(pane.getWidth() / pa.getWidth(), pane.getHeight() / pa.getHeight()));
+				// final double newScale = Math.min(pane.getWidth() /
+				// pa.getWidth(), pane.getHeight() / pa.getHeight());
+				final double newScale = 0.25;
+
+				pane.setTranslateX(0);
+				pane.setTranslateY(0);
+
+				pane.setScaleX(newScale);
+				pane.setScaleY(newScale);
+
+				// pane.setScaleX(Math.min(pane.getWidth() / pa.getWidth(),
+				// pane.getHeight() / pa.getHeight()));
+				// pane.setScaleY(Math.min(pane.getWidth() / pa.getWidth(),
+				// pane.getHeight() / pa.getHeight()));
 			}
 			// event.get
 			final double newX = event.getSceneX();
@@ -280,10 +250,10 @@ public class RootLayoutController {
 			}
 		}
 
-		setPaneContent(0, TransformationType.ORIGINAL);
-		setPaneContent(1, TransformationType.CIRCULAR);
-		setPaneContent(2, TransformationType.FORCEDIRECTED);
-		setPaneContent(3, TransformationType.HIERARCHICAL);
+		// setPaneContent(0, TransformationType.ORIGINAL);
+		// setPaneContent(1, TransformationType.CIRCULAR);
+		// setPaneContent(2, TransformationType.FORCEDIRECTED);
+		// setPaneContent(3, TransformationType.HIERARCHICAL);
 
 	}
 
@@ -297,6 +267,7 @@ public class RootLayoutController {
 		final int height = (int) panes[pane].getHeight();
 
 		Pane content = controller.generatePane(width, height, trans);
+		// System.out.println(" " + width + " " + height);
 
 		panes[pane].getChildren().clear();
 		panes[pane].getChildren().add(content);
@@ -305,6 +276,12 @@ public class RootLayoutController {
 			panePaneMap.remove(panes[pane]);
 		}
 		panePaneMap.put(panes[pane], content);
+		
+		content.setScaleX(0.25);
+		content.setScaleY(0.25);
+		
+		content.setTranslateX(0.0);
+		content.setTranslateY(0.0);
 	}
 
 	protected class MousePoint {

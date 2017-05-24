@@ -1,7 +1,6 @@
 package controller.graph.transformation.subclasses;
 
 import controller.graph.transformation.Transformation;
-import javafx.scene.paint.Color;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
@@ -9,31 +8,18 @@ public class IdentityTransformation extends Transformation {
 
 	public void applyOn(Graph g) {
 
-		int maxRow = 0;
-		int maxColumn = 0;
+		int radius = 0;
 		for (Node node : g.getAllNodes()) {
-			final int row = node.getData().getOriginalRow();
-			final int column = node.getData().getOriginalColumn();
-			
-			maxRow = (row > maxRow) ? row: maxRow;
-			maxColumn  = (column > maxColumn) ? column : maxColumn;
+			radius = (node.getRadius() > radius) ? node.getRadius() : radius;
 		}
-		
-		final int width = g.getData().getRange().WIDTH;
-		final int height = g.getData().getRange().HEIGHT;
-		
-		double columnSize = (double) width / (double) maxColumn;
-		double rowSize = (double) height / (double) maxRow;
-		
-		for (Node node : g.getAllNodes()){
-			int centerX = node.getData().getOriginalColumn() * (int) columnSize + (int)(columnSize/2);
-			int centerY = node.getData().getOriginalRow() * (int) rowSize + (int)(rowSize/2);
-			
+
+		for (Node node : g.getAllNodes()) {
+			int centerX = node.getData().getOriginalColumn() * radius * 4;
+			int centerY = node.getData().getOriginalRow() * radius * 4;
+
 			node.setxCenter(centerX);
 			node.setyCenter(centerY);
 		}
-		
-		
 	}
 
 }
