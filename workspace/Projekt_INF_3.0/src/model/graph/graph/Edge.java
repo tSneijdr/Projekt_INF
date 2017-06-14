@@ -204,4 +204,11 @@ public class Edge {
 		}
 	}
 
+	// ----------------------------------------------------
+	// Java Methoden
+	// ----------------------------------------------------
+	public boolean equals(Edge e) {
+		return this.parent.equals(e.getParent()) && child.equals(e.getChild()) && thickness.equals(e.thickness);
+	}
+
 }

@@ -65,7 +65,7 @@ public class RootLayoutController {
 			// Setzt die Untermenüs und deren Funktion
 			for (int i = 0; i < menus.length; i++) {
 				for (TransformationType trans : TransformationType.values()) {
-					MenuItem item = new MenuItem(trans.toString());
+					MenuItem item = new MenuItem(trans.getDescription());
 					Integer index = new Integer(i);
 
 					item.setOnAction(new EventHandler<ActionEvent>() {
@@ -80,14 +80,6 @@ public class RootLayoutController {
 					menus[i].getItems().add(item);
 				}
 			}
-		}
-
-		// ----------------------------------------------------------------------------------
-		// Store
-		{
-			showStore.setOnAction((ActionEvent event) -> {
-				// StoreViewController.run(store);
-			});
 		}
 
 		// ----------------------------------------------------------------------------------

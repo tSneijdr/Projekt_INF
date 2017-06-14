@@ -1,8 +1,6 @@
 package model.graph.graph;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javafx.event.ActionEvent;
@@ -30,10 +28,6 @@ public class Node {
 	//
 	private final NodeData data;
 
-	// Eltern und Kinder
-	private final List<Node> children;
-	private final List<Node> parents;
-
 	// Beschreibt die Darstellung des Knotens
 	private NodeType shape;
 
@@ -53,9 +47,6 @@ public class Node {
 	public Node(NodeData data) {
 		this.data = data;
 		this.data.addInstance(this);
-
-		this.children = new ArrayList<Node>();
-		this.parents = new ArrayList<Node>();
 
 		this.incoming = new HashSet<Edge>();
 		this.outgoing = new HashSet<Edge>();
@@ -213,9 +204,14 @@ public class Node {
 						Menu menu = new Menu("Color");
 
 						Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.BROWN, Color.CRIMSON,
-								Color.DARKOLIVEGREEN, Color.GREEN };
-						for (Color color : colors) {
-							MenuItem item = new MenuItem(color.toString());
+								Color.DARKOLIVEGREEN};
+						String[] names = {"red", "green", "blue", "brown", "crimson", "dark olivegreen"};
+						
+						for (int i = 0; i<colors.length; i++) {
+							String name = names[i];
+							Color color = colors[i];
+							
+							MenuItem item = new MenuItem(name);
 							item.setOnAction((ActionEvent e) -> {
 								node.getData().setColor(color);
 							});
@@ -262,32 +258,6 @@ public class Node {
 	// ------------------------------------------------------------------
 	// Getter und Setter
 	// ------------------------------------------------------------------
-	public List<Node> getChildren() {
-		return new ArrayList<Node>(children);
-	}
-
-	public List<Node> getParents() {
-		return new ArrayList<Node>(parents);
-	}
-
-	public void addChild(Node child) {
-		if (children.contains(child) || child == this) {
-			return;
-		} else {
-			this.children.add(child);
-			child.addParent(this);
-		}
-	}
-
-	public void addParent(Node parent) {
-		if (parents.contains(parent) || parent == this) {
-			return;
-		} else {
-			this.parents.add(parent);
-			parent.addChild(this);
-		}
-	}
-
 	public Color getColor() {
 		return this.data.getColor();
 	}
@@ -325,7 +295,7 @@ public class Node {
 	}
 
 	public void setColor() {
-		
+
 		if (this.shapeObject != null) {
 			this.shapeObject.setFill(this.getData().getColor());
 			this.shapeObject.setStroke(this.getData().getColor());
@@ -343,15 +313,48 @@ public class Node {
 	}
 
 	public void addIncomingEdge(Edge e) {
-		if (e.getChild() == this) {
+		if (e.getChild() == this && e.getParent() != this && !incoming.contains(e)) {
+			for (Edge test : this.incoming) {
+				if (e.getParent() == test.getParent()) { // Abbruch wenn Kante
+															// vorhanden
+					return;
+				}
+			}
 			this.incoming.add(e);
 		}
 	}
 
 	public void addOutgoingEdge(Edge e) {
-		if (e.getParent() == this) {
+		if (e.getParent() == this && e.getChild() != this && !outgoing.contains(e)) {
+			for (Edge test : this.outgoing) {
+				if (e.getChild() == test.getChild()) { // Abbruch wenn Kante
+														// vorhanden
+					return;
+				}
+			}
 			this.outgoing.add(e);
 		}
 	}
+
+	public Set<Edge> getIncomingEdges() {
+		Set<Edge> cp = new HashSet<Edge>();
+		cp.addAll(this.incoming);
+		return cp;
+	}
+	
+	public Set<Edge> getOutgoingEdges() {
+		Set<Edge> cp = new HashSet<Edge>();
+		cp.addAll(this.outgoing);
+		return cp;
+	}
+
+	// ---------------------------------------------
+	// Java Methoden
+	// ---------------------------------------------
+
+	// TODO
+	// public boolean equals(Node node){
+
+	// }
 
 }

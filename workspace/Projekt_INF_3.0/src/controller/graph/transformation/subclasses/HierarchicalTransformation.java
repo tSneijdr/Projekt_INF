@@ -1,14 +1,10 @@
 package controller.graph.transformation.subclasses;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
 import controller.graph.transformation.Transformation;
-import model.graph.data.NodeData;
 import model.graph.graph.Edge;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
@@ -17,61 +13,96 @@ public class HierarchicalTransformation extends Transformation {
 
 	@Override
 	public void applyOn(Graph g) {
+		if (g == null || g.getAllNodes().isEmpty())
+			return;
 
-		List<Node> orderedNodes = new LinkedList<Node>();
-
-		Map<Integer, List<Node>> numOfKids = new HashMap<Integer, List<Node>>();
-		Map<Integer, List<Node>> numOfParents = new HashMap<Integer, List<Node>>();
-
-		Map<NodeData, Node> dataToNode = new HashMap<NodeData, Node>();
-
-		List<Edge> edges = g.getAllEdges();
 		List<Node> nodes = g.getAllNodes();
+		List<Node> visited = new LinkedList<Node>();
+		List<List<Node>> target = new LinkedList<List<Node>>();
 
-		// Setup
-		{
-			for (Node node : g.getAllNodes()) {
-				dataToNode.put(node.getData(), node);
+		// Ermittle den Baum
+		while (!nodes.isEmpty()) {
+			for (Node node : startNodes(nodes)) {
+				depthSearch(node, visited, 0, target);
+			}
+			nodes.removeAll(visited);
+		}
+
+		// Platizere die Knoten
+		final int radius = visited.get(0).getRadius();
+		for (int i = 0; i < target.size(); i++) {
+			List<Node> level = target.get(i);
+			final double displacement =  level.size() * 1.1 * radius / 2.0;
+
+			for (int j = 0; j < level.size(); j++) {
+				System.out.println("i: " + i + " j: " + j);
+				level.get(j).setxCenter(radius * 2 * i);
+				level.get(j).setyCenter((int) ((j * radius * 1.1) - displacement));
 			}
 
-			for (Node node : g.getAllNodes()) {
-				final int num = node.getChildren().size();
-System.out.println("num: " + num);
-				
-				if (!numOfKids.containsKey(num)) {
-					numOfKids.put(num, new LinkedList<Node>());
-				}
-				numOfKids.get(num).add(node);
+		}
+
+	}
+
+	private void depthSearch(Node currentNode, List<Node> visited, int depth, List<List<Node>> target) {
+		visited.add(currentNode);
+
+		// Füge Knoten an richtiger Stelle zu
+		try {
+			List<Node> list = target.get(depth);
+			if (list == null) {
+				target.add(depth, new LinkedList<Node>());
 			}
+		} catch (IndexOutOfBoundsException e) {
+			target.add(depth, new LinkedList<Node>());
+		}
+		target.get(depth).add(currentNode);
 
-			for (Node node : g.getAllNodes()) {
-				final int num = node.getParents().size();
-
-				if (!numOfParents.containsKey(num)) {
-					numOfParents.put(num, new LinkedList<Node>());
-				}
-				numOfParents.get(num).add(node);
+		Set<Node> children;
+		{ // Ermittle alle Kinder
+			children = new HashSet<Node>();
+			for (Edge e : currentNode.getOutgoingEdges()) {
+				children.add(e.getChild());
 			}
 		}
 
-		final int radius = nodes.get(0).getRadius();
-		{
-			int index = 0;
-			while (!nodes.isEmpty()) {
-				if (numOfKids.containsKey(index)) {
+		for (Node node : children) {
+			if (!visited.contains(node)) {
+				depthSearch(node, visited, (depth + 1), target);
+			}
+		}
+	}
 
-					List<Node> level = numOfKids.get(index);
-					// Place Kids
-					for (int i = 0; i < level.size(); i++) {
-						level.get(i).setxCenter(radius * 2 * index);
-						level.get(i).setyCenter((int) (i * radius * 1.1));
-					}
-					nodes.removeAll(level);
-				}
+	/**
+	 * Ermittle einen oder mehrere Startknoten
+	 * 
+	 * @param nodes
+	 * @return
+	 */
+	private List<Node> startNodes(List<Node> nodes) {
+		if (nodes.isEmpty())
+			return null;
 
-				index++;
+		// Ermittle Startknoten
+		List<Node> start = new LinkedList<Node>();
+
+		for (Node node : nodes) {
+			if (node.getIncomingEdges().size() == 0) {
+				start.add(node);
 			}
 		}
 
+		int index = 1;
+		outerLoop: while (start.isEmpty()) {
+			for (Node node : nodes) {
+				if (node.getIncomingEdges().size() == index) {
+					start.add(node);
+					break outerLoop;
+				}
+			}
+			index++;
+		}
+
+		return start;
 	}
 }

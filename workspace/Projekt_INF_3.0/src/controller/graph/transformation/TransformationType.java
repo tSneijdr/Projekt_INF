@@ -7,9 +7,8 @@ import controller.graph.transformation.subclasses.IdentityTransformation;
 import controller.graph.transformation.subclasses.OriginalTransformation;
 
 public enum TransformationType {
-	ORIGINAL("Stellt Knoten dem originalen Raster entsprechend dar"), IDENTITY(
-			"Nimmt keine Änderung am Graph vor"), HIERARCHICAL("Hierarchische Darstellung der Knoten"), FORCEDIRECTED(
-					"Kräfte-gerichtetes Layout"), CIRCULAR("Stellt Knoten auf einem Kreis dar");
+	ORIGINAL("Grid with picture"), IDENTITY("Grid without picture"), HIERARCHICAL("Hierarchical"), FORCEDIRECTED(
+			"Forcdirected"), CIRCULAR("Circular");
 
 	private final String description;
 
