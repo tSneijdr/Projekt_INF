@@ -3,7 +3,7 @@ package utils.datastructures;
 /**
  * Praktische Datenstruktur, stellt ein Quadrupel von beliebigen Werten dar
  * 
- * @author tobi
+ * @author tobias meisel
  *
  * @param <A>
  * @param <B>

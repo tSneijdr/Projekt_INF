@@ -10,7 +10,7 @@ import utils.ranges.Range2D;
 /**
  * Datenstruktur, stellt einen einfachen Quadtree dar
  * 
- * @author tobi
+ * @author tobias meisel
  *
  */
 public class Quadtree {

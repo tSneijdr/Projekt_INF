@@ -72,7 +72,13 @@ public class NodeData {
 		return originalRow;
 	}
 
+	/**
+	 * Fügt ein Kind dieses abstrakten Knoten hinzu
+	 * 
+	 * @param child
+	 */
 	public void addChild(NodeData child) {
+		// Legalitätschecks
 		if (child == this || child == null) {
 			return;
 		} else if (this.children.contains(child)) {
@@ -84,6 +90,13 @@ public class NodeData {
 		}
 	}
 
+	/**
+	 * Gibt die Anzahl der Punkte in diesem Knoten deren Nachfolger im
+	 * übergebenen Knoten liegt zurück
+	 * 
+	 * @param child
+	 * @return
+	 */
 	public int getNumberOfChildEdges(NodeData child) {
 		if (this.childThickness.containsKey(child)) {
 			return this.childThickness.get(child);
@@ -92,6 +105,11 @@ public class NodeData {
 		}
 	}
 
+	/**
+	 * Fügt eine konkrete Darstellung dieses abstrakten Knotens hinzu
+	 * 
+	 * @param node
+	 */
 	public void addInstance(Node node) {
 		allInstances.add(node);
 	}

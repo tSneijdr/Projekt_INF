@@ -10,9 +10,6 @@ import java.util.Set;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -124,9 +121,6 @@ public class Graph {
 
 					Image image = graph.getData().getBackground();
 					ImageView view = new ImageView(image);
-
-					// view.setFitHeight(graph.getData().getRange().HEIGHT);
-					// view.setFitWidth(graph.getData().getRange().WIDTH);
 
 					view.setX(0);
 					view.setY(0);

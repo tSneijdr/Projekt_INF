@@ -8,10 +8,13 @@ import model.points.Record;
 import utils.ranges.Range2D;
 
 /**
- * Datenstruktur, stellt eine einfache Matrix dar
- * @author tobi
+ * Datenstruktur, stellt eine einfache Matrix dar Deprecated weil nicht
+ * getestet, sollte aber funktionieren
+ * 
+ * @author tobias meisel
  *
  */
+@Deprecated
 public class Matrix {
 	public final Range2D IMAGE_RANGE;
 	public final int NUMBER_OF_COLUMNS;
@@ -30,10 +33,8 @@ public class Matrix {
 		NUMBER_OF_COLUMNS = numberOfColumns;
 		NUMBER_OF_ROWS = numberOfRows;
 
-		SIZE_OF_ROW = (int) Math
-				.ceil(((double) IMAGE_RANGE.HEIGHT / (double) NUMBER_OF_ROWS));
-		SIZE_OF_COLUMN = (int) Math
-				.ceil(((double) IMAGE_RANGE.WIDTH / (double) NUMBER_OF_COLUMNS));
+		SIZE_OF_ROW = (int) Math.ceil(((double) IMAGE_RANGE.HEIGHT / (double) NUMBER_OF_ROWS));
+		SIZE_OF_COLUMN = (int) Math.ceil(((double) IMAGE_RANGE.WIDTH / (double) NUMBER_OF_COLUMNS));
 
 		values = new int[NUMBER_OF_COLUMNS * NUMBER_OF_ROWS];
 		for (int i = 0; i < values.length; i++) {
@@ -43,14 +44,20 @@ public class Matrix {
 		arrows = new HashSet<Quadrupel<Integer, Integer, Integer, Integer>>();
 	}
 
+	/**
+	 * Gibt die Anzahl der Punkte in der durch diese Daten gegebenen Zelle
+	 * zurück
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public int getNumberOfPointsAt(int x, int y) {
 		if (x < 0 || NUMBER_OF_COLUMNS <= x) {
-			throw new ArrayIndexOutOfBoundsException(
-					"Der x-Wert stimmt hier nicht.");
+			throw new ArrayIndexOutOfBoundsException("Der x-Wert stimmt hier nicht.");
 		}
 		if (y < 0 || NUMBER_OF_ROWS <= y) {
-			throw new ArrayIndexOutOfBoundsException(
-					"Der y-Wert stimmt hier nicht.");
+			throw new ArrayIndexOutOfBoundsException("Der y-Wert stimmt hier nicht.");
 		}
 
 		return values[y * NUMBER_OF_ROWS + x];
@@ -67,12 +74,10 @@ public class Matrix {
 		int y = p.getY() / SIZE_OF_ROW;
 
 		if (x < 0 || NUMBER_OF_COLUMNS <= x) {
-			throw new ArrayIndexOutOfBoundsException(
-					"Der x-Wert stimmt hier nicht.");
+			throw new ArrayIndexOutOfBoundsException("Der x-Wert stimmt hier nicht.");
 		}
 		if (y < 0 || NUMBER_OF_ROWS <= y) {
-			throw new ArrayIndexOutOfBoundsException(
-					"Der y-Wert stimmt hier nicht.");
+			throw new ArrayIndexOutOfBoundsException("Der y-Wert stimmt hier nicht.");
 		}
 
 		values[y * NUMBER_OF_ROWS + x]++;
@@ -92,13 +97,12 @@ public class Matrix {
 			int x1, x2, y1, y2;
 			x1 = p.getX() / SIZE_OF_COLUMN;
 			y1 = p.getY() / SIZE_OF_ROW;
-			
+
 			x2 = p.getNextNode().getX() / SIZE_OF_COLUMN;
 			y2 = p.getNextNode().getY() / SIZE_OF_ROW;
 
 			Quadrupel<Integer, Integer, Integer, Integer> q;
-			q = new Quadrupel<Integer, Integer, Integer, Integer>(x1, y1, x2,
-					y2);
+			q = new Quadrupel<Integer, Integer, Integer, Integer>(x1, y1, x2, y2);
 			arrows.add(q);
 
 			p = p.getNextNode();

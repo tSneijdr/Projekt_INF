@@ -12,7 +12,7 @@ import utils.ranges.Range3D;
  * Datenstruktur, stellt einen einfachen Oktree dar (Quadtree der zusätzlich die
  * Zeitkomponente berücksichtigt)
  * 
- * @author tobi
+ * @author tobias meisel
  *
  */
 public class Octree {

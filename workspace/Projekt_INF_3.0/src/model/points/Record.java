@@ -8,7 +8,7 @@ import java.util.Set;
  * Ein einzelner Datensatz. Enthält neben den Punkte auch z.b. den Titel und den
  * Namen des Teilnehmers
  * 
- * @author tobi
+ * @author tobias meisel
  *
  */
 public class Record {
@@ -37,6 +37,10 @@ public class Record {
 		}
 	}
 
+	// ---------------------------------------------------
+	// Getter, Setter und "Isser"
+	// ---------------------------------------------------
+	
 	/**
 	 * Gibt ein Set zurück das alle Punkte der Datenreihe enthält
 	 * 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller.graph.transformation.subclasses;
 
 import java.util.HashSet;
@@ -16,8 +11,12 @@ import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
 /**
+ * Benutzt Hierarchical Layout um alle Knoten in einem Kreis anzuordnen und die
+ * Anzahl von Kanten die stark im inneren des Kreises liegen zu vermeiden. In
+ * einigen Fällen kann dies doch jedoch dazu führen dass viele Kanten in der
+ * Nähe des Kreises liegen
  *
- * @author ts
+ * @author tobias schneider, tobias meisel
  */
 public class CircularLayout extends Transformation {
 
@@ -41,9 +40,9 @@ public class CircularLayout extends Transformation {
 
 			// Flatmappen der Anordnung
 			List<Node> res = new LinkedList<Node>();
-			for (int i = 0; i< target.size(); i++) {
+			for (int i = 0; i < target.size(); i++) {
 				List<Node> list = target.get(i);
-				
+
 				for (int j = 0; j < list.size(); j++) {
 					res.add(list.get(j));
 				}

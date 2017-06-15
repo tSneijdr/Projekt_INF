@@ -4,9 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Stellt einen einzelnen Punkt eines datesatzes dar
+ * Stellt einen einzelnen Punkt eines datesatzes dar, so wie er von einem Sensor
+ * ausgegeben wurde
  * 
- * @author tobi
+ * 
+ * @author tobias meisel
  *
  */
 public class Point {
@@ -23,35 +25,19 @@ public class Point {
 	private Point previousNode = null;
 	private Point nextNode = null;
 
+	/**
+	 * Standardkonstruktor, Parameternamen sollten selbsterklärend sein
+	 * 
+	 * @param x
+	 * @param y
+	 * @param timepoint
+	 * @param duration
+	 */
 	public Point(int x, int y, double timepoint, double duration) {
 		X = x;
 		Y = y;
 		TIMEPOINT = timepoint;
 		DURATION = duration;
-	}
-
-	// -----------------------------------------------------------------
-	// Getter und Setter -----------------------------------------------
-	// -----------------------------------------------------------------
-
-	/**
-	 * Gibt den im Datensatz nächsten Punkt zurück
-	 * 
-	 * @return nächster Punkt im Datensatz, oder null wenn kein solcher
-	 *         existiert
-	 */
-	public Point getNextNode() {
-		return nextNode;
-	}
-
-	/**
-	 * Gibt den Punkt zurück der im Datensatz vor diesem steht
-	 * 
-	 * @return nächster Punkt im Datensatz, oder null wenn kein solcher
-	 *         existiert
-	 */
-	public Point getPreviousNode() {
-		return previousNode;
 	}
 
 	/**
@@ -62,10 +48,10 @@ public class Point {
 	 * @return Den ersten Punkt der Datenreihe
 	 */
 	public static Point link(List<Point> points) {
-		if (points == null){
+		if (points == null) {
 			throw new NullPointerException();
 		}
-		
+
 		for (Point p : points) {
 			if (p.isAlreadySet == true) {
 				throw new IllegalArgumentException("Einer der Punkte ist bereits Mitglied einer Datenreihe");
@@ -91,10 +77,10 @@ public class Point {
 
 			copy.remove(minimalPoint);
 			minimalPoint.previousNode = lastPoint;
-			if (lastPoint != null){
+			if (lastPoint != null) {
 				lastPoint.nextNode = minimalPoint;
 			}
-			
+
 			minimalPoint.isAlreadySet = true;
 			lastPoint = minimalPoint;
 		}
@@ -103,7 +89,6 @@ public class Point {
 		while (lastPoint.getPreviousNode() != null) {
 			lastPoint = lastPoint.getPreviousNode();
 		}
-
 
 		return lastPoint;
 	}
@@ -176,4 +161,25 @@ public class Point {
 	public double getDURATION() {
 		return DURATION;
 	}
+
+	/**
+	 * Gibt den im Datensatz nächsten Punkt zurück
+	 * 
+	 * @return nächster Punkt im Datensatz, oder null wenn kein solcher
+	 *         existiert
+	 */
+	public Point getNextNode() {
+		return nextNode;
+	}
+
+	/**
+	 * Gibt den Punkt zurück der im Datensatz vor diesem steht
+	 * 
+	 * @return nächster Punkt im Datensatz, oder null wenn kein solcher
+	 *         existiert
+	 */
+	public Point getPreviousNode() {
+		return previousNode;
+	}
+
 }

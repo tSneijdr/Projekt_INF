@@ -30,6 +30,11 @@ import javafx.scene.paint.Color;
 import model.points.Record;
 import model.points.Store;
 
+/**
+ * Kontroller des rootLayouts
+ * @author tobias meisel
+ *
+ */
 public class RootLayoutController {
 	@FXML
 	private Accordion accordion;
@@ -53,6 +58,9 @@ public class RootLayoutController {
 	// Hilfs -Datenstrukt
 	private Pane[] panes;
 
+	/**
+	 * JavaFx - Methode
+	 */
 	public void initialize() {
 		panePaneMap = new HashMap<Pane, Pane>();
 		panes = new Pane[] { upperLeftPane, upperRightPane, lowerLeftPane, lowerRightPane };
@@ -96,6 +104,10 @@ public class RootLayoutController {
 
 	}
 
+	/**
+	 * Fügt den einzelnen Felder ihre notwendingen actionListener zu
+	 * @param pa
+	 */
 	private void addActionListeners(Pane pa) {
 		final Double zoomSpeed = 0.001;
 
@@ -204,6 +216,11 @@ public class RootLayoutController {
 
 	}
 
+	/**
+	 * Initialisiert das akkordeon am linken Rand und einige andere Panes und Menüs
+	 * @param controller
+	 * @param store
+	 */
 	public void setUp(Controller controller, Store store) {
 		this.controller = controller;
 
@@ -249,6 +266,11 @@ public class RootLayoutController {
 
 	}
 
+	/**
+	 * Setzt den Inhalt eines Panes
+	 * @param pane
+	 * @param trans
+	 */
 	private void setPaneContent(int pane, TransformationType trans) {
 		if (!(0 <= pane && pane < panes.length)) {
 			System.exit(-1);

@@ -13,6 +13,12 @@ import model.points.Point;
 import utils.datastructures.Quadtree;
 import utils.ranges.Range2D;
 
+/**
+ * Standardsynthese, überträgt eine Menge von Punkten durch Rasterisierung in
+ * einen Graphen
+ * 
+ * @author tobias meisel
+ */
 public class StandardSynthesis extends Synthesis {
 
 	@Override
@@ -28,27 +34,50 @@ public class StandardSynthesis extends Synthesis {
 			tree.add(point);
 		}
 
-		{
-			// Erstellt Knoten
+		{ // Erstellt Knoten
 			int sizeColumn = Math.floorDiv(range.WIDTH, numberOfColumns);
 			int sizeRow = Math.floorDiv(range.HEIGHT, numberOfRows);
 			for (int x = 0; x < numberOfColumns; x++) {
 				for (int y = 0; y < numberOfRows; y++) {
+					final Set<String> informations;
+					final Range2D r;
+					final Set<Point> localPoints;
+
 					// Suchfläche
-					final Range2D r = new Range2D(x * sizeColumn, (x + 1) * sizeColumn, y * sizeRow, (y + 1) * sizeRow);
-					final Set<Point> localPoints = tree.getPoints(r);
+					r = new Range2D(x * sizeColumn, (x + 1) * sizeColumn, y * sizeRow, (y + 1) * sizeRow);
+					localPoints = tree.getPoints(r);
 
 					// Skippe wenn keine Knoten gefunden wurden
 					if (localPoints == null || localPoints.isEmpty()) {
 						continue;
 					} else {
-						System.out.println("      " + localPoints.size() + " Punkt(e) => 1 Rohknoten");
+						System.out.println("      " + localPoints.size() + " point(s) => 1 abstract node");
 					}
 
-					// Zusätzliche relevante Daten können hier eingefügt werden
-					Set<String> informations = new HashSet<String>();
-					informations.add("Anzahl der Knoten: " + localPoints.size());
+					{ // Zusätzliche Infos können hier eingefügt werden
+						informations = new HashSet<String>();
+						informations.add("Number of datapoints: " + localPoints.size());
 
+						// Berechne die durchschnittlichen Werte der Datenpunkte
+						// in diesem Knoten
+						double avgDur = 0.0, avgX = 0.0, avgY = 0.0, avgTimepoint = 0.0;
+						for (Point p : localPoints) {
+							avgDur += p.getDURATION();
+							avgTimepoint += p.getTIMEPOINT();
+							avgX += p.getX();
+							avgY += p.getY();
+						}
+						final int size = localPoints.size();
+						avgDur = avgDur / (double) size;
+						avgTimepoint = avgTimepoint / (double) size;
+						avgX = avgX / (double) size;
+						avgY = avgY / (double) size;
+
+						informations.add("Average duration of datapoints: " + avgDur);
+						informations.add("Average timepoint of datapoints: " + avgTimepoint);
+						informations.add("Average x coordinates of datapoints: " + avgX);
+						informations.add("Average y coordinates of datapoints: " + avgY);
+					}
 					// Knoten
 					NodeData data = new NodeData(x, y, informations);
 					allNodeData.add(data);
@@ -75,8 +104,12 @@ public class StandardSynthesis extends Synthesis {
 				}
 			}
 		}
-		System.out.println("   Aus " + points.size() + " Punkt(en) wurde(n) " + allNodeData.size() + " Rohknoten.");
-		System.out.println("   --> Synthese erfolgreich abgeschlossen.");
+
+		// Log
+		System.out.println(
+				"   From " + points.size() + " datapoint(s) " + allNodeData.size() + " abstract nodes were extracted.");
+		System.out.println("   --> Synthesis finished succesfully.");
+
 		return new GraphData(allNodeData, img, numberOfColumns, numberOfRows);
 	}
 }

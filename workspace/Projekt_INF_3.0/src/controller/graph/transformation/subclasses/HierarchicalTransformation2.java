@@ -13,17 +13,22 @@ import model.graph.graph.Edge;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
+/**
+ * Veraltete Demoklasse
+ * @author tobias meisel
+ *
+ */
+@Deprecated
 public class HierarchicalTransformation2 extends Transformation {
 
 	@Override
 	public void applyOn(Graph g) {
 
-		Map<Integer, List<Node>> numOfKids;
 		Map<Integer, List<Node>> numOfParents;
 
 		Map<NodeData, Node> dataToNode = new HashMap<NodeData, Node>();
 
-		List<Edge> edges = g.getAllEdges();
+		g.getAllEdges();
 		List<Node> nodes = g.getAllNodes();
 
 		// Setup
@@ -33,7 +38,7 @@ public class HierarchicalTransformation2 extends Transformation {
 			}
 
 			numOfParents = orderByIncomingEdges(nodes);
-			numOfKids = orderByOutgoingEdges(nodes);
+			orderByOutgoingEdges(nodes);
 		}
 
 		final int radius = nodes.get(0).getRadius();

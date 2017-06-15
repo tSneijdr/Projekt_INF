@@ -1,9 +1,7 @@
 package controller.graph.transformation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +11,14 @@ import model.graph.graph.Edge;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
+/**
+ * Abstracte Klasse, die von Transforamtionen implementiert werden muss, bietet
+ * eine statische Methode zum transformieren von abstrakten Graphen in konkrete
+ * Graphen
+ * 
+ * @author tobi
+ *
+ */
 public abstract class Transformation {
 	/**
 	 * Erhält ein Set von Punkten und Generiert daraus einen Graphen
@@ -23,8 +29,8 @@ public abstract class Transformation {
 	public abstract void applyOn(Graph g);
 
 	/**
-	 * Erzeugt aus den übergebenen GraphenDaten einen noch untransformierten
-	 * Graphen
+	 * Erzeugt aus den übergebenen abstraken Graphen einen noch
+	 * untransformierten Graphen
 	 * 
 	 * @return
 	 */

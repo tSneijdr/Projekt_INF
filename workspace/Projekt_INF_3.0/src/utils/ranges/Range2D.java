@@ -30,22 +30,48 @@ public class Range2D {
 		HEIGHT = MAX_Y - MIN_Y;
 	}
 
+	/**
+	 * Prüft ob die gegebene x-Position in dieser Range liegt
+	 * @param x
+	 * @return
+	 */
 	public boolean inX(int x) {
 		return (MIN_X <= x && x < MAX_X);
 	}
 
+	/**
+	 * Prüft ob die gegebene y-Position in dieser Range liegt
+	 * @param y
+	 * @return
+	 */
 	public boolean inY(int y) {
 		return (MIN_Y <= y && y < MAX_Y);
 	}
 
+	/**
+	 * Prüft ob die beiden ranges überlappen
+	 * @param searchRange
+	 * @return
+	 */
 	public boolean overlap(Range2D searchRange) {
 		return inX(searchRange.MIN_X) || inX(searchRange.MAX_X) || inY(searchRange.MIN_Y) || inY(searchRange.MAX_Y);
 	}
 
+	/**
+	 * Prüft ob dieser Punkt in der range liegt
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean inRange(int x, int y) {
 		return inX(x) && inY(y);
 	}
 
+	/**
+	 * prüft ob dieser Punkt in der Range liegt
+	 * @param p
+	 * @return
+	 */
 	public boolean inRange(Point p) {
 		return inRange(p.getX(), p.getY());
 	}

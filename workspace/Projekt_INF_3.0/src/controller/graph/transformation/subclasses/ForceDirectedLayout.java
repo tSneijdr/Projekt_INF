@@ -14,11 +14,15 @@ import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
 /**
- *
- * @author ts
+ * Repräsentiert ein ForceDirected Layout
+ * 
+ * @author tobias schneider, tobias meisel
  */
 public class ForceDirectedLayout extends Transformation {
 
+	// -------------------------------------------------
+	// Hilfsmethoden
+	// -------------------------------------------------
 	public static double f_a(double x, double k) {
 		return Math.pow(x, 2) / k;
 	}
@@ -31,6 +35,9 @@ public class ForceDirectedLayout extends Transformation {
 		return Math.pow(t, 0.99);
 	}
 
+	/**
+	 * Siehe Klasse Transformation
+	 */
 	@Override
 	public void applyOn(Graph g) {
 		if (g.getAllNodes().isEmpty() || g == null)
@@ -123,6 +130,11 @@ public class ForceDirectedLayout extends Transformation {
 		}
 	}
 
+	/**
+	 * Hilfsklasse, die einen Vektor repräsentiert
+	 * @author tobi
+	 *
+	 */
 	class Vector {
 		private double x = 0;
 		private double y = 0;

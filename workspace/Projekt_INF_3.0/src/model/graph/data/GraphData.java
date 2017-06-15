@@ -1,18 +1,23 @@
 package model.graph.data;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javafx.scene.image.Image;
 import utils.ranges.Range2D;
 
+/**
+ * Stellt einen abstrakten Graph dar, hierbei werden wichtige daten, z.b. Größe
+ * und Hintergrund, hier gespeichert
+ * 
+ * @author tobias meisel
+ *
+ */
 public class GraphData {
 	private final Set<NodeData> allNodeData;
 	private final Range2D range;
 	private Image originalImage;
-	
+
 	// Daten zur Rasterisierung
 	private final int numColumns;
 	private final int numRows;
@@ -24,7 +29,7 @@ public class GraphData {
 		this.range = r;
 
 		this.originalImage = image;
-		
+
 		this.numColumns = numColumns;
 		this.numRows = numRows;
 	}
@@ -47,11 +52,12 @@ public class GraphData {
 	public void setBackground(Image img) {
 		this.originalImage = img;
 	}
-	
-	public int getNumColumns(){
+
+	public int getNumColumns() {
 		return numColumns;
 	}
-	public int getNumRows(){
+
+	public int getNumRows() {
 		return numRows;
 	}
 }

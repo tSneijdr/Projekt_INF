@@ -5,6 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 import model.points.Record;
 
+/**
+ * Klasse die einen kompletten Speicher eines Programmablaufes darstellt
+ * (mehrere Datensätze usw)
+ * 
+ * @author tobias meisel
+ *
+ */
 public class Store {
 	private final List<StoreNode> allNodes;
 

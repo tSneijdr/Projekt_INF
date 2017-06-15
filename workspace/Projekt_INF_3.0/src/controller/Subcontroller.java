@@ -1,4 +1,4 @@
-package controller.graph;
+package controller;
 
 import java.util.Set;
 
@@ -12,11 +12,16 @@ import model.graph.data.GraphData;
 import model.graph.graph.Graph;
 import model.points.Point;
 
-public class Subcontroller {
+/**
+ * Veraltetes Fragment
+ * @author tobias meisel
+ *
+ */
+@Deprecated abstract class Subcontroller {
 
 	private final GraphData data;
 
-	public Subcontroller(Set<Point> points, final SynthesisType synthType, final Image img, final int numberOfColumns,
+	private Subcontroller(Set<Point> points, final SynthesisType synthType, final Image img, final int numberOfColumns,
 			final int numberOfRows) {
 		Synthesis synthesis = synthType.getSynthesis();
 
@@ -45,8 +50,4 @@ public class Subcontroller {
 
 		return pane;
 	}
-
-	// --------------------------------------------------------------------------------------------------
-	// Getter und Setter
-	// --------------------------------------------------------------------------------------------------
 }

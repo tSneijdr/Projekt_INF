@@ -14,12 +14,13 @@ import model.graph.graph.Node;
 import utils.datastructures.Pair;
 
 /**
- *
- * @author ts
+ * Veraltete demoklasse
+ * @author tobias schneider, tobias meisel
  */
 public class CircularLayout2 extends Transformation {
     
-    private static List<Pair> bucketSort(List<Pair> nodeList, int n, int maxDegree) {
+    @SuppressWarnings({ "unused", "rawtypes", "unchecked" })
+	private static List<Pair> bucketSort(List<Pair> nodeList, int n, int maxDegree) {
         List<List<Pair>> buckets = new ArrayList<>(n);
         List<Pair> sortedNodes = new ArrayList<>();
         

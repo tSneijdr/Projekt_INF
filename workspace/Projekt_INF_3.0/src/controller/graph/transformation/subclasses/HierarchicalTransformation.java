@@ -9,6 +9,12 @@ import model.graph.graph.Edge;
 import model.graph.graph.Graph;
 import model.graph.graph.Node;
 
+/**
+ * Stellt einen Algorithmus dar, der versucht den Graphen auf ein gutes
+ * Hierarchisches Layout zu mappen
+ * 
+ * @author tobias schneider, tobias meisel
+ */
 public class HierarchicalTransformation extends Transformation {
 
 	@Override
@@ -32,7 +38,7 @@ public class HierarchicalTransformation extends Transformation {
 		final int radius = visited.get(0).getRadius();
 		for (int i = 0; i < target.size(); i++) {
 			List<Node> level = target.get(i);
-			final double displacement =  level.size() * 1.1 * radius / 2.0;
+			final double displacement = level.size() * 1.1 * radius / 2.0;
 
 			for (int j = 0; j < level.size(); j++) {
 				System.out.println("i: " + i + " j: " + j);

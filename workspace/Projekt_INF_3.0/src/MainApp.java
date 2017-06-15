@@ -14,12 +14,24 @@ import javafx.stage.Stage;
 import model.points.Store;
 import view.RootLayoutController;
 
+/**
+ * Hauptklasse, von hier werden Interfaces initialisiert und mit ihren
+ * controllern verbunden
+ * 
+ * @author tobias meisel
+ *
+ */
 public class MainApp extends Application {
 
 	// Objekte für GUI
 	private Stage primaryStage;
 	private AnchorPane rootLayout;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
 	@Override
 	public void start(Stage parameterPrimaryStage) {
 		String pictureUrl = null;
@@ -28,12 +40,10 @@ public class MainApp extends Application {
 		int numRows = 10;
 		Image img = null;
 
-		// Einlesen der Parameter
-		{
+		{ // Einlesen der Parameter
 			Parameters param = this.getParameters();
 
-			// Validieren der Parameter
-			{
+			{ // Validieren der Parameter
 
 				try {
 					Map<String, String> params = param.getNamed();
@@ -44,7 +54,7 @@ public class MainApp extends Application {
 					}
 
 					if (params.size() != 4) {
-						throw new Exception("Es wurden " + params.size() + "Argumente übergeben.");
+						throw new Exception("There are " + params.size() + " arguments provided.");
 					}
 
 					pictureUrl = params.get("picture");
@@ -69,7 +79,7 @@ public class MainApp extends Application {
 
 					img = new Image(f.toURI().toString());
 				} catch (Exception e) {
-					System.err.println("Einer der Parameter war fehlerhaft");
+					System.err.println("An argument was invalid.");
 					e.printStackTrace();
 					System.exit(-1);
 				}
@@ -77,19 +87,19 @@ public class MainApp extends Application {
 		}
 
 		// Laden der Dateien
-		final Store store;
+		final Store store; // Benutzt zum speichern von Datensätzen
 		{
-			System.out.println("Lade die Daten aus der Datei...");
+			System.out.println("Load data from file...");
 			store = DataReader.loadStoreFromFile(sourceUrl).getURLStore(pictureUrl);
-			System.out.println("Laden aus Datei abgeschlossen...");
+			System.out.println("Loading finished successfully...");
 		}
 
 		// Laden des Controllers
 		final Controller controller;
 		{
-			System.out.println("Initialisiere den Controller...");
+			System.out.println("Initialize Controller...");
 			controller = new Controller(store, SynthesisType.STANDARD, img, numColumns, numRows);
-			System.out.println("Initialisieren des Kontrollers abgeschlossen...");
+			System.out.println("Loading of controller finished successfully...");
 		}
 
 		// Lade das StandardLayout
@@ -98,7 +108,7 @@ public class MainApp extends Application {
 			try {
 				// Bereite Stage vor
 				this.primaryStage = parameterPrimaryStage;
-				this.primaryStage.setTitle("Graphvisualisierung");
+				this.primaryStage.setTitle("Graph");
 
 				// Bereite rootLoader vor
 				FXMLLoader rootLoader = new FXMLLoader();
@@ -118,13 +128,19 @@ public class MainApp extends Application {
 				return;
 			}
 		}
-		
+
 		// Weiteres Vorbereiten
 		rootController.setUp(controller, store);
 
 	}
 
+	/**
+	 * main, übergibt nur an JavaFX
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 }
+	

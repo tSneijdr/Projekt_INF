@@ -44,6 +44,11 @@ public class Node {
 	private final Set<Edge> incoming;
 	private final Set<Edge> outgoing;
 
+	/**
+	 * Erstellt einen konkreten Knoten aus einem abstrakten
+	 * 
+	 * @param data
+	 */
 	public Node(NodeData data) {
 		this.data = data;
 		this.data.addInstance(this);
@@ -61,7 +66,12 @@ public class Node {
 		this.radius = 1;
 	}
 
-	public static void colorOutgoingEdges(Node node, boolean active) {
+	/**
+	 * Färbt alle nachfolgenden Knoten wie diesen Knoten
+	 * 
+	 * @param node
+	 */
+	public static void colorOutgoingEdges(Node node) {
 		node.setColor();
 		for (Edge edge : node.outgoing) {
 			edge.getChild().getData().setColor(node.getColor());
@@ -69,7 +79,12 @@ public class Node {
 		}
 	}
 
-	public static void colorIncomingEdges(Node node, boolean active) {
+	/**
+	 * Färbt alle eingehenden Knoten wie diesen Knoten
+	 * 
+	 * @param node
+	 */
+	public static void colorIncomingEdges(Node node) {
 		node.setColor();
 		for (Edge edge : node.incoming) {
 			edge.getParent().getData().setColor(node.getColor());
@@ -204,13 +219,13 @@ public class Node {
 						Menu menu = new Menu("Color");
 
 						Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.BROWN, Color.CRIMSON,
-								Color.DARKOLIVEGREEN};
-						String[] names = {"red", "green", "blue", "brown", "crimson", "dark olivegreen"};
-						
-						for (int i = 0; i<colors.length; i++) {
+								Color.DARKOLIVEGREEN };
+						String[] names = { "red", "green", "blue", "brown", "crimson", "dark olivegreen" };
+
+						for (int i = 0; i < colors.length; i++) {
 							String name = names[i];
 							Color color = colors[i];
-							
+
 							MenuItem item = new MenuItem(name);
 							item.setOnAction((ActionEvent e) -> {
 								node.getData().setColor(color);
@@ -222,18 +237,18 @@ public class Node {
 
 					// Menu Item Aktiviere nachfolger
 					{
-						MenuItem controllItem = new MenuItem("Aktiviere alle Nachfolger");
+						MenuItem controllItem = new MenuItem("Color all successors.");
 						controllItem.setOnAction((ActionEvent e) -> {
-							Node.colorOutgoingEdges(node, true);
+							Node.colorOutgoingEdges(node);
 						});
 						contextMenu.getItems().add(controllItem);
 					}
 
 					// Menu Item Aktiviere Vorgänger
 					{
-						MenuItem controllItem = new MenuItem("Aktiviere alle Vorgänger");
+						MenuItem controllItem = new MenuItem("Color all predecessors");
 						controllItem.setOnAction((ActionEvent e) -> {
-							Node.colorIncomingEdges(node, true);
+							Node.colorIncomingEdges(node);
 						});
 						contextMenu.getItems().add(controllItem);
 					}
@@ -256,7 +271,7 @@ public class Node {
 	}
 
 	// ------------------------------------------------------------------
-	// Getter und Setter
+	// Getter und Setter (und adder)
 	// ------------------------------------------------------------------
 	public Color getColor() {
 		return this.data.getColor();
@@ -294,6 +309,10 @@ public class Node {
 		this.radius = radius;
 	}
 
+	/**
+	 * Aktualisiert die Farbe dieses Knotens sowie aller Kanten die diesen
+	 * Knoten beinhalten
+	 */
 	public void setColor() {
 
 		if (this.shapeObject != null) {
@@ -312,7 +331,13 @@ public class Node {
 		return data;
 	}
 
+	/**
+	 * Fügt eine neue eingehende Kante die diesen Knoten betrifft zu
+	 * 
+	 * @param e
+	 */
 	public void addIncomingEdge(Edge e) {
+		// Legalitätsprüfung
 		if (e.getChild() == this && e.getParent() != this && !incoming.contains(e)) {
 			for (Edge test : this.incoming) {
 				if (e.getParent() == test.getParent()) { // Abbruch wenn Kante
@@ -324,7 +349,13 @@ public class Node {
 		}
 	}
 
+	/**
+	 * Fügt eine neue ausgehende Kante die diesen Knoten betrifft hinzu
+	 * 
+	 * @param e
+	 */
 	public void addOutgoingEdge(Edge e) {
+		// Legalitätsprüfung
 		if (e.getParent() == this && e.getChild() != this && !outgoing.contains(e)) {
 			for (Edge test : this.outgoing) {
 				if (e.getChild() == test.getChild()) { // Abbruch wenn Kante
@@ -341,20 +372,10 @@ public class Node {
 		cp.addAll(this.incoming);
 		return cp;
 	}
-	
+
 	public Set<Edge> getOutgoingEdges() {
 		Set<Edge> cp = new HashSet<Edge>();
 		cp.addAll(this.outgoing);
 		return cp;
 	}
-
-	// ---------------------------------------------
-	// Java Methoden
-	// ---------------------------------------------
-
-	// TODO
-	// public boolean equals(Node node){
-
-	// }
-
 }

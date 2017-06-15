@@ -5,15 +5,13 @@ import java.util.List;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import javafx.scene.shape.Sphere;
 
 /**
  * Stellt eine Kante zwischen zwei Knoten dar, dabei werden u.a. Daten wie Farbe
  * der Kante und Dicke einbezogen.
  * 
- * @author tobi
+ * @author tobias meisel
  *
  */
 public class Edge {
@@ -27,6 +25,13 @@ public class Edge {
 	// Daten zur Darstellung
 	private final List<Line> lineObjects;
 
+	/**
+	 * Standardkonstruktor der die beiden enthaltenen Knoten übergibt
+	 * 
+	 * @param parent
+	 * @param child
+	 * @throws Exception
+	 */
 	public Edge(Node parent, Node child) throws Exception {
 		if (parent == child) {
 			throw new Exception("Der Elternknoten kann nicht gleich dem Kindknoten sein.");
@@ -43,6 +48,12 @@ public class Edge {
 		lineObjects = new LinkedList<Line>();
 	}
 
+	/**
+	 * Gibt eine zeichenbare Repräsentation der Kante zurück
+	 * 
+	 * @param edge
+	 * @return
+	 */
 	public static List<Shape> getDrawableObject(Edge edge) {
 		List<Shape> objects = new LinkedList<Shape>();
 		Line l = null;
@@ -108,23 +119,8 @@ public class Edge {
 				corner2Y = crossY - orthVecY * smallLen;
 			}
 
-			// Die drei Ecken des Pfeilkopfes
-			Double[] target = { targetX, targetY };
-			Double[] corner1 = { corner1X, corner1Y };
-			Double[] corner2 = { corner2X, corner2Y };
-
 			// Erstelle Pfeilkopf
 			{
-				/*
-				 * Polygon poly = new Polygon();
-				 * poly.getPoints().addAll(target);
-				 * poly.getPoints().addAll(corner1);
-				 * poly.getPoints().addAll(corner2);
-				 * 
-				 * // Setze Farbe auf gleiche Farbe wie Kante
-				 * poly.setStroke(Color.BLACK); poly.setFill(Color.BLACK);
-				 */
-
 				Line l1 = new Line();
 				Line l2 = new Line();
 
@@ -190,6 +186,10 @@ public class Edge {
 		return new LinkedList<Line>(this.lineObjects);
 	}
 
+	/**
+	 * Setzt die Farbe dieser Kante auf eine Farbe, wenn beide enthaltenen
+	 * Knoten diese Farbe haben, sonst schwarz
+	 */
 	public void setColor() {
 		if (this.getLineObject() != null) {
 			if (this.getParent().getColor().equals(this.getChild().getColor())) {
